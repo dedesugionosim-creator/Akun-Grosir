@@ -2227,6 +2227,324 @@
      AKHIR BLOK 12 – LANJUT KE BLOK 13
      ============================================================ -->
 	 <!-- ============================================================
+     BLOK 13 – MODAL CASH & BELANJA (LABA RUGI)
+     ============================================================ -->
+<style>
+  /* ============================================================
+     STYLE MODAL & LABA RUGI
+     ============================================================ */
+  .modal-laba-container { max-width: 900px; margin: 0 auto; }
+  .modal-laba-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .modal-laba-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
+
+  .modal-laba-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .modal-laba-form input, .modal-laba-form select, .modal-laba-form textarea {
+    width: 100%; padding: 10px 14px; border: 2px solid var(--border);
+    border-radius: var(--radius); font-size: 0.9em;
+  }
+  .modal-laba-form input:focus, .modal-laba-form select:focus, .modal-laba-form textarea:focus {
+    outline: none; border-color: var(--primary);
+  }
+  .modal-laba-form textarea { resize: vertical; min-height: 60px; }
+
+  .modal-laba-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px; margin-bottom: 20px;
+  }
+  .modal-laba-stat-card {
+    background: white; padding: 18px; border-radius: var(--radius);
+    text-align: center; box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+  }
+  .modal-laba-stat-card .stat-value { font-size: 1.6em; font-weight: 700; color: var(--dark); }
+  .modal-laba-stat-card .stat-label { font-size: 0.8em; color: var(--gray-500); }
+  .modal-laba-stat-card.success { border-left-color: var(--success); }
+  .modal-laba-stat-card.danger { border-left-color: var(--danger); }
+
+  .laba-rugi-card {
+    background: #e8f5e9;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid var(--success);
+    margin-bottom: 20px;
+  }
+  .laba-rugi-card.rugi {
+    background: #ffebee;
+    border-color: var(--danger);
+  }
+  .laba-rugi-card .laba-value { font-size: 2em; font-weight: 700; }
+  .laba-rugi-card .laba-label { font-size: 0.9em; color: #555; margin-top: 5px; }
+
+  .modal-laba-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .modal-laba-table th { background: var(--dark); color: white; padding: 10px 12px; text-align: left; }
+  .modal-laba-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+
+  .btn-modal-laba { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+  .btn-modal-laba-tambah { background: var(--success); color: white; }
+  .btn-modal-laba-hapus { background: var(--danger); color: white; }
+</style>
+
+<div class="modal-laba-container">
+  <div class="modal-laba-panel">
+    <h4>💵 Catat Modal Cash</h4>
+    <div class="modal-laba-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Jumlah (Rp)</label>
+          <input type="number" id="modal-cash-jumlah" placeholder="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>Keterangan</label>
+          <input type="text" id="modal-cash-keterangan" placeholder="Misal: Modal awal, tambahan modal">
+        </div>
+      </div>
+      <button class="btn-modal-laba btn-modal-laba-tambah" onclick="tambahModalCash()">➕ Tambah Modal Cash</button>
+    </div>
+  </div>
+
+  <div class="modal-laba-panel">
+    <h4>🛒 Catat Modal Belanja</h4>
+    <div class="modal-laba-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Jumlah (Rp)</label>
+          <input type="number" id="modal-belanja-jumlah" placeholder="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>Keterangan</label>
+          <input type="text" id="modal-belanja-keterangan" placeholder="Misal: Belanja barang, kulakan">
+        </div>
+      </div>
+      <button class="btn-modal-laba btn-modal-laba-tambah" onclick="tambahModalBelanja()">➕ Tambah Modal Belanja</button>
+    </div>
+  </div>
+
+  <div class="modal-laba-panel">
+    <h4>📊 Ringkasan Modal & Laba Rugi</h4>
+    <div class="modal-laba-stats" id="modal-laba-stats">
+      <div class="modal-laba-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Modal Cash</div></div>
+      <div class="modal-laba-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Modal Belanja</div></div>
+      <div class="modal-laba-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Modal</div></div>
+      <div class="modal-laba-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Penjualan</div></div>
+    </div>
+    <div class="laba-rugi-card" id="laba-rugi-card">
+      <div style="font-size:2em;">📈</div>
+      <div class="laba-value" id="laba-value">Rp 0</div>
+      <div class="laba-label" id="laba-label">LABA BERSIH</div>
+      <div class="laba-label" style="font-size:0.8em;color:#888;" id="laba-detail">Penjualan Rp 0 - Modal Rp 0</div>
+    </div>
+  </div>
+
+  <div class="modal-laba-panel">
+    <h4>📜 Riwayat Modal</h4>
+    <div class="table-responsive">
+      <table class="modal-laba-table">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Jenis</th>
+            <th>Jumlah</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="riwayat-modal-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // FUNGSI AMBIL & SIMPAN DATA MODAL
+  // ============================================================
+  function ambilDataModal() {
+    const key = 'tokoonline_modal_' + (penggunaAktif ? penggunaAktif.username : '');
+    return JSON.parse(localStorage.getItem(key) || '{"cash":[],"belanja":[]}');
+  }
+
+  function simpanDataModal(data) {
+    const key = 'tokoonline_modal_' + (penggunaAktif ? penggunaAktif.username : '');
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  // ============================================================
+  // FUNGSI TAMBAH MODAL CASH
+  // ============================================================
+  function tambahModalCash() {
+    const jumlah = parseInt(document.getElementById('modal-cash-jumlah').value) || 0;
+    const keterangan = document.getElementById('modal-cash-keterangan').value.trim();
+
+    if (jumlah <= 0) {
+      alert('⚠️ Jumlah modal cash harus lebih dari 0!');
+      return;
+    }
+
+    const data = ambilDataModal();
+    if (!data.cash) data.cash = [];
+    data.cash.push({
+      id: Date.now(),
+      jumlah: jumlah,
+      keterangan: keterangan || 'Modal Cash',
+      tanggal: new Date().toLocaleString('id-ID')
+    });
+    simpanDataModal(data);
+
+    document.getElementById('modal-cash-jumlah').value = '';
+    document.getElementById('modal-cash-keterangan').value = '';
+
+    tampilkanNotifikasi('✅ Modal cash Rp ' + jumlah.toLocaleString('id-ID') + ' dicatat!', 'sukses');
+    renderModalLabaRugi();
+  }
+
+  // ============================================================
+  // FUNGSI TAMBAH MODAL BELANJA
+  // ============================================================
+  function tambahModalBelanja() {
+    const jumlah = parseInt(document.getElementById('modal-belanja-jumlah').value) || 0;
+    const keterangan = document.getElementById('modal-belanja-keterangan').value.trim();
+
+    if (jumlah <= 0) {
+      alert('⚠️ Jumlah modal belanja harus lebih dari 0!');
+      return;
+    }
+
+    const data = ambilDataModal();
+    if (!data.belanja) data.belanja = [];
+    data.belanja.push({
+      id: Date.now(),
+      jumlah: jumlah,
+      keterangan: keterangan || 'Modal Belanja',
+      tanggal: new Date().toLocaleString('id-ID')
+    });
+    simpanDataModal(data);
+
+    document.getElementById('modal-belanja-jumlah').value = '';
+    document.getElementById('modal-belanja-keterangan').value = '';
+
+    tampilkanNotifikasi('✅ Modal belanja Rp ' + jumlah.toLocaleString('id-ID') + ' dicatat!', 'sukses');
+    renderModalLabaRugi();
+  }
+
+  // ============================================================
+  // FUNGSI HAPUS MODAL
+  // ============================================================
+  function hapusModal(id, jenis) {
+    if (!confirm('🗑️ Hapus catatan ini?')) return;
+
+    const data = ambilDataModal();
+    if (jenis === 'cash') {
+      data.cash = data.cash.filter(c => c.id !== id);
+    } else if (jenis === 'belanja') {
+      data.belanja = data.belanja.filter(b => b.id !== id);
+    }
+    simpanDataModal(data);
+    renderModalLabaRugi();
+    tampilkanNotifikasi('🗑️ Catatan dihapus!', 'sukses');
+  }
+
+  // ============================================================
+  // FUNGSI RENDER MODAL & LABA RUGI
+  // ============================================================
+  function renderModalLabaRugi() {
+    const data = ambilDataModal();
+    const totalCash = data.cash.reduce((s, c) => s + c.jumlah, 0);
+    const totalBelanja = data.belanja.reduce((s, b) => s + b.jumlah, 0);
+    const totalModal = totalCash + totalBelanja;
+
+    // Ambil total penjualan dari transaksi
+    const transaksi = JSON.parse(localStorage.getItem('tokoonline_transaksi_' + (penggunaAktif ? penggunaAktif.username : '')) || '[]');
+    const totalPenjualan = transaksi.reduce((s, t) => s + (t.total || 0), 0);
+
+    // Laba rugi
+    const labaRugi = totalPenjualan - totalModal;
+
+    // Update statistik
+    document.querySelector('#modal-laba-stats .modal-laba-stat-card:nth-child(1) .stat-value').textContent = 'Rp ' + totalCash.toLocaleString('id-ID');
+    document.querySelector('#modal-laba-stats .modal-laba-stat-card:nth-child(2) .stat-value').textContent = 'Rp ' + totalBelanja.toLocaleString('id-ID');
+    document.querySelector('#modal-laba-stats .modal-laba-stat-card:nth-child(3) .stat-value').textContent = 'Rp ' + totalModal.toLocaleString('id-ID');
+    document.querySelector('#modal-laba-stats .modal-laba-stat-card:nth-child(4) .stat-value').textContent = 'Rp ' + totalPenjualan.toLocaleString('id-ID');
+
+    // Update laba rugi card
+    const labaCard = document.getElementById('laba-rugi-card');
+    const labaValue = document.getElementById('laba-value');
+    const labaLabel = document.getElementById('laba-label');
+    const labaDetail = document.getElementById('laba-detail');
+
+    if (labaRugi >= 0) {
+      labaCard.className = 'laba-rugi-card';
+      labaValue.style.color = '#2e7d32';
+      labaLabel.textContent = 'LABA BERSIH';
+    } else {
+      labaCard.className = 'laba-rugi-card rugi';
+      labaValue.style.color = '#c62828';
+      labaLabel.textContent = 'RUGI BERSIH';
+    }
+    labaValue.textContent = 'Rp ' + Math.abs(labaRugi).toLocaleString('id-ID');
+    labaDetail.textContent = 'Penjualan Rp ' + totalPenjualan.toLocaleString('id-ID') + ' - Modal Rp ' + totalModal.toLocaleString('id-ID');
+
+    // Render riwayat modal
+    const tbody = document.getElementById('riwayat-modal-tbody');
+    const allItems = [];
+    data.cash.forEach(c => allItems.push({ ...c, jenis: 'Cash' }));
+    data.belanja.forEach(b => allItems.push({ ...b, jenis: 'Belanja' }));
+    allItems.sort((a, b) => b.id - a.id);
+
+    if (allItems.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#888;">Belum ada catatan modal.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    allItems.forEach(item => {
+      html += `
+        <tr>
+          <td>${item.tanggal}</td>
+          <td><strong>${item.jenis}</strong></td>
+          <td>Rp ${item.jumlah.toLocaleString('id-ID')}</td>
+          <td>${item.keterangan || '-'}</td>
+          <td><button class="btn-modal-laba btn-modal-laba-hapus" onclick="hapusModal(${item.id}, '${item.jenis.toLowerCase()}')">🗑️</button></td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // ============================================================
+  // INISIALISASI SAAT HALAMAN DIMUAT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    if (penggunaAktif) {
+      renderModalLabaRugi();
+    }
+  });
+
+  // Override navigasi agar render ulang saat pindah halaman
+  const originalMuatKontenModal = window.muatKontenHalaman;
+  if (typeof originalMuatKontenModal === 'function') {
+    window.muatKontenHalaman = function(pageId, container) {
+      originalMuatKontenModal(pageId, container);
+      if (pageId === 'modal-cash-belanja') {
+        setTimeout(renderModalLabaRugi, 300);
+      }
+    };
+  }
+
+  console.log('✅ Blok 13 – Modal Cash & Belanja (Laba Rugi) berhasil dimuat.');
+  console.log('📌 Pemilik grosir dapat mencatat modal cash dan belanja.');
+  console.log('📌 Laba rugi otomatis dihitung dari total penjualan dikurangi modal.');
+</script>
+<!-- ============================================================
+     AKHIR BLOK 13 – LANJUT KE BLOK 14
+     ============================================================ -->
+	 <!-- ============================================================
      BLOK 14 – KASBON (PIUTANG PELANGGAN)
      ============================================================ -->
 <style>
@@ -3643,6 +3961,303 @@ Materai Rp 10.000`
      AKHIR BLOK 18 – LANJUT KE BLOK 19
      ============================================================ -->
 	 <!-- ============================================================
+     BLOK 19 – LAPORAN PENJUALAN & RIWAYAT TRANSAKSI
+     ============================================================ -->
+<style>
+  /* ============================================================
+     STYLE LAPORAN PENJUALAN
+     ============================================================ */
+  .laporan-container { max-width: 1000px; margin: 0 auto; }
+  .laporan-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .laporan-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
+
+  .laporan-filter {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .laporan-filter input, .laporan-filter select {
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.9em;
+  }
+  .laporan-filter input:focus, .laporan-filter select:focus {
+    outline: none; border-color: var(--primary);
+  }
+  .laporan-filter button {
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .laporan-filter button:hover { background: var(--primary-dark); }
+
+  .laporan-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .laporan-stat-card {
+    background: white;
+    padding: 18px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+  }
+  .laporan-stat-card .stat-value { font-size: 1.6em; font-weight: 700; color: var(--dark); }
+  .laporan-stat-card .stat-label { font-size: 0.8em; color: var(--gray-500); }
+
+  .grafik-laporan {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 150px;
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .grafik-laporan .bar-item { flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .grafik-laporan .bar {
+    width: 30px;
+    border-radius: 4px 4px 0 0;
+    min-height: 10px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-light));
+    position: relative;
+  }
+  .grafik-laporan .bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7em;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .grafik-laporan .bar-label { font-size: 0.7em; margin-top: 5px; }
+
+  .laporan-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .laporan-table th { background: var(--dark); color: white; padding: 10px 12px; text-align: left; }
+  .laporan-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+
+  @media (max-width: 768px) {
+    .laporan-filter { flex-direction: column; align-items: stretch; }
+    .grafik-laporan { height: 120px; gap: 6px; }
+    .grafik-laporan .bar { width: 20px; }
+  }
+</style>
+
+<div class="laporan-container">
+  <div class="laporan-panel">
+    <h4>📊 Laporan Penjualan</h4>
+
+    <div class="laporan-filter">
+      <input type="date" id="filter-tanggal-dari">
+      <input type="date" id="filter-tanggal-sampai">
+      <button onclick="renderLaporan()">🔍 Tampilkan</button>
+      <button class="btn btn-warning btn-sm" onclick="resetFilterLaporan()">🔄 Reset</button>
+    </div>
+
+    <div class="laporan-stats" id="laporan-stats">
+      <div class="laporan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Penjualan</div></div>
+      <div class="laporan-stat-card"><div class="stat-value">0</div><div class="stat-label">Total Transaksi</div></div>
+      <div class="laporan-stat-card"><div class="stat-value">0</div><div class="stat-label">Total Item Terjual</div></div>
+    </div>
+
+    <div class="grafik-laporan" id="grafik-laporan">
+      <div style="flex:1;text-align:center;color:#888;padding:20px;">Pilih rentang tanggal untuk melihat grafik.</div>
+    </div>
+
+    <h4 style="color:#1a1a2e;margin:15px 0 10px;">📋 Riwayat Transaksi</h4>
+    <div class="table-responsive">
+      <table class="laporan-table">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Item</th>
+            <th>Total</th>
+            <th>Metode</th>
+          </tr>
+        </thead>
+        <tbody id="riwayat-transaksi-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // FUNGSI AMBIL TRANSAKSI
+  // ============================================================
+  function ambilTransaksiToko() {
+    const key = 'tokoonline_transaksi_' + (penggunaAktif ? penggunaAktif.username : '');
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  }
+
+  // ============================================================
+  // FUNGSI RENDER LAPORAN
+  // ============================================================
+  function renderLaporan() {
+    const dari = document.getElementById('filter-tanggal-dari').value;
+    const sampai = document.getElementById('filter-tanggal-sampai').value;
+
+    let transaksi = ambilTransaksiToko();
+
+    // Filter tanggal
+    if (dari && sampai) {
+      const dariDate = new Date(dari);
+      const sampaiDate = new Date(sampai);
+      sampaiDate.setHours(23, 59, 59);
+      transaksi = transaksi.filter(t => {
+        const tanggal = new Date(t.tanggal || '');
+        return tanggal >= dariDate && tanggal <= sampaiDate;
+      });
+    }
+
+    // Hitung statistik
+    const totalPenjualan = transaksi.reduce((s, t) => s + (t.total || 0), 0);
+    const totalTransaksi = transaksi.length;
+    let totalItem = 0;
+    transaksi.forEach(t => {
+      if (t.items) {
+        t.items.forEach(item => {
+          totalItem += item.qty || 0;
+        });
+      }
+    });
+
+    // Update statistik
+    document.querySelector('#laporan-stats .laporan-stat-card:nth-child(1) .stat-value').textContent = 'Rp ' + totalPenjualan.toLocaleString('id-ID');
+    document.querySelector('#laporan-stats .laporan-stat-card:nth-child(2) .stat-value').textContent = totalTransaksi;
+    document.querySelector('#laporan-stats .laporan-stat-card:nth-child(3) .stat-value').textContent = totalItem + ' item';
+
+    // Grafik 7 hari (jika tidak ada filter, tampilkan 7 hari terakhir)
+    let grafikData = [];
+    if (!dari && !sampai) {
+      const hariIni = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const t = new Date(hariIni);
+        t.setDate(t.getDate() - i);
+        const key = t.toISOString().split('T')[0];
+        const total = transaksi.filter(tx => new Date(tx.tanggal || '').toISOString().split('T')[0] === key).reduce((s, tx) => s + (tx.total || 0), 0);
+        grafikData.push({ label: t.toLocaleDateString('id-ID', {weekday:'short'}), total });
+      }
+    } else {
+      // Jika ada filter, tampilkan data per hari dalam rentang
+      const dateMap = {};
+      transaksi.forEach(t => {
+        const key = new Date(t.tanggal || '').toISOString().split('T')[0];
+        if (!dateMap[key]) dateMap[key] = 0;
+        dateMap[key] += t.total || 0;
+      });
+      const keys = Object.keys(dateMap).sort();
+      keys.forEach(key => {
+        grafikData.push({
+          label: new Date(key).toLocaleDateString('id-ID', {day:'numeric',month:'short'}),
+          total: dateMap[key]
+        });
+      });
+      if (grafikData.length === 0) {
+        grafikData.push({ label: 'Tidak ada data', total: 0 });
+      }
+    }
+
+    const max = Math.max(...grafikData.map(d => d.total), 1);
+    const grafikEl = document.getElementById('grafik-laporan');
+    if (grafikData.length === 0 || grafikData.every(d => d.total === 0)) {
+      grafikEl.innerHTML = '<div style="flex:1;text-align:center;color:#888;padding:20px;">Belum ada data penjualan.</div>';
+    } else {
+      let html = '';
+      grafikData.forEach(d => {
+        const h = Math.max((d.total / max) * 120, 10);
+        html += `
+          <div class="bar-item">
+            <div class="bar" style="height:${h}px;">
+              <span class="bar-value">${d.total >= 1000 ? (d.total/1000).toFixed(0)+'K' : d.total}</span>
+            </div>
+            <div class="bar-label">${d.label}</div>
+          </div>
+        `;
+      });
+      grafikEl.innerHTML = html;
+    }
+
+    // Render riwayat transaksi
+    const tbody = document.getElementById('riwayat-transaksi-tbody');
+    if (transaksi.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#888;">Belum ada transaksi.</td></tr>';
+      return;
+    }
+
+    // Urutkan dari yang terbaru
+    transaksi.sort((a, b) => (b.id || 0) - (a.id || 0));
+
+    let html = '';
+    transaksi.forEach(t => {
+      const items = t.items ? t.items.map(item => item.nama + ' x' + item.qty).join(', ') : '-';
+      html += `
+        <tr>
+          <td>${t.tanggal || '-'}</td>
+          <td style="font-size:0.85em;">${items}</td>
+          <td><strong>Rp ${(t.total || 0).toLocaleString('id-ID')}</strong></td>
+          <td>${t.metode || '-'}</td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // ============================================================
+  // RESET FILTER
+  // ============================================================
+  function resetFilterLaporan() {
+    document.getElementById('filter-tanggal-dari').value = '';
+    document.getElementById('filter-tanggal-sampai').value = '';
+    renderLaporan();
+  }
+
+  // ============================================================
+  // INISIALISASI SAAT HALAMAN DIMUAT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    if (penggunaAktif) {
+      renderLaporan();
+    }
+  });
+
+  // Override navigasi agar render ulang saat pindah halaman
+  const originalMuatKontenLaporan = window.muatKontenHalaman;
+  if (typeof originalMuatKontenLaporan === 'function') {
+    window.muatKontenHalaman = function(pageId, container) {
+      originalMuatKontenLaporan(pageId, container);
+      if (pageId === 'laporan-penjualan') {
+        setTimeout(renderLaporan, 300);
+      }
+    };
+  }
+
+  console.log('✅ Blok 19 – Laporan Penjualan & Riwayat Transaksi berhasil dimuat.');
+  console.log('📌 Pemilik grosir dapat melihat total penjualan, grafik, dan riwayat transaksi.');
+  console.log('📌 Filter berdasarkan tanggal tersedia.');
+</script>
+<!-- ============================================================
+     AKHIR BLOK 19 – LANJUT KE BLOK 20
+     ============================================================ -->
+	 <!-- ============================================================
      BLOK 20 – MANAJEMEN STOK MINIMUM & PERINGATAN STOK HABIS
      ============================================================ -->
 <style>
@@ -5027,6 +5642,337 @@ Materai Rp 10.000`
 </script>
 <!-- ============================================================
      AKHIR BLOK 23 – LANJUT KE BLOK 24
+     ============================================================ -->
+	 <!-- ============================================================
+     BLOK 24 – MANAJEMEN SHIFT KASIR & SETORAN
+     ============================================================ -->
+<style>
+  /* ============================================================
+     STYLE SHIFT KASIR
+     ============================================================ */
+  .shift-container { max-width: 1000px; margin: 0 auto; }
+  .shift-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .shift-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
+
+  .shift-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;
+  }
+  .shift-stat-card {
+    background: white; padding: 15px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow); border-left: 4px solid var(--primary);
+  }
+  .shift-stat-card .stat-value { font-size: 1.5em; font-weight: 700; color: var(--dark); }
+  .shift-stat-card .stat-label { font-size: 0.8em; color: var(--gray-500); }
+
+  .shift-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .shift-table th { background: var(--dark); color: white; padding: 10px 12px; text-align: left; }
+  .shift-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+
+  .badge-shift-buka { background: #e8f5e9; color: #2e7d32; padding: 3px 10px; border-radius: 10px; font-size: 0.75em; font-weight: 700; }
+  .badge-shift-tutup { background: #ffebee; color: #c62828; padding: 3px 10px; border-radius: 10px; font-size: 0.75em; font-weight: 700; }
+
+  .btn-shift { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8em; }
+  .btn-shift-buka { background: var(--success); color: white; }
+  .btn-shift-tutup { background: var(--danger); color: white; }
+
+  @media (max-width: 768px) {
+    .shift-panel { padding: 15px; }
+  }
+</style>
+
+<div class="shift-container">
+  <div class="shift-panel">
+    <h4>🕒 Shift Kasir Saat Ini</h4>
+    <div id="shift-status">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div>
+          <strong>Status:</strong> <span id="shift-status-label" class="badge-shift-tutup">Belum Dibuka</span><br>
+          <small id="shift-kasir-label">Kasir: -</small><br>
+          <small id="shift-waktu-buka">Waktu Buka: -</small>
+        </div>
+        <div>
+          <button class="btn-shift btn-shift-buka" id="btn-buka-shift" onclick="bukaShift()">🟢 Buka Shift</button>
+          <button class="btn-shift btn-shift-tutup" id="btn-tutup-shift" onclick="tutupShift()" style="display:none;">🔴 Tutup Shift</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shift-panel">
+    <h4>📊 Ringkasan Shift</h4>
+    <div class="shift-stats" id="shift-stats">
+      <div class="shift-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Penjualan Shift</div></div>
+      <div class="shift-stat-card"><div class="stat-value">0</div><div class="stat-label">Transaksi</div></div>
+      <div class="shift-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Uang Awal</div></div>
+      <div class="shift-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Uang Akhir</div></div>
+    </div>
+  </div>
+
+  <div class="shift-panel">
+    <h4>📜 Riwayat Shift</h4>
+    <div class="table-responsive">
+      <table class="shift-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kasir</th>
+            <th>Buka</th>
+            <th>Tutup</th>
+            <th>Transaksi</th>
+            <th>Total Penjualan</th>
+            <th>Uang Awal</th>
+            <th>Uang Akhir</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="riwayat-shift-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // FUNGSI AMBIL & SIMPAN DATA SHIFT
+  // ============================================================
+  function ambilShift() {
+    const key = 'tokoonline_shift_' + (penggunaAktif ? penggunaAktif.pemilikGrosir || penggunaAktif.username : '');
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  }
+
+  function simpanShift(data) {
+    const key = 'tokoonline_shift_' + (penggunaAktif ? penggunaAktif.pemilikGrosir || penggunaAktif.username : '');
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  // ============================================================
+  // FUNGSI BUKA SHIFT
+  // ============================================================
+  function bukaShift() {
+    if (!penggunaAktif) {
+      alert('⚠️ Anda harus login!');
+      return;
+    }
+
+    // Cek apakah sedang ada shift yang aktif
+    const shifts = ambilShift();
+    const aktif = shifts.find(s => s.status === 'Buka');
+    if (aktif) {
+      alert('⚠️ Masih ada shift yang sedang berjalan! Tutup shift terlebih dahulu.');
+      return;
+    }
+
+    const uangAwal = prompt('💰 Masukkan jumlah uang awal kasir (Rp):', '0');
+    if (uangAwal === null) return;
+    const uangAwalNum = parseInt(uangAwal) || 0;
+
+    const shiftBaru = {
+      id: Date.now(),
+      kasir: penggunaAktif.nama,
+      username: penggunaAktif.username,
+      waktuBuka: new Date().toLocaleString('id-ID'),
+      waktuTutup: null,
+      uangAwal: uangAwalNum,
+      uangAkhir: null,
+      totalPenjualan: 0,
+      totalTransaksi: 0,
+      status: 'Buka'
+    };
+
+    shifts.push(shiftBaru);
+    simpanShift(shifts);
+
+    tampilkanNotifikasi('✅ Shift berhasil dibuka!', 'sukses');
+    renderShiftStatus();
+    renderRiwayatShift();
+  }
+
+  // ============================================================
+  // FUNGSI TUTUP SHIFT
+  // ============================================================
+  function tutupShift() {
+    if (!penggunaAktif) {
+      alert('⚠️ Anda harus login!');
+      return;
+    }
+
+    const shifts = ambilShift();
+    const aktifIndex = shifts.findIndex(s => s.status === 'Buka' && s.kasir === penggunaAktif.nama);
+    if (aktifIndex === -1) {
+      alert('⚠️ Tidak ada shift yang sedang berjalan!');
+      return;
+    }
+
+    const uangAkhir = prompt('💰 Masukkan jumlah uang akhir kasir (Rp):', '0');
+    if (uangAkhir === null) return;
+    const uangAkhirNum = parseInt(uangAkhir) || 0;
+
+    // Hitung total penjualan selama shift (dari transaksi yang terjadi setelah waktu buka)
+    const shift = shifts[aktifIndex];
+    const transaksi = JSON.parse(localStorage.getItem('tokoonline_transaksi_' + (penggunaAktif.pemilikGrosir || penggunaAktif.username)) || '[]');
+    // Filter transaksi setelah waktu buka shift
+    const waktuBuka = new Date(shift.waktuBuka);
+    const transaksiShift = transaksi.filter(t => {
+      const waktuTransaksi = new Date(t.tanggal);
+      return waktuTransaksi >= waktuBuka;
+    });
+
+    const totalPenjualan = transaksiShift.reduce((s, t) => s + (t.total || 0), 0);
+    const totalTransaksi = transaksiShift.length;
+
+    shift.waktuTutup = new Date().toLocaleString('id-ID');
+    shift.uangAkhir = uangAkhirNum;
+    shift.totalPenjualan = totalPenjualan;
+    shift.totalTransaksi = totalTransaksi;
+    shift.status = 'Tutup';
+
+    simpanShift(shifts);
+
+    tampilkanNotifikasi('✅ Shift ditutup! Total penjualan: Rp ' + totalPenjualan.toLocaleString('id-ID'), 'sukses');
+    renderShiftStatus();
+    renderRiwayatShift();
+    renderShiftStats(shift);
+  }
+
+  // ============================================================
+  // RENDER STATUS SHIFT SAAT INI
+  // ============================================================
+  function renderShiftStatus() {
+    const shifts = ambilShift();
+    const aktif = shifts.find(s => s.status === 'Buka');
+
+    const statusLabel = document.getElementById('shift-status-label');
+    const kasirLabel = document.getElementById('shift-kasir-label');
+    const waktuBuka = document.getElementById('shift-waktu-buka');
+    const btnBuka = document.getElementById('btn-buka-shift');
+    const btnTutup = document.getElementById('btn-tutup-shift');
+
+    if (aktif) {
+      statusLabel.textContent = '🟢 Shift Sedang Berjalan';
+      statusLabel.className = 'badge-shift-buka';
+      kasirLabel.textContent = 'Kasir: ' + aktif.kasir;
+      waktuBuka.textContent = 'Waktu Buka: ' + aktif.waktuBuka;
+      btnBuka.style.display = 'none';
+      btnTutup.style.display = 'inline-block';
+    } else {
+      statusLabel.textContent = '🔴 Belum Dibuka';
+      statusLabel.className = 'badge-shift-tutup';
+      kasirLabel.textContent = 'Kasir: -';
+      waktuBuka.textContent = 'Waktu Buka: -';
+      btnBuka.style.display = 'inline-block';
+      btnTutup.style.display = 'none';
+    }
+  }
+
+  // ============================================================
+  // RENDER STATISTIK SHIFT SAAT INI
+  // ============================================================
+  function renderShiftStats(shift) {
+    // Jika shift tidak diberikan, cari shift aktif
+    if (!shift) {
+      const shifts = ambilShift();
+      shift = shifts.find(s => s.status === 'Buka');
+    }
+
+    if (!shift) {
+      document.querySelector('#shift-stats .shift-stat-card:nth-child(1) .stat-value').textContent = 'Rp 0';
+      document.querySelector('#shift-stats .shift-stat-card:nth-child(2) .stat-value').textContent = '0';
+      document.querySelector('#shift-stats .shift-stat-card:nth-child(3) .stat-value').textContent = 'Rp 0';
+      document.querySelector('#shift-stats .shift-stat-card:nth-child(4) .stat-value').textContent = 'Rp 0';
+      return;
+    }
+
+    document.querySelector('#shift-stats .shift-stat-card:nth-child(1) .stat-value').textContent = 'Rp ' + (shift.totalPenjualan || 0).toLocaleString('id-ID');
+    document.querySelector('#shift-stats .shift-stat-card:nth-child(2) .stat-value').textContent = shift.totalTransaksi || 0;
+    document.querySelector('#shift-stats .shift-stat-card:nth-child(3) .stat-value').textContent = 'Rp ' + (shift.uangAwal || 0).toLocaleString('id-ID');
+    document.querySelector('#shift-stats .shift-stat-card:nth-child(4) .stat-value').textContent = 'Rp ' + (shift.uangAkhir || 0).toLocaleString('id-ID');
+  }
+
+  // ============================================================
+  // RENDER RIWAYAT SHIFT
+  // ============================================================
+  function renderRiwayatShift() {
+    const tbody = document.getElementById('riwayat-shift-tbody');
+    if (!tbody) return;
+
+    const shifts = ambilShift();
+    // Tampilkan hanya shift yang sudah ditutup, urutkan dari yang terbaru
+    const riwayat = shifts.filter(s => s.status === 'Tutup').sort((a, b) => b.id - a.id);
+
+    if (riwayat.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:#888;">Belum ada riwayat shift.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    riwayat.forEach((s, i) => {
+      html += `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong>${s.kasir}</strong></td>
+          <td>${s.waktuBuka}</td>
+          <td>${s.waktuTutup}</td>
+          <td>${s.totalTransaksi || 0}</td>
+          <td>Rp ${(s.totalPenjualan || 0).toLocaleString('id-ID')}</td>
+          <td>Rp ${(s.uangAwal || 0).toLocaleString('id-ID')}</td>
+          <td>Rp ${(s.uangAkhir || 0).toLocaleString('id-ID')}</td>
+          <td><span class="badge-shift-tutup">Tutup</span></td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // ============================================================
+  // INISIALISASI SAAT HALAMAN DIMUAT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    if (penggunaAktif) {
+      renderShiftStatus();
+      renderRiwayatShift();
+      // Jika ada shift aktif, tampilkan statistiknya
+      const shifts = ambilShift();
+      const aktif = shifts.find(s => s.status === 'Buka');
+      if (aktif) {
+        renderShiftStats(aktif);
+      } else {
+        renderShiftStats(null);
+      }
+    }
+  });
+
+  // Override navigasi agar render ulang saat pindah halaman
+  const originalMuatKontenShift = window.muatKontenHalaman;
+  if (typeof originalMuatKontenShift === 'function') {
+    window.muatKontenHalaman = function(pageId, container) {
+      originalMuatKontenShift(pageId, container);
+      if (pageId === 'shift-kasir') {
+        setTimeout(() => {
+          renderShiftStatus();
+          renderRiwayatShift();
+          const shifts = ambilShift();
+          const aktif = shifts.find(s => s.status === 'Buka');
+          if (aktif) {
+            renderShiftStats(aktif);
+          } else {
+            renderShiftStats(null);
+          }
+        }, 300);
+      }
+    };
+  }
+
+  console.log('✅ Blok 24 – Manajemen Shift Kasir & Setoran berhasil dimuat.');
+  console.log('📌 Kasir dapat membuka dan menutup shift, mencatat uang awal dan akhir.');
+  console.log('📌 Pemilik grosir dapat melihat riwayat shift dan setoran.');
+</script>
+<!-- ============================================================
+     AKHIR BLOK 24 – LANJUT KE BLOK 25
      ============================================================ -->
 	 <!-- ============================================================
      BLOK 25 – HISTORI AKTIVITAS (LOG AKTIVITAS USER)
