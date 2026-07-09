@@ -363,82 +363,51 @@
      AKHIR BLOK 3 – LANJUT KE BLOK 4
      ============================================================ -->
 	 <!-- ============================================================
-     BLOK 4 R1 – LOGIKA LOGIN, LOGOUT, CEK SESI (PERBAIKAN)
+     BLOK 4 R1 – LOGIKA LOGIN, CEK SESI, LOGOUT & NOTIFIKASI
      ============================================================ -->
 <script>
   // ============================================================
-  // DATA PENGGUNA (SIMULASI REGISTRASI)
-  // ============================================================
-  function ambilSemuaUser() {
-    return JSON.parse(localStorage.getItem('tokoonline_users') || '[]');
-  }
-  function simpanSemuaUser(data) {
-    localStorage.setItem('tokoonline_users', JSON.stringify(data));
-  }
-
-  // ============================================================
-  // FUNGSI LOGIN
+  // FUNGSI LOGIN (GUEST MODE)
   // ============================================================
   function prosesLogin() {
-    const username = document.getElementById('login-username').value.trim();
-    const password = document.getElementById('login-password').value.trim();
+    const namaToko = document.getElementById('login-toko').value.trim();
     const errorEl = document.getElementById('login-error');
     errorEl.textContent = '';
 
-    if (!username || !password) {
-      errorEl.textContent = '⚠️ Username dan password wajib diisi!';
+    if (!namaToko) {
+      errorEl.textContent = '⚠️ Nama toko wajib diisi!';
       return;
     }
 
-    const users = ambilSemuaUser();
-    const user = users.find(u => u.username === username && u.password === password);
-
-    if (!user) {
-      errorEl.textContent = '❌ Username atau password salah!';
-      return;
-    }
-    if (user.status !== 'Aktif') {
-      errorEl.textContent = '⛔ Akun tidak aktif!';
-      return;
-    }
-
-    window.penggunaAktif = user;
-    localStorage.setItem('tokoonline_current_user', JSON.stringify(user));
+    // Simpan data pengguna aktif ke localStorage
+    window.penggunaAktif = {
+      username: namaToko.toLowerCase().replace(/\s+/g, '_'),
+      nama: namaToko,
+      role: 'toko_grosir',
+      jabatan: 'Toko Grosir'
+    };
+    localStorage.setItem('tokoonline_current_user', JSON.stringify(penggunaAktif));
     localStorage.setItem('tokoonline_is_logged_in', 'true');
 
-    // Sembunyikan login, tampilkan main app
+    // Sembunyikan login, tampilkan aplikasi utama
     document.getElementById('login-page').classList.add('hidden');
     document.getElementById('main-app').classList.add('active');
 
+    // Bangun halaman utama setelah login
     if (typeof bangunHalamanUtama === 'function') {
       bangunHalamanUtama();
     }
   }
 
   // ============================================================
-  // FUNGSI LOGOUT
-  // ============================================================
-  function prosesLogout() {
-    if (!confirm('🚪 Yakin ingin keluar?')) return;
-    localStorage.removeItem('tokoonline_current_user');
-    localStorage.setItem('tokoonline_is_logged_in', 'false');
-    window.penggunaAktif = null;
-
-    document.getElementById('login-page').classList.remove('hidden');
-    document.getElementById('main-app').classList.remove('active');
-    document.getElementById('login-username').value = '';
-    document.getElementById('login-password').value = '';
-    document.getElementById('login-error').textContent = '';
-  }
-
-  // ============================================================
-  // CEK SESI SAAT HALAMAN DIMUAT
+  // CEK SESI TERSIMPAN (SAAT HALAMAN DIMUAT ULANG)
   // ============================================================
   function cekSesiLogin() {
     if (localStorage.getItem('tokoonline_is_logged_in') === 'true') {
-      const saved = localStorage.getItem('tokoonline_current_user');
-      if (saved) {
-        window.penggunaAktif = JSON.parse(saved);
+      const savedUser = localStorage.getItem('tokoonline_current_user');
+      if (savedUser) {
+        window.penggunaAktif = JSON.parse(savedUser);
+        // Sembunyikan login, tampilkan aplikasi
         document.getElementById('login-page').classList.add('hidden');
         document.getElementById('main-app').classList.add('active');
         if (typeof bangunHalamanUtama === 'function') {
@@ -449,47 +418,87 @@
   }
 
   // ============================================================
-  // TAMBAHKAN AKUN DEFAULT (UNTUK DEMO)
+  // LOGOUT (KELUAR DARI APLIKASI)
   // ============================================================
-  function tambahAkunDemo() {
-    const users = ambilSemuaUser();
-    if (users.length === 0) {
-      users.push({
-        username: 'admin',
-        password: 'admin123',
-        role: 'toko_grosir',
-        nama: 'Admin Grosir',
-        jabatan: 'Pemilik Grosir',
-        status: 'Aktif'
-      });
-      simpanSemuaUser(users);
-      console.log('✅ Akun demo dibuat: admin / admin123');
-    }
+  function prosesLogout() {
+    if (!confirm('🚪 Yakin ingin keluar?')) return;
+
+    // Hapus data sesi
+    localStorage.removeItem('tokoonline_current_user');
+    localStorage.setItem('tokoonline_is_logged_in', 'false');
+    window.penggunaAktif = null;
+
+    // Tampilkan kembali halaman login, sembunyikan aplikasi
+    document.getElementById('login-page').classList.remove('hidden');
+    document.getElementById('main-app').classList.remove('active');
+
+    // Reset input login
+    document.getElementById('login-toko').value = '';
   }
 
-  // Jalankan inisialisasi
+  // ============================================================
+  // NOTIFIKASI TOAST (POP-UP KECIL DI POJOK KANAN ATAS)
+  // ============================================================
+  function tampilkanNotifikasi(pesan, tipe) {
+    // Buat container toast jika belum ada
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'toast-container';
+      container.id = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-item toast-' + (tipe || 'info');
+    toast.textContent = pesan;
+    container.appendChild(toast);
+
+    // Hapus otomatis setelah 3 detik
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 3000);
+  }
+
+  // ============================================================
+  // INISIALISASI SAAT HALAMAN DIMUAT
+  // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
-    tambahAkunDemo();
     cekSesiLogin();
-    document.getElementById('login-password').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') prosesLogin();
-    });
   });
 
-  console.log('✅ Blok 4 R1 – Logika Login & Logout diperbaiki.');
+  // Tekan Enter pada input login untuk memicu login
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputLogin = document.getElementById('login-toko');
+    if (inputLogin) {
+      inputLogin.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          prosesLogin();
+        }
+      });
+    }
+  });
+
+  // ============================================================
+  // CATATAN: Fungsi bangunHalamanUtama akan didefinisikan di Blok 5
+  // ============================================================
 </script>
 <!-- ============================================================
-     AKHIR BLOK 4 R1 – LANJUT KE BLOK 5 R1
+     AKHIR BLOK 4 R1 – LANJUT KE BLOK 5 R1 (SAAT DIMINTA)
      ============================================================ -->
 	<!-- ============================================================
-     BLOK 5 R1 – SIDEBAR, NAVIGASI & HALAMAN UTAMA (PERBAIKAN)
+     BLOK 5 R1 – SIDEBAR, NAVIGASI & HALAMAN UTAMA (STRUKTUR BENAR)
      ============================================================ -->
 <style>
   /* ============================================================
      STYLE SIDEBAR & MAIN APP
      ============================================================ */
-  #main-app { display: none; }
-  #main-app.active { display: block; }
+  #main-app { display: none !important; }
+  #main-app.active { display: block !important; }
+  #login-page.hidden { display: none !important; }
+
   .app-container { display: flex; min-height: 100vh; }
 
   .sidebar {
@@ -558,9 +567,7 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s;
   }
-  .sidebar-footer button:hover { background: #d32f2f; }
 
   .main-content {
     flex: 1;
@@ -588,6 +595,9 @@
     box-shadow: var(--shadow);
   }
 
+  /* ============================================================
+     RESPONSIVE SIDEBAR
+     ============================================================ */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); width: 260px; }
     .sidebar.open { transform: translateX(0); }
@@ -596,29 +606,33 @@
 </style>
 
 <!-- ============================================================
-     MAIN APP – HANYA TAMPIL SAAT LOGIN
+     SIDEBAR HTML
      ============================================================ -->
-<div id="main-app">
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="user-avatar" id="sidebar-avatar">G</div>
-      <div class="user-name" id="sidebar-nama">Toko Grosir</div>
-      <div class="user-role" id="sidebar-role">Toko Grosir</div>
-    </div>
-    <div class="sidebar-menu" id="sidebar-menu"></div>
-    <div class="sidebar-footer">
-      <button onclick="prosesLogout()">🚪 Keluar</button>
-    </div>
-  </nav>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="user-avatar" id="sidebar-avatar">G</div>
+    <div class="user-name" id="sidebar-nama">Toko Grosir</div>
+    <div class="user-role" id="sidebar-role">Toko Grosir</div>
+  </div>
+  <div class="sidebar-menu" id="sidebar-menu"></div>
+  <div class="sidebar-footer">
+    <button onclick="prosesLogout()">🚪 Keluar</button>
+  </div>
+</nav>
 
-  <main class="main-content" id="main-content">
-    <div class="content-header">
-      <h2 id="content-title">Dashboard</h2>
-    </div>
-    <div class="content-area" id="content-area"></div>
-  </main>
-</div>
+<!-- ============================================================
+     MAIN CONTENT HTML
+     ============================================================ -->
+<main class="main-content" id="main-content">
+  <div class="content-header">
+    <h2 id="content-title">Dashboard</h2>
+  </div>
+  <div class="content-area" id="content-area"></div>
+</main>
 
+<!-- ============================================================
+     SCRIPT NAVIGASI & SIDEBAR
+     ============================================================ -->
 <script>
   // ============================================================
   // MENU NAVIGASI KHUSUS GROSIR
@@ -632,17 +646,31 @@
     { id: 'daftar-produk', icon: '📋', label: 'Daftar Produk' },
     { kategori: '💰 Transaksi & Keuangan' },
     { id: 'transaksi', icon: '💰', label: 'Transaksi Kasir' },
+    { id: 'modal-cash-belanja', icon: '💵', label: 'Modal & Laba Rugi' },
+    { id: 'kasbon', icon: '📋', label: 'Kasbon (Piutang)' },
+    { id: 'ambil-keuntungan', icon: '💸', label: 'Ambil Keuntungan' },
     { kategori: '📥 Order' },
     { id: 'order-masuk-toko', icon: '📥', label: 'Order Masuk' },
     { kategori: '🔧 Pengaturan' },
+    { id: 'rekening-toko', icon: '🏦', label: 'Rekening Toko' },
+    { id: 'chat', icon: '💬', label: 'Chat' },
+    { id: 'template-surat', icon: '📄', label: 'Template Surat' },
+    { id: 'upload-dokumen', icon: '📤', label: 'Upload Dokumen' },
     { id: 'bantuan', icon: '📖', label: 'Bantuan' }
   ];
 
   let halamanAktif = 'dashboard';
 
+  // ============================================================
+  // BANGUN SIDEBAR
+  // ============================================================
   function bangunSidebar() {
     const menuContainer = document.getElementById('sidebar-menu');
-    if (!menuContainer || !penggunaAktif) return;
+    if (!menuContainer) return;
+
+    // Pastikan pengguna aktif tersedia
+    if (!penggunaAktif) return;
+
     document.getElementById('sidebar-avatar').textContent = penggunaAktif.nama.charAt(0).toUpperCase();
     document.getElementById('sidebar-nama').textContent = penggunaAktif.nama;
     document.getElementById('sidebar-role').textContent = penggunaAktif.jabatan;
@@ -662,63 +690,122 @@
     menuContainer.innerHTML = html;
   }
 
+  // ============================================================
+  // NAVIGASI KE HALAMAN
+  // ============================================================
   function navigasiKeHalaman(pageId) {
     halamanAktif = pageId;
+
+    // Update active class pada menu item
     document.querySelectorAll('.menu-item').forEach(el => {
       el.classList.remove('active');
       if (el.dataset.page === pageId) el.classList.add('active');
     });
+
+    // Update judul dan breadcrumb
     const label = menuGrosir.find(m => m.id === pageId)?.label || pageId;
     document.getElementById('content-title').textContent = label;
+
+    // Tampilkan loading lalu muat konten
     const area = document.getElementById('content-area');
-    area.innerHTML = '<div class="text-center mt-2"><div class="loading-spinner"></div><p>Memuat...</p></div>';
+    area.innerHTML = `
+      <div class="text-center mt-2">
+        <div style="display:inline-block;width:30px;height:30px;border:4px solid var(--gray-200);border-top:4px solid var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        <p style="color:#888;margin-top:10px;">Memuat...</p>
+      </div>
+      <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+      </style>
+    `;
+
     setTimeout(() => muatKontenHalaman(pageId, area), 200);
+
+    // Tutup sidebar di mobile
+    if (window.innerWidth <= 768) {
+      closeSidebar();
+    }
   }
 
+  // ============================================================
+  // MUAT KONTEN HALAMAN
+  // ============================================================
   function muatKontenHalaman(pageId, container) {
     const funcName = 'halaman_' + pageId.replace(/-/g, '_');
     if (typeof window[funcName] === 'function') {
       window[funcName](container);
     } else {
-      container.innerHTML = '<div class="text-center mt-2" style="color:#888;">📄 Halaman "' + pageId + '" belum siap.</div>';
+      container.innerHTML = `
+        <div class="text-center mt-2" style="color:#888;">
+          <div style="font-size:3em;margin-bottom:10px;">📄</div>
+          <p>Halaman "${pageId}" belum siap.</p>
+        </div>
+      `;
     }
   }
 
+  // ============================================================
+  // BANGUN HALAMAN UTAMA (SETELAH LOGIN)
+  // ============================================================
   function bangunHalamanUtama() {
     bangunSidebar();
     navigasiKeHalaman('dashboard');
   }
 
-  // --- Toggle Sidebar Mobile ---
-  // (opsional, jika ingin tombol hamburger)
-  const toggleBtn = document.createElement('button');
-  toggleBtn.id = 'sidebar-toggle';
-  toggleBtn.innerHTML = '☰';
-  toggleBtn.style.cssText = `
-    position:fixed; top:10px; left:10px; z-index:1001;
-    padding:8px 12px; background:#e65100; color:white;
-    border:none; border-radius:8px; cursor:pointer;
-    display:none;
-  `;
-  toggleBtn.onclick = () => document.getElementById('sidebar').classList.toggle('open');
-  document.body.prepend(toggleBtn);
+  // ============================================================
+  // TOGGLE SIDEBAR MOBILE
+  // ============================================================
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
 
-  window.addEventListener('resize', () => {
-    toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
+  // ============================================================
+  // TAMBAHKAN TOMBOL TOGGLE UNTUK MOBILE
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tombol toggle hanya muncul di mobile
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'sidebar-toggle';
+    toggleBtn.style.cssText = `
+      position: fixed; top: 10px; left: 10px; z-index: 1001;
+      padding: 8px 12px; background: #e65100; color: white;
+      border: none; border-radius: 8px; cursor: pointer;
+      display: none; font-size: 1.2em;
+    `;
+    toggleBtn.textContent = '☰';
+    toggleBtn.onclick = toggleSidebar;
+    document.body.appendChild(toggleBtn);
+
+    // Tampilkan tombol hanya jika lebar layar <= 768px
+    function updateToggleVisibility() {
+      toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+    }
+    updateToggleVisibility();
+    window.addEventListener('resize', updateToggleVisibility);
   });
-  toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
 
+  // Tutup sidebar jika klik di luar sidebar (di mobile)
   document.addEventListener('click', function(e) {
-    const sidebar = document.getElementById('sidebar');
-    if (window.innerWidth <= 768 && !e.target.closest('.sidebar') && !e.target.closest('#sidebar-toggle')) {
-      sidebar.classList.remove('open');
+    if (window.innerWidth <= 768) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('sidebar-toggle');
+      if (sidebar && sidebar.classList.contains('open')) {
+        if (!e.target.closest('.sidebar') && !e.target.closest('#sidebar-toggle')) {
+          closeSidebar();
+        }
+      }
     }
   });
 
-  console.log('✅ Blok 5 R1 – Sidebar & Navigasi diperbaiki.');
+  // ============================================================
+  // CATATAN: Fungsi halaman_* akan didefinisikan di blok berikutnya
+  // ============================================================
 </script>
 <!-- ============================================================
-     AKHIR BLOK 5 R1 – LANJUT KE BLOK 6
+     AKHIR BLOK 5 R1 – LANJUT KE BLOK 6 (SAAT DIMINTA)
      ============================================================ -->
 	 <!-- ============================================================
      BLOK 6 – DASHBOARD GROSIR (STATISTIK & GRAFIK)
