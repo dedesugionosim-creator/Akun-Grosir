@@ -363,7 +363,126 @@
      AKHIR BLOK 3 – LANJUT KE BLOK 4
      ============================================================ -->
 	 <!-- ============================================================
-     BLOK 5 – SIDEBAR, NAVIGASI & HALAMAN UTAMA
+     BLOK 4 R1 – LOGIKA LOGIN, LOGOUT, CEK SESI (PERBAIKAN)
+     ============================================================ -->
+<script>
+  // ============================================================
+  // DATA PENGGUNA (SIMULASI REGISTRASI)
+  // ============================================================
+  function ambilSemuaUser() {
+    return JSON.parse(localStorage.getItem('tokoonline_users') || '[]');
+  }
+  function simpanSemuaUser(data) {
+    localStorage.setItem('tokoonline_users', JSON.stringify(data));
+  }
+
+  // ============================================================
+  // FUNGSI LOGIN
+  // ============================================================
+  function prosesLogin() {
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    const errorEl = document.getElementById('login-error');
+    errorEl.textContent = '';
+
+    if (!username || !password) {
+      errorEl.textContent = '⚠️ Username dan password wajib diisi!';
+      return;
+    }
+
+    const users = ambilSemuaUser();
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (!user) {
+      errorEl.textContent = '❌ Username atau password salah!';
+      return;
+    }
+    if (user.status !== 'Aktif') {
+      errorEl.textContent = '⛔ Akun tidak aktif!';
+      return;
+    }
+
+    window.penggunaAktif = user;
+    localStorage.setItem('tokoonline_current_user', JSON.stringify(user));
+    localStorage.setItem('tokoonline_is_logged_in', 'true');
+
+    // Sembunyikan login, tampilkan main app
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('main-app').classList.add('active');
+
+    if (typeof bangunHalamanUtama === 'function') {
+      bangunHalamanUtama();
+    }
+  }
+
+  // ============================================================
+  // FUNGSI LOGOUT
+  // ============================================================
+  function prosesLogout() {
+    if (!confirm('🚪 Yakin ingin keluar?')) return;
+    localStorage.removeItem('tokoonline_current_user');
+    localStorage.setItem('tokoonline_is_logged_in', 'false');
+    window.penggunaAktif = null;
+
+    document.getElementById('login-page').classList.remove('hidden');
+    document.getElementById('main-app').classList.remove('active');
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-error').textContent = '';
+  }
+
+  // ============================================================
+  // CEK SESI SAAT HALAMAN DIMUAT
+  // ============================================================
+  function cekSesiLogin() {
+    if (localStorage.getItem('tokoonline_is_logged_in') === 'true') {
+      const saved = localStorage.getItem('tokoonline_current_user');
+      if (saved) {
+        window.penggunaAktif = JSON.parse(saved);
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('main-app').classList.add('active');
+        if (typeof bangunHalamanUtama === 'function') {
+          bangunHalamanUtama();
+        }
+      }
+    }
+  }
+
+  // ============================================================
+  // TAMBAHKAN AKUN DEFAULT (UNTUK DEMO)
+  // ============================================================
+  function tambahAkunDemo() {
+    const users = ambilSemuaUser();
+    if (users.length === 0) {
+      users.push({
+        username: 'admin',
+        password: 'admin123',
+        role: 'toko_grosir',
+        nama: 'Admin Grosir',
+        jabatan: 'Pemilik Grosir',
+        status: 'Aktif'
+      });
+      simpanSemuaUser(users);
+      console.log('✅ Akun demo dibuat: admin / admin123');
+    }
+  }
+
+  // Jalankan inisialisasi
+  document.addEventListener('DOMContentLoaded', function() {
+    tambahAkunDemo();
+    cekSesiLogin();
+    document.getElementById('login-password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') prosesLogin();
+    });
+  });
+
+  console.log('✅ Blok 4 R1 – Logika Login & Logout diperbaiki.');
+</script>
+<!-- ============================================================
+     AKHIR BLOK 4 R1 – LANJUT KE BLOK 5 R1
+     ============================================================ -->
+	<!-- ============================================================
+     BLOK 5 R1 – SIDEBAR, NAVIGASI & HALAMAN UTAMA (PERBAIKAN)
      ============================================================ -->
 <style>
   /* ============================================================
@@ -439,7 +558,9 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.2s;
   }
+  .sidebar-footer button:hover { background: #d32f2f; }
 
   .main-content {
     flex: 1;
@@ -474,24 +595,29 @@
   }
 </style>
 
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="user-avatar" id="sidebar-avatar">G</div>
-    <div class="user-name" id="sidebar-nama">Toko Grosir</div>
-    <div class="user-role" id="sidebar-role">Toko Grosir</div>
-  </div>
-  <div class="sidebar-menu" id="sidebar-menu"></div>
-  <div class="sidebar-footer">
-    <button onclick="prosesLogout()">🚪 Keluar</button>
-  </div>
-</nav>
+<!-- ============================================================
+     MAIN APP – HANYA TAMPIL SAAT LOGIN
+     ============================================================ -->
+<div id="main-app">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="user-avatar" id="sidebar-avatar">G</div>
+      <div class="user-name" id="sidebar-nama">Toko Grosir</div>
+      <div class="user-role" id="sidebar-role">Toko Grosir</div>
+    </div>
+    <div class="sidebar-menu" id="sidebar-menu"></div>
+    <div class="sidebar-footer">
+      <button onclick="prosesLogout()">🚪 Keluar</button>
+    </div>
+  </nav>
 
-<main class="main-content" id="main-content">
-  <div class="content-header">
-    <h2 id="content-title">Dashboard</h2>
-  </div>
-  <div class="content-area" id="content-area"></div>
-</main>
+  <main class="main-content" id="main-content">
+    <div class="content-header">
+      <h2 id="content-title">Dashboard</h2>
+    </div>
+    <div class="content-area" id="content-area"></div>
+  </main>
+</div>
 
 <script>
   // ============================================================
@@ -514,9 +640,6 @@
 
   let halamanAktif = 'dashboard';
 
-  // ============================================================
-  // BANGUN SIDEBAR
-  // ============================================================
   function bangunSidebar() {
     const menuContainer = document.getElementById('sidebar-menu');
     if (!menuContainer || !penggunaAktif) return;
@@ -539,9 +662,6 @@
     menuContainer.innerHTML = html;
   }
 
-  // ============================================================
-  // NAVIGASI KE HALAMAN
-  // ============================================================
   function navigasiKeHalaman(pageId) {
     halamanAktif = pageId;
     document.querySelectorAll('.menu-item').forEach(el => {
@@ -555,9 +675,6 @@
     setTimeout(() => muatKontenHalaman(pageId, area), 200);
   }
 
-  // ============================================================
-  // MUAT KONTEN HALAMAN
-  // ============================================================
   function muatKontenHalaman(pageId, container) {
     const funcName = 'halaman_' + pageId.replace(/-/g, '_');
     if (typeof window[funcName] === 'function') {
@@ -567,38 +684,41 @@
     }
   }
 
-  // ============================================================
-  // BANGUN HALAMAN UTAMA (SETELAH LOGIN)
-  // ============================================================
   function bangunHalamanUtama() {
     bangunSidebar();
     navigasiKeHalaman('dashboard');
   }
 
-  // ============================================================
-  // TOGGLE SIDEBAR MOBILE
-  // ============================================================
-  document.body.insertAdjacentHTML('afterbegin', `
-    <button onclick="document.getElementById('sidebar').classList.toggle('open')"
-            style="position:fixed;top:10px;left:10px;z-index:1001;padding:8px 12px;background:#e65100;color:white;border:none;border-radius:8px;cursor:pointer;display:none;"
-            id="sidebar-toggle">☰ Menu</button>
-  `);
-  const toggleBtn = document.getElementById('sidebar-toggle');
-  if (toggleBtn) {
-    window.addEventListener('resize', () => {
-      toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-    });
+  // --- Toggle Sidebar Mobile ---
+  // (opsional, jika ingin tombol hamburger)
+  const toggleBtn = document.createElement('button');
+  toggleBtn.id = 'sidebar-toggle';
+  toggleBtn.innerHTML = '☰';
+  toggleBtn.style.cssText = `
+    position:fixed; top:10px; left:10px; z-index:1001;
+    padding:8px 12px; background:#e65100; color:white;
+    border:none; border-radius:8px; cursor:pointer;
+    display:none;
+  `;
+  toggleBtn.onclick = () => document.getElementById('sidebar').classList.toggle('open');
+  document.body.prepend(toggleBtn);
+
+  window.addEventListener('resize', () => {
     toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-  }
+  });
+  toggleBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+
   document.addEventListener('click', function(e) {
     const sidebar = document.getElementById('sidebar');
     if (window.innerWidth <= 768 && !e.target.closest('.sidebar') && !e.target.closest('#sidebar-toggle')) {
       sidebar.classList.remove('open');
     }
   });
+
+  console.log('✅ Blok 5 R1 – Sidebar & Navigasi diperbaiki.');
 </script>
 <!-- ============================================================
-     AKHIR BLOK 5 – LANJUT KE BLOK 6
+     AKHIR BLOK 5 R1 – LANJUT KE BLOK 6
      ============================================================ -->
 	 <!-- ============================================================
      BLOK 6 – DASHBOARD GROSIR (STATISTIK & GRAFIK)
@@ -5710,10 +5830,172 @@ Materai Rp 10.000`
   </div>
 </div>
 
-<!-- ===== PENUTUP HTML (BODY & HTML) ===== -->
-</body>
-</html>
-
 <!-- ============================================================
      AKHIR BLOK 27 R1 – SELESAI
      ============================================================ -->
+	 <!-- ============================================================
+     BLOK 28 – HALAMAN REGISTRASI (DAFTAR AKUN BARU)
+     ============================================================ -->
+<style>
+  /* ============================================================
+     STYLE REGISTRASI
+     ============================================================ */
+  #register-page {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e65100, #bf360c, #ff9800);
+    padding: 20px;
+  }
+  #register-page.hidden { display: none; }
+  .register-container {
+    background: var(--white);
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    animation: slideUp 0.5s ease-out;
+  }
+  .register-logo { text-align: center; margin-bottom: 20px; }
+  .register-logo .logo-icon {
+    width: 65px; height: 65px;
+    background: linear-gradient(135deg, #e65100, #ff9800);
+    border-radius: 18px; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto; font-size: 32px;
+    color: white; font-weight: bold;
+  }
+  .register-logo h2 { color: #e65100; margin: 10px 0 0 0; }
+  .register-container .form-group input { background: #fafafa; }
+  .btn-register {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, #e65100, #ff9800);
+    color: white; border: none; border-radius: 10px;
+    font-size: 1em; font-weight: bold; cursor: pointer;
+    margin-top: 6px; transition: 0.2s;
+  }
+  .btn-register:hover {
+    transform: translateY(-2px); box-shadow: 0 8px 25px rgba(230,81,0,0.4);
+  }
+  .register-error { color: var(--danger); text-align: center; margin-top: 10px; font-size: 0.88em; min-height: 18px; }
+  .register-success { color: var(--success); text-align: center; margin-top: 10px; font-size: 0.88em; min-height: 18px; }
+  .login-link { text-align: center; margin-top: 14px; font-size: 0.88em; }
+  .login-link a { color: #e65100; cursor: pointer; font-weight: bold; }
+  @media (max-width: 768px) {
+    #register-page { flex-direction: column-reverse; padding: 15px; }
+  }
+</style>
+
+<div id="register-page">
+  <div class="register-container">
+    <div class="register-logo">
+      <div class="logo-icon">📝</div>
+      <h2>Daftar Akun Baru</h2>
+      <p style="color:#666;font-size:0.85em;">Buat akun untuk memulai menggunakan Kasir Grosir</p>
+    </div>
+    <div class="form-group">
+      <label for="reg-username">👤 Username</label>
+      <input type="text" id="reg-username" placeholder="Masukkan username">
+    </div>
+    <div class="form-group">
+      <label for="reg-password">🔒 Password</label>
+      <input type="password" id="reg-password" placeholder="Masukkan password">
+    </div>
+    <div class="form-group">
+      <label for="reg-nama">🏪 Nama Toko</label>
+      <input type="text" id="reg-nama" placeholder="Nama toko Anda">
+    </div>
+    <button class="btn-register" onclick="prosesRegistrasi()">📝 Daftar Sekarang</button>
+    <div class="register-error" id="register-error"></div>
+    <div class="register-success" id="register-success"></div>
+    <div class="login-link">
+      Sudah punya akun? <a onclick="bukaLogin()">Login di sini</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // FUNGSI REGISTRASI
+  // ============================================================
+  function prosesRegistrasi() {
+    const username = document.getElementById('reg-username').value.trim();
+    const password = document.getElementById('reg-password').value.trim();
+    const nama = document.getElementById('reg-nama').value.trim();
+    const errorEl = document.getElementById('register-error');
+    const successEl = document.getElementById('register-success');
+    errorEl.textContent = '';
+    successEl.textContent = '';
+
+    if (!username || !password || !nama) {
+      errorEl.textContent = '⚠️ Semua field wajib diisi!';
+      return;
+    }
+
+    const users = ambilSemuaUser();
+    if (users.some(u => u.username === username)) {
+      errorEl.textContent = '❌ Username sudah digunakan!';
+      return;
+    }
+
+    users.push({
+      username: username,
+      password: password,
+      nama: nama,
+      role: 'toko_grosir',
+      jabatan: 'Pemilik Grosir',
+      status: 'Aktif'
+    });
+    simpanSemuaUser(users);
+
+    successEl.textContent = '✅ Akun berhasil dibuat! Silakan login.';
+    document.getElementById('reg-username').value = '';
+    document.getElementById('reg-password').value = '';
+    document.getElementById('reg-nama').value = '';
+    setTimeout(() => {
+      document.getElementById('register-page').classList.add('hidden');
+      document.getElementById('login-page').classList.remove('hidden');
+    }, 1500);
+  }
+
+  // ============================================================
+  // BUKA HALAMAN LOGIN (DARI REGISTRASI)
+  // ============================================================
+  function bukaLogin() {
+    document.getElementById('register-page').classList.add('hidden');
+    document.getElementById('login-page').classList.remove('hidden');
+  }
+
+  // ============================================================
+  // MODIFIKASI HALAMAN LOGIN UNTUK MENAMPILKAN LINK DAFTAR
+  // ============================================================
+  // Tambahkan link ke halaman registrasi di Blok 3 (Login)
+  // Anda bisa menambahkan ini di bawah tombol login:
+  // <div class="register-link" style="text-align:center;margin-top:10px;font-size:0.88em;">
+  //   Belum punya akun? <a onclick="bukaRegistrasi()" style="color:#e65100;cursor:pointer;font-weight:bold;">Daftar di sini</a>
+  // </div>
+
+  // ============================================================
+  // FUNGSI BUKA REGISTRASI (DARI LOGIN)
+  // ============================================================
+  function bukaRegistrasi() {
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('register-page').classList.remove('hidden');
+  }
+
+  // Tampilkan registrasi saat pertama kali aplikasi dijalankan (jika belum ada user)
+  document.addEventListener('DOMContentLoaded', function() {
+    const users = ambilSemuaUser();
+    if (users.length === 0) {
+      document.getElementById('login-page').classList.add('hidden');
+      document.getElementById('register-page').classList.remove('hidden');
+    }
+  });
+
+  console.log('✅ Blok 28 – Halaman Registrasi berhasil dimuat.');
+</script>
+<!-- ============================================================
+     AKHIR BLOK 28 – LANJUT KE BLOK 3 (LOGIN) / BLOK 29
+     ============================================================ -->
+	 <!-- ===== PENUTUP HTML (BODY & HTML) ===== -->
+</body>
+</html>
