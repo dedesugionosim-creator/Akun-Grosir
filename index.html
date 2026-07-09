@@ -5252,234 +5252,314 @@ Materai Rp 10.000`
      AKHIR BLOK 25 – LANJUT KE BLOK 26
      ============================================================ -->
 	 <!-- ============================================================
-     BLOK 26 – LAPORAN KEUANGAN LENGKAP (LABA RUGI & NERACA)
+     BLOK 26 R1 – HISTORI AKTIVITAS (LOG AKTIVITAS USER) DENGAN PERBAIKAN
      ============================================================ -->
 <style>
   /* ============================================================
-     STYLE LAPORAN KEUANGAN
+     STYLE HISTORI AKTIVITAS
      ============================================================ */
-  .laporan-keuangan-container { max-width: 1000px; margin: 0 auto; }
-  .laporan-keuangan-panel {
+  .histori-container { max-width: 1000px; margin: 0 auto; }
+  .histori-panel {
     background: white;
     border-radius: 12px;
     padding: 20px;
     box-shadow: var(--shadow);
     margin-bottom: 20px;
   }
-  .laporan-keuangan-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
+  .histori-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
 
-  .laporan-keuangan-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-  .laporan-keuangan-stat-card {
-    background: white;
-    padding: 18px;
-    border-radius: var(--radius);
-    text-align: center;
-    box-shadow: var(--shadow);
-    border-left: 4px solid var(--primary);
-  }
-  .laporan-keuangan-stat-card .stat-value { font-size: 1.6em; font-weight: 700; color: var(--dark); }
-  .laporan-keuangan-stat-card .stat-label { font-size: 0.8em; color: var(--gray-500); }
-
-  .laporan-keuangan-tabel { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-  .laporan-keuangan-tabel th { background: var(--dark); color: white; padding: 10px 12px; text-align: left; }
-  .laporan-keuangan-tabel td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-  .laporan-keuangan-tabel .total-row { background: #f5f5f5; font-weight: bold; }
-
-  .grafik-keuangan {
+  .histori-filter {
     display: flex;
-    align-items: flex-end;
     gap: 10px;
-    height: 150px;
-    padding: 10px;
-    background: #fafafa;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    align-items: center;
   }
-  .grafik-keuangan .bar-item { flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
-  .grafik-keuangan .bar {
-    width: 30px;
-    border-radius: 4px 4px 0 0;
-    min-height: 10px;
-    background: linear-gradient(180deg, var(--primary), var(--primary-light));
-    position: relative;
+  .histori-filter input, .histori-filter select {
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.9em;
   }
-  .grafik-keuangan .bar-value {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7em;
+  .histori-filter input:focus, .histori-filter select:focus {
+    outline: none; border-color: var(--primary);
+  }
+  .histori-filter button {
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
     font-weight: bold;
-    white-space: nowrap;
   }
-  .grafik-keuangan .bar-label { font-size: 0.7em; margin-top: 5px; }
+  .histori-filter button:hover { background: var(--primary-dark); }
 
-  .btn-export-laporan { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-  .btn-export-laporan:hover { background: var(--primary-dark); }
+  .histori-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .histori-table th { background: var(--dark); color: white; padding: 10px 12px; text-align: left; }
+  .histori-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+
+  .aktivitas-login { color: var(--success); font-weight: bold; }
+  .aktivitas-logout { color: var(--warning); font-weight: bold; }
+  .aktivitas-transaksi { color: var(--info); font-weight: bold; }
+  .aktivitas-produk { color: var(--primary); font-weight: bold; }
+  .aktivitas-other { color: #888; }
+
+  .btn-hapus-histori { padding: 8px 16px; background: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
   @media (max-width: 768px) {
-    .grafik-keuangan { height: 120px; gap: 6px; }
-    .grafik-keuangan .bar { width: 20px; }
+    .histori-filter { flex-direction: column; align-items: stretch; }
   }
 </style>
 
-<div class="laporan-keuangan-container">
-  <div class="laporan-keuangan-panel">
-    <h4>📊 Laporan Keuangan Lengkap</h4>
-    <p style="color:#666;font-size:0.9em;">Menampilkan ringkasan pendapatan, modal, kasbon, penarikan, dan laba rugi bersih.</p>
+<div class="histori-container">
+  <div class="histori-panel">
+    <h4>📜 Histori Aktivitas</h4>
 
-    <div class="laporan-keuangan-stats" id="laporan-keuangan-stats">
-      <div class="laporan-keuangan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Penjualan</div></div>
-      <div class="laporan-keuangan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Modal</div></div>
-      <div class="laporan-keuangan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Kasbon</div></div>
-      <div class="laporan-keuangan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Total Penarikan</div></div>
-      <div class="laporan-keuangan-stat-card"><div class="stat-value">Rp 0</div><div class="stat-label">Laba Bersih</div></div>
+    <div class="histori-filter">
+      <input type="date" id="filter-histori-dari">
+      <input type="date" id="filter-histori-sampai">
+      <select id="filter-histori-aktivitas">
+        <option value="Semua">Semua Aktivitas</option>
+        <option value="Login">Login</option>
+        <option value="Logout">Logout</option>
+        <option value="Transaksi">Transaksi</option>
+        <option value="Tambah Produk">Tambah Produk</option>
+        <option value="Edit Produk">Edit Produk</option>
+        <option value="Hapus Produk">Hapus Produk</option>
+        <option value="Order">Order</option>
+        <option value="Shift">Shift</option>
+      </select>
+      <button onclick="renderHistori()">🔍 Filter</button>
+      <button class="btn-hapus-histori" onclick="hapusSemuaHistori()">🗑️ Hapus Semua</button>
     </div>
 
-    <div class="grafik-keuangan" id="grafik-keuangan">
-      <div style="flex:1;text-align:center;color:#888;padding:20px;">Data belum cukup.</div>
-    </div>
-
-    <h4 style="color:#1a1a2e;margin:15px 0 10px;">📋 Rincian</h4>
     <div class="table-responsive">
-      <table class="laporan-keuangan-tabel">
+      <table class="histori-table">
         <thead>
           <tr>
-            <th>Kategori</th>
-            <th>Jumlah</th>
-            <th>Keterangan</th>
+            <th>Waktu</th>
+            <th>User</th>
+            <th>Aktivitas</th>
+            <th>Detail</th>
           </tr>
         </thead>
-        <tbody id="laporan-keuangan-tbody"></tbody>
+        <tbody id="histori-tbody"></tbody>
       </table>
     </div>
-
-    <button class="btn-export-laporan" onclick="exportLaporanKeuangan()" style="margin-top:15px;">📥 Export CSV</button>
   </div>
 </div>
 
 <script>
   // ============================================================
-  // FUNGSI AMBIL DATA KEUANGAN
+  // FUNGSI AMBIL & SIMPAN HISTORI
   // ============================================================
-  function ambilDataKeuangan() {
-    const username = penggunaAktif ? penggunaAktif.username : '';
-    const transaksi = JSON.parse(localStorage.getItem('tokoonline_transaksi_' + username) || '[]');
-    const modal = JSON.parse(localStorage.getItem('tokoonline_modal_' + username) || '{"cash":[],"belanja":[]}');
-    const kasbon = JSON.parse(localStorage.getItem('tokoonline_kasbon_' + username) || '[]');
-    const penarikan = JSON.parse(localStorage.getItem('tokoonline_penarikan_' + username) || '[]');
+  function ambilHistori() {
+    const key = 'tokoonline_histori_' + (penggunaAktif ? penggunaAktif.username : '');
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  }
 
-    // Hitung total
-    const totalPenjualan = transaksi.reduce((s, t) => s + (t.total || 0), 0);
-    const totalModalCash = modal.cash.reduce((s, c) => s + c.jumlah, 0);
-    const totalModalBelanja = modal.belanja.reduce((s, b) => s + b.jumlah, 0);
-    const totalModal = totalModalCash + totalModalBelanja;
-    const totalKasbonBelum = kasbon.filter(k => k.status === 'Belum').reduce((s, k) => s + k.jumlah, 0);
-    const totalKasbonLunas = kasbon.filter(k => k.status === 'Lunas').reduce((s, k) => s + k.jumlah, 0);
-    const totalKasbon = totalKasbonBelum + totalKasbonLunas;
-    const totalPenarikan = penarikan.reduce((s, p) => s + p.jumlah, 0);
+  function simpanHistori(data) {
+    const key = 'tokoonline_histori_' + (penggunaAktif ? penggunaAktif.username : '');
+    localStorage.setItem(key, JSON.stringify(data));
+  }
 
-    const labaBersih = totalPenjualan - totalModal - totalKasbonBelum + totalKasbonLunas - totalPenarikan;
+  // ============================================================
+  // TAMBAH AKTIVITAS (DIPANGGIL DARI FUNGSI LAIN)
+  // ============================================================
+  function tambahAktivitas(aktivitas, detail) {
+    if (!penggunaAktif) return;
+    const histori = ambilHistori();
+    histori.push({
+      id: Date.now(),
+      waktu: new Date().toLocaleString('id-ID'),
+      user: penggunaAktif.nama,
+      username: penggunaAktif.username,
+      aktivitas: aktivitas,
+      detail: detail
+    });
+    // Batasi maksimal 500 entri
+    if (histori.length > 500) {
+      histori.splice(0, histori.length - 500);
+    }
+    simpanHistori(histori);
+  }
 
-    return {
-      totalPenjualan,
-      totalModal,
-      totalKasbon,
-      totalKasbonBelum,
-      totalKasbonLunas,
-      totalPenarikan,
-      labaBersih,
-      modal,
-      kasbon,
-      penarikan,
-      transaksi
+  // ============================================================
+  // OVERRIDE FUNGSI-FUNGSI PENTING UNTUK MENCATAT HISTORI
+  // ============================================================
+  // Catatan: Semua override dilakukan dengan pengecekan typeof agar tidak error jika fungsi belum ada.
+
+  // Login & Logout
+  if (typeof window.prosesLogin === 'function') {
+    const originalLogin = window.prosesLogin;
+    window.prosesLogin = function() {
+      const result = originalLogin.apply(this, arguments);
+      if (penggunaAktif) {
+        tambahAktivitas('Login', 'Login berhasil');
+      }
+      return result;
+    };
+  }
+
+  if (typeof window.prosesLogout === 'function') {
+    const originalLogout = window.prosesLogout;
+    window.prosesLogout = function() {
+      if (penggunaAktif) {
+        tambahAktivitas('Logout', 'Logout');
+      }
+      return originalLogout.apply(this, arguments);
+    };
+  }
+
+  // Transaksi
+  if (typeof window.bayarSekarang === 'function') {
+    const originalBayar = window.bayarSekarang;
+    window.bayarSekarang = function() {
+      const result = originalBayar.apply(this, arguments);
+      tambahAktivitas('Transaksi', 'Melakukan pembayaran transaksi');
+      return result;
+    };
+  }
+
+  // Produk
+  if (typeof window.simpanProdukBaru === 'function') {
+    const originalSimpanProduk = window.simpanProdukBaru;
+    window.simpanProdukBaru = function() {
+      const nama = document.getElementById('produk-nama') ? document.getElementById('produk-nama').value.trim() : '';
+      const result = originalSimpanProduk.apply(this, arguments);
+      if (nama) tambahAktivitas('Tambah Produk', 'Menambahkan produk: ' + nama);
+      return result;
+    };
+  }
+
+  if (typeof window.editProduk === 'function') {
+    const originalEditProduk = window.editProduk;
+    window.editProduk = function(index) {
+      const data = ambilDataProdukToko(penggunaAktif.username);
+      const p = data[index];
+      const nama = p ? p.nama : '';
+      const result = originalEditProduk.apply(this, arguments);
+      if (nama) tambahAktivitas('Edit Produk', 'Mengedit produk: ' + nama);
+      return result;
+    };
+  }
+
+  if (typeof window.hapusProduk === 'function') {
+    const originalHapusProduk = window.hapusProduk;
+    window.hapusProduk = function(index) {
+      const data = ambilDataProdukToko(penggunaAktif.username);
+      const p = data[index];
+      const nama = p ? p.nama : '';
+      const result = originalHapusProduk.apply(this, arguments);
+      if (nama) tambahAktivitas('Hapus Produk', 'Menghapus produk: ' + nama);
+      return result;
+    };
+  }
+
+  // Order
+  if (typeof window.setujuiOrderToko === 'function') {
+    const originalSetujuiOrder = window.setujuiOrderToko;
+    window.setujuiOrderToko = function(orderId) {
+      const result = originalSetujuiOrder.apply(this, arguments);
+      tambahAktivitas('Order', 'Menyetujui order #' + orderId);
+      return result;
+    };
+  }
+
+  if (typeof window.tolakOrderToko === 'function') {
+    const originalTolakOrder = window.tolakOrderToko;
+    window.tolakOrderToko = function(orderId) {
+      const result = originalTolakOrder.apply(this, arguments);
+      tambahAktivitas('Order', 'Menolak order #' + orderId);
+      return result;
+    };
+  }
+
+  // Shift
+  if (typeof window.bukaShift === 'function') {
+    const originalBukaShift = window.bukaShift;
+    window.bukaShift = function() {
+      const result = originalBukaShift.apply(this, arguments);
+      tambahAktivitas('Shift', 'Membuka shift');
+      return result;
+    };
+  }
+
+  if (typeof window.tutupShift === 'function') {
+    const originalTutupShift = window.tutupShift;
+    window.tutupShift = function() {
+      const result = originalTutupShift.apply(this, arguments);
+      tambahAktivitas('Shift', 'Menutup shift');
+      return result;
     };
   }
 
   // ============================================================
-  // RENDER LAPORAN KEUANGAN
+  // RENDER HISTORI
   // ============================================================
-  function renderLaporanKeuangan() {
-    const data = ambilDataKeuangan();
+  function renderHistori() {
+    const tbody = document.getElementById('histori-tbody');
+    if (!tbody) return;
 
-    // Update statistik
-    document.querySelector('#laporan-keuangan-stats .laporan-keuangan-stat-card:nth-child(1) .stat-value').textContent = 'Rp ' + data.totalPenjualan.toLocaleString('id-ID');
-    document.querySelector('#laporan-keuangan-stats .laporan-keuangan-stat-card:nth-child(2) .stat-value').textContent = 'Rp ' + data.totalModal.toLocaleString('id-ID');
-    document.querySelector('#laporan-keuangan-stats .laporan-keuangan-stat-card:nth-child(3) .stat-value').textContent = 'Rp ' + data.totalKasbon.toLocaleString('id-ID');
-    document.querySelector('#laporan-keuangan-stats .laporan-keuangan-stat-card:nth-child(4) .stat-value').textContent = 'Rp ' + data.totalPenarikan.toLocaleString('id-ID');
-    document.querySelector('#laporan-keuangan-stats .laporan-keuangan-stat-card:nth-child(5) .stat-value').textContent = 'Rp ' + data.labaBersih.toLocaleString('id-ID');
+    const dari = document.getElementById('filter-histori-dari').value;
+    const sampai = document.getElementById('filter-histori-sampai').value;
+    const filterAktivitas = document.getElementById('filter-histori-aktivitas').value;
 
-    // Grafik (gunakan 5 komponen)
-    const labels = ['Penjualan', 'Modal', 'Kasbon', 'Penarikan', 'Laba'];
-    const values = [data.totalPenjualan, data.totalModal, data.totalKasbon, data.totalPenarikan, data.labaBersih];
-    const max = Math.max(...values, 1);
-    const grafikEl = document.getElementById('grafik-keuangan');
-    if (values.every(v => v === 0)) {
-      grafikEl.innerHTML = '<div style="flex:1;text-align:center;color:#888;padding:20px;">Belum ada data.</div>';
-    } else {
-      let html = '';
-      labels.forEach((label, i) => {
-        const h = Math.max((values[i] / max) * 120, 10);
-        html += `
-          <div class="bar-item">
-            <div class="bar" style="height:${h}px;">
-              <span class="bar-value">${values[i] >= 1000 ? (values[i]/1000).toFixed(0)+'K' : values[i]}</span>
-            </div>
-            <div class="bar-label">${label}</div>
-          </div>
-        `;
+    let data = ambilHistori();
+
+    // Filter tanggal (dengan normalisasi waktu)
+    if (dari && sampai) {
+      const dariDate = new Date(dari + 'T00:00:00');
+      const sampaiDate = new Date(sampai + 'T23:59:59');
+      data = data.filter(h => {
+        const waktu = new Date(h.waktu);
+        return waktu >= dariDate && waktu <= sampaiDate;
       });
-      grafikEl.innerHTML = html;
     }
 
-    // Rincian tabel
-    const tbody = document.getElementById('laporan-keuangan-tbody');
-    let html = `
-      <tr><td><strong>Total Penjualan</strong></td><td>Rp ${data.totalPenjualan.toLocaleString('id-ID')}</td><td>Dari semua transaksi</td></tr>
-      <tr><td><strong>Total Modal Cash</strong></td><td>Rp ${data.modal.cash.reduce((s,c) => s+c.jumlah,0).toLocaleString('id-ID')}</td><td>Modal tunai yang dimasukkan</td></tr>
-      <tr><td><strong>Total Modal Belanja</strong></td><td>Rp ${data.modal.belanja.reduce((s,b) => s+b.jumlah,0).toLocaleString('id-ID')}</td><td>Modal untuk belanja barang</td></tr>
-      <tr><td><strong>Total Modal</strong></td><td>Rp ${data.totalModal.toLocaleString('id-ID')}</td><td>Cash + Belanja</td></tr>
-      <tr><td><strong>Total Kasbon (Belum)</strong></td><td>Rp ${data.totalKasbonBelum.toLocaleString('id-ID')}</td><td>Piutang belum lunas</td></tr>
-      <tr><td><strong>Total Kasbon (Lunas)</strong></td><td>Rp ${data.totalKasbonLunas.toLocaleString('id-ID')}</td><td>Piutang sudah lunas</td></tr>
-      <tr><td><strong>Total Kasbon</strong></td><td>Rp ${data.totalKasbon.toLocaleString('id-ID')}</td><td>Belum + Lunas</td></tr>
-      <tr><td><strong>Total Penarikan</strong></td><td>Rp ${data.totalPenarikan.toLocaleString('id-ID')}</td><td>Uang ditarik pemilik</td></tr>
-      <tr class="total-row"><td><strong>LABA BERSIH</strong></td><td>Rp ${data.labaBersih.toLocaleString('id-ID')}</td><td>Penjualan - Modal - KasbonBelum + KasbonLunas - Penarikan</td></tr>
-    `;
+    // Filter aktivitas
+    if (filterAktivitas !== 'Semua') {
+      data = data.filter(h => h.aktivitas === filterAktivitas);
+    }
+
+    // Urutkan dari yang terbaru
+    data.sort((a, b) => b.id - a.id);
+
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#888;">Tidak ada data aktivitas.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    data.forEach(h => {
+      let classAktivitas = 'aktivitas-other';
+      if (h.aktivitas === 'Login') classAktivitas = 'aktivitas-login';
+      else if (h.aktivitas === 'Logout') classAktivitas = 'aktivitas-logout';
+      else if (h.aktivitas === 'Transaksi') classAktivitas = 'aktivitas-transaksi';
+      else if (h.aktivitas.includes('Produk')) classAktivitas = 'aktivitas-produk';
+      else if (h.aktivitas === 'Order') classAktivitas = 'aktivitas-transaksi';
+
+      html += `
+        <tr>
+          <td>${h.waktu}</td>
+          <td><strong>${h.user}</strong></td>
+          <td class="${classAktivitas}">${h.aktivitas}</td>
+          <td>${h.detail || '-'}</td>
+        </tr>
+      `;
+    });
     tbody.innerHTML = html;
   }
 
   // ============================================================
-  // EXPORT LAPORAN KE CSV
+  // HAPUS SEMUA HISTORI
   // ============================================================
-  function exportLaporanKeuangan() {
-    const data = ambilDataKeuangan();
-    let csv = 'Kategori,Jumlah,Keterangan\n';
-    csv += `"Total Penjualan",${data.totalPenjualan},"Dari semua transaksi"\n`;
-    csv += `"Total Modal Cash",${data.modal.cash.reduce((s,c) => s+c.jumlah,0)},"Modal tunai"\n`;
-    csv += `"Total Modal Belanja",${data.modal.belanja.reduce((s,b) => s+b.jumlah,0)},"Modal belanja"\n`;
-    csv += `"Total Modal",${data.totalModal},"Cash + Belanja"\n`;
-    csv += `"Total Kasbon Belum",${data.totalKasbonBelum},"Piutang belum lunas"\n`;
-    csv += `"Total Kasbon Lunas",${data.totalKasbonLunas},"Piutang sudah lunas"\n`;
-    csv += `"Total Kasbon",${data.totalKasbon},"Belum + Lunas"\n`;
-    csv += `"Total Penarikan",${data.totalPenarikan},"Uang ditarik pemilik"\n`;
-    csv += `"LABA BERSIH",${data.labaBersih},"Penjualan - Modal - KasbonBelum + KasbonLunas - Penarikan"\n`;
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'laporan_keuangan_' + new Date().toISOString().split('T')[0] + '.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    tampilkanNotifikasi('📥 Laporan keuangan berhasil diexport!', 'sukses');
+  function hapusSemuaHistori() {
+    if (!confirm('🗑️ Hapus semua histori aktivitas? Data tidak dapat dikembalikan.')) return;
+    simpanHistori([]);
+    renderHistori();
+    tampilkanNotifikasi('🗑️ Semua histori dihapus.', 'sukses');
   }
 
   // ============================================================
@@ -5487,25 +5567,153 @@ Materai Rp 10.000`
   // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
     if (penggunaAktif) {
-      renderLaporanKeuangan();
+      renderHistori();
     }
   });
 
   // Override navigasi agar render ulang saat pindah halaman
-  const originalMuatKontenLaporanKeuangan = window.muatKontenHalaman;
-  if (typeof originalMuatKontenLaporanKeuangan === 'function') {
+  const originalMuatKonten = window.muatKontenHalaman;
+  if (typeof originalMuatKonten === 'function') {
     window.muatKontenHalaman = function(pageId, container) {
-      originalMuatKontenLaporanKeuangan(pageId, container);
-      if (pageId === 'laporan-keuangan') {
-        setTimeout(renderLaporanKeuangan, 300);
+      originalMuatKonten(pageId, container);
+      if (pageId === 'histori-aktivitas') {
+        setTimeout(renderHistori, 300);
       }
     };
   }
 
-  console.log('✅ Blok 26 – Laporan Keuangan Lengkap (Laba Rugi & Neraca) berhasil dimuat.');
-  console.log('📌 Menampilkan total penjualan, modal, kasbon, penarikan, dan laba bersih.');
-  console.log('📌 Tersedia fitur export ke CSV.');
+  console.log('✅ Blok 26 R1 – Histori Aktivitas (Log Aktivitas User) dengan perbaikan berhasil dimuat.');
+  console.log('📌 Perbaikan: pengecekan typeof, filter tanggal lebih akurat, override fungsi lebih aman.');
 </script>
 <!-- ============================================================
-     AKHIR BLOK 26 – LANJUT KE BLOK 27
+     AKHIR BLOK 26 R1 – LANJUT KE BLOK 27
+     ============================================================ -->
+	 <!-- ============================================================
+     BLOK 27 R1 – PENUTUP APLIKASI & PENUTUP HTML
+     ============================================================ -->
+<style>
+  .penutup-container { max-width: 900px; margin: 0 auto; }
+  .penutup-panel {
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: var(--shadow); margin-bottom: 20px;
+  }
+  .penutup-panel h4 { color: #1a1a2e; margin-bottom: 15px; }
+  .penutup-info {
+    background: #e8f5e9; border-left: 4px solid #4caf50;
+    padding: 12px 16px; border-radius: 8px; margin-bottom: 15px;
+    font-size: 0.85em; color: #2e7d32;
+  }
+  .penutup-info.danger {
+    background: #ffebee; border-left-color: #f44336; color: #c62828;
+  }
+  .penutup-step {
+    padding: 8px 0; border-bottom: 1px solid #e0e0e0;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .penutup-step .step-num { font-weight: 700; color: #e65100; min-width: 30px; }
+  .penutup-step .step-desc { color: #333; }
+  .penutup-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px; margin: 15px 0;
+  }
+  .penutup-card {
+    background: #f9fafb; border: 1px solid #e0e0e0;
+    border-radius: 8px; padding: 15px; text-align: center;
+  }
+  .penutup-card .card-icon { font-size: 2em; display: block; }
+  .penutup-card .card-title { font-weight: 700; margin-top: 5px; }
+  .penutup-card .card-desc { font-size: 0.85em; color: #888; }
+  @media (max-width: 768px) {
+    .penutup-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="penutup-container">
+  <div class="penutup-panel">
+    <h4>🏁 Penutup Aplikasi</h4>
+    <div class="penutup-info">
+      ✅ Aplikasi Kasir Grosir – APP TOKO ONLINE telah selesai dibangun.
+      Semua fitur utama yang diperlukan untuk operasional toko grosir dan kasir sudah tersedia.
+    </div>
+
+    <h4 style="margin-top:20px;">📦 Ringkasan Fitur yang Tersedia</h4>
+    <div class="penutup-grid">
+      <div class="penutup-card">
+        <span class="card-icon">🛒</span>
+        <div class="card-title">Transaksi Kasir</div>
+        <div class="card-desc">Pilih produk, keranjang, bayar, riwayat.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">📦</span>
+        <div class="card-title">Manajemen Produk</div>
+        <div class="card-desc">Input, edit, hapus, stok, diskon.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">💰</span>
+        <div class="card-title">Keuangan</div>
+        <div class="card-desc">Modal, laba rugi, kasbon, penarikan.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">📊</span>
+        <div class="card-title">Laporan</div>
+        <div class="card-desc">Penjualan, grafik, histori aktivitas.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">👤</span>
+        <div class="card-title">Manajemen Kasir</div>
+        <div class="card-desc">Buat akun kasir, shift, chat internal.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">📦</span>
+        <div class="card-title">Pengiriman</div>
+        <div class="card-desc">Ekspedisi, tracking, update status.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">💾</span>
+        <div class="card-title">Backup & Restore</div>
+        <div class="card-desc">Cadangkan dan pulihkan data.</div>
+      </div>
+      <div class="penutup-card">
+        <span class="card-icon">📜</span>
+        <div class="card-title">Histori Aktivitas</div>
+        <div class="card-desc">Catat semua aktivitas user.</div>
+      </div>
+    </div>
+
+    <h4 style="margin-top:20px;">🚀 Cara Deploy Aplikasi</h4>
+    <div class="penutup-step">
+      <span class="step-num">1.</span>
+      <span class="step-desc">Gabungkan semua blok (1–27) secara berurutan menjadi satu file <code>index.html</code>.</span>
+    </div>
+    <div class="penutup-step">
+      <span class="step-num">2.</span>
+      <span class="step-desc">Pastikan Blok 10 menggunakan versi <strong>R1</strong> yang sudah diperbaiki.</span>
+    </div>
+    <div class="penutup-step">
+      <span class="step-num">3.</span>
+      <span class="step-desc">Buka file di browser (Chrome/Edge/Firefox) dan mulai gunakan.</span>
+    </div>
+    <div class="penutup-step">
+      <span class="step-num">4.</span>
+      <span class="step-desc">Untuk deploy ke hosting (GitHub Pages, Netlify, Vercel), upload file <code>index.html</code> saja.</span>
+    </div>
+
+    <div class="penutup-info danger" style="margin-top:20px;">
+      ⚠️ <strong>Peringatan:</strong> Aplikasi ini menyimpan data di <code>localStorage</code> browser.
+      Hapus data browser akan menghapus semua data toko. Gunakan fitur Backup secara berkala.
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <p style="color:#888;font-size:0.9em;">Terima kasih telah menggunakan APP TOKO ONLINE – Grosir.</p>
+      <p style="color:#888;font-size:0.9em;">Versi 2.0-Grosir</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PENUTUP HTML (BODY & HTML) ===== -->
+</body>
+</html>
+
+<!-- ============================================================
+     AKHIR BLOK 27 R1 – SELESAI
      ============================================================ -->
