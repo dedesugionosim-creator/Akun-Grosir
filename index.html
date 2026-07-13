@@ -1052,5 +1052,1327 @@ PENJELASAN FUNGSI PERINTAH BLOK TG-06:
         </div>
     </div>
 <!-- AKHIR BLOK TG-06 -->
-   </body>
-</html>
+<!-- ==========================================
+BLOK TG-07 - LAYOUT DASBOR TOKO (ORANYE-PUTIH)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-07:
+1. Pusat Kendali (Dashboard): Halaman navigasi utama bagi Pemilik Toko Grosir setelah berhasil masuk (login).
+2. Indikator Status Akun: Menampilkan informasi penting di header seperti Nama Toko, Status Verifikasi, dan Tipe Akun (Free/Pro) agar pemilik selalu sadar akan kapasitas akunnya.
+3. Pengelompokan Menu Terstruktur: Membagi puluhan fitur menjadi 4 kategori utama (Master Data, Transaksi, Administrasi, Komunikasi) dalam bentuk grid/kartu agar mudah dicari dan tidak membingungkan pengguna.
+4. Tema Visual Konsisten: Tetap menggunakan palet Oranye-Putih, di mana tombol menu dibuat menonjol dengan efek hover (terangkat saat disentuh) untuk memberikan pengalaman interaktif yang responsif.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-dashboard-toko">
+    
+    <!-- Header Dashboard -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center border-bottom pb-3 mb-4" style="border-bottom-color: #ff6600 !important;">
+        <div class="mb-3 mb-md-0">
+            <h3 class="text-dark fw-bold mb-1">Dasbor Utama Toko</h3>
+            <div class="d-flex gap-2 flex-wrap mt-2">
+                <span class="badge bg-orange-custom text-white shadow-sm px-3 py-2"><i class="bi bi-shop me-1"></i> ID: TG-2026071301</span>
+                <span class="badge bg-success shadow-sm px-3 py-2"><i class="bi bi-check-circle-fill me-1"></i> Status: Aktif</span>
+                <span class="badge bg-secondary shadow-sm px-3 py-2"><i class="bi bi-person-badge-fill me-1"></i> Tipe: FREE (Batas 5 Produk)</span>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-outline-danger fw-bold shadow-sm px-4" onclick="alert('Anda telah keluar.'); kembaliKeLogin();">
+                <i class="bi bi-box-arrow-right me-2"></i> KELUAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Peringatan Sistem (Info Upgrade) -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center">
+        <i class="bi bi-info-circle-fill text-warning fs-4 me-3"></i>
+        <div>
+            <strong>Informasi Akun:</strong> Anda saat ini menggunakan versi FREE. Beberapa fitur komunikasi terkunci. Silakan masuk ke menu <strong>Pengajuan</strong> untuk beralih ke Akun PRO dan membuka semua akses.
+        </div>
+    </div>
+
+    <!-- Kategori 1: Master Data & Operasional -->
+    <div class="card-custom mb-4 border-top-orange">
+        <h5 class="text-orange-custom fw-bold border-bottom pb-2 mb-3"><i class="bi bi-hdd-network-fill me-2"></i> Kategori 1: Master Data & Operasional</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-person-vcard fs-3 text-orange-custom mb-2"></i>Profil Master
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-wallet2 fs-3 text-orange-custom mb-2"></i>Rekening & E-Wallet
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-cash-coin fs-3 text-orange-custom mb-2"></i>Modal Cash
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-box-seam-fill fs-3 text-orange-custom mb-2"></i>Input Produk
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-shop-window fs-3 text-orange-custom mb-2"></i>Etalase Publik
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-clipboard-check-fill fs-3 text-orange-custom mb-2"></i>Pemeriksaan Stok
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-people-fill fs-3 text-orange-custom mb-2"></i>Buat Akun Kasir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 2: Transaksi & Keuangan -->
+    <div class="card-custom mb-4" style="border-top: 4px solid #198754;">
+        <h5 class="text-success fw-bold border-bottom pb-2 mb-3"><i class="bi bi-calculator-fill me-2"></i> Kategori 2: Transaksi & Keuangan</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-receipt fs-3 mb-2"></i>Mesin Kasir / POS
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-server fs-3 mb-2"></i>Data Transaksi
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-bar-chart-line-fill fs-3 mb-2"></i>Rekap Keuangan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-journal-text fs-3 mb-2"></i>Kasbon Pelanggan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                    <i class="bi bi-bell-fill fs-3 mb-2"></i>Order Online Masuk
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-graph-down-arrow fs-3 mb-2"></i>Biaya Operasional
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 3: Administrasi & Pengajuan -->
+    <div class="card-custom mb-4" style="border-top: 4px solid #6f42c1;">
+        <h5 class="fw-bold border-bottom pb-2 mb-3" style="color: #6f42c1;"><i class="bi bi-folder-check me-2"></i> Kategori 3: Administrasi & Legalitas</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-arrow-up-circle-fill fs-3 mb-2" style="color: #6f42c1;"></i>Menu Pengajuan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-file-earmark-arrow-up-fill fs-3 mb-2" style="color: #6f42c1;"></i>Upload Persyaratan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-receipt-cutoff fs-3 mb-2" style="color: #6f42c1;"></i>Tagihan & Suspend
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-gear-fill fs-3 mb-2" style="color: #6f42c1;"></i>Konfigurasi & Backup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 4: Komunikasi & Promosi (Terkunci untuk Free) -->
+    <div class="card-custom mb-5" style="border-top: 4px solid #dc3545;">
+        <h5 class="text-danger fw-bold border-bottom pb-2 mb-3"><i class="bi bi-chat-dots-fill me-2"></i> Kategori 4: Komunikasi & Promosi</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-headset fs-3 mb-2"></i>Chat CS
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-motorcycle fs-3 mb-2"></i>Chat Ojek
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-chat-heart-fill fs-3 mb-2"></i>Chat Pelanggan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-megaphone-fill fs-3 mb-2"></i>Promo Produk
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- AKHIR BLOK TG-07 -->
+<!-- ==========================================
+BLOK TG-07 - LAYOUT DASBOR TOKO (ORANYE-PUTIH)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-07:
+1. Pusat Kendali (Dashboard): Halaman navigasi utama bagi Pemilik Toko Grosir setelah berhasil masuk (login).
+2. Indikator Status Akun: Menampilkan informasi penting di header seperti Nama Toko, Status Verifikasi, dan Tipe Akun (Free/Pro) agar pemilik selalu sadar akan kapasitas akunnya.
+3. Pengelompokan Menu Terstruktur: Membagi puluhan fitur menjadi 4 kategori utama (Master Data, Transaksi, Administrasi, Komunikasi) dalam bentuk grid/kartu agar mudah dicari dan tidak membingungkan pengguna.
+4. Tema Visual Konsisten: Tetap menggunakan palet Oranye-Putih, di mana tombol menu dibuat menonjol dengan efek hover (terangkat saat disentuh) untuk memberikan pengalaman interaktif yang responsif.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-dashboard-toko">
+    
+    <!-- Header Dashboard -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center border-bottom pb-3 mb-4" style="border-bottom-color: #ff6600 !important;">
+        <div class="mb-3 mb-md-0">
+            <h3 class="text-dark fw-bold mb-1">Dasbor Utama Toko</h3>
+            <div class="d-flex gap-2 flex-wrap mt-2">
+                <span class="badge bg-orange-custom text-white shadow-sm px-3 py-2"><i class="bi bi-shop me-1"></i> ID: TG-2026071301</span>
+                <span class="badge bg-success shadow-sm px-3 py-2"><i class="bi bi-check-circle-fill me-1"></i> Status: Aktif</span>
+                <span class="badge bg-secondary shadow-sm px-3 py-2"><i class="bi bi-person-badge-fill me-1"></i> Tipe: FREE (Batas 5 Produk)</span>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-outline-danger fw-bold shadow-sm px-4" onclick="alert('Anda telah keluar.'); kembaliKeLogin();">
+                <i class="bi bi-box-arrow-right me-2"></i> KELUAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Peringatan Sistem (Info Upgrade) -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center">
+        <i class="bi bi-info-circle-fill text-warning fs-4 me-3"></i>
+        <div>
+            <strong>Informasi Akun:</strong> Anda saat ini menggunakan versi FREE. Beberapa fitur komunikasi terkunci. Silakan masuk ke menu <strong>Pengajuan</strong> untuk beralih ke Akun PRO dan membuka semua akses.
+        </div>
+    </div>
+
+    <!-- Kategori 1: Master Data & Operasional -->
+    <div class="card-custom mb-4 border-top-orange">
+        <h5 class="text-orange-custom fw-bold border-bottom pb-2 mb-3"><i class="bi bi-hdd-network-fill me-2"></i> Kategori 1: Master Data & Operasional</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-person-vcard fs-3 text-orange-custom mb-2"></i>Profil Master
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-wallet2 fs-3 text-orange-custom mb-2"></i>Rekening & E-Wallet
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-cash-coin fs-3 text-orange-custom mb-2"></i>Modal Cash
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-box-seam-fill fs-3 text-orange-custom mb-2"></i>Input Produk
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-shop-window fs-3 text-orange-custom mb-2"></i>Etalase Publik
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-clipboard-check-fill fs-3 text-orange-custom mb-2"></i>Pemeriksaan Stok
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-people-fill fs-3 text-orange-custom mb-2"></i>Buat Akun Kasir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 2: Transaksi & Keuangan -->
+    <div class="card-custom mb-4" style="border-top: 4px solid #198754;">
+        <h5 class="text-success fw-bold border-bottom pb-2 mb-3"><i class="bi bi-calculator-fill me-2"></i> Kategori 2: Transaksi & Keuangan</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-receipt fs-3 mb-2"></i>Mesin Kasir / POS
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-server fs-3 mb-2"></i>Data Transaksi
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-bar-chart-line-fill fs-3 mb-2"></i>Rekap Keuangan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-journal-text fs-3 mb-2"></i>Kasbon Pelanggan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                    <i class="bi bi-bell-fill fs-3 mb-2"></i>Order Online Masuk
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-success w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-graph-down-arrow fs-3 mb-2"></i>Biaya Operasional
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 3: Administrasi & Pengajuan -->
+    <div class="card-custom mb-4" style="border-top: 4px solid #6f42c1;">
+        <h5 class="fw-bold border-bottom pb-2 mb-3" style="color: #6f42c1;"><i class="bi bi-folder-check me-2"></i> Kategori 3: Administrasi & Legalitas</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-arrow-up-circle-fill fs-3 mb-2" style="color: #6f42c1;"></i>Menu Pengajuan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-file-earmark-arrow-up-fill fs-3 mb-2" style="color: #6f42c1;"></i>Upload Persyaratan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-receipt-cutoff fs-3 mb-2" style="color: #6f42c1;"></i>Tagihan & Suspend
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-outline-secondary w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                    <i class="bi bi-gear-fill fs-3 mb-2" style="color: #6f42c1;"></i>Konfigurasi & Backup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kategori 4: Komunikasi & Promosi (Terkunci untuk Free) -->
+    <div class="card-custom mb-5" style="border-top: 4px solid #dc3545;">
+        <h5 class="text-danger fw-bold border-bottom pb-2 mb-3"><i class="bi bi-chat-dots-fill me-2"></i> Kategori 4: Komunikasi & Promosi</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-headset fs-3 mb-2"></i>Chat CS
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-motorcycle fs-3 mb-2"></i>Chat Ojek
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-chat-heart-fill fs-3 mb-2"></i>Chat Pelanggan
+                </button>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button class="btn btn-light border text-muted w-100 h-100 p-3 fw-bold d-flex flex-column align-items-center justify-content-center position-relative" style="min-height: 100px;" disabled>
+                    <i class="bi bi-lock-fill position-absolute top-0 end-0 m-2 text-danger"></i>
+                    <i class="bi bi-megaphone-fill fs-3 mb-2"></i>Promo Produk
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- AKHIR BLOK TG-07 -->
+<!-- ==========================================
+BLOK TG-08 - PROFIL MASTER & PENGATURAN LOGIN
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-08:
+1. Master Data Toko: Formulir utama untuk melengkapi profil toko grosir, mulai dari unggah foto fisik toko, nama, hingga alamat lengkap.
+2. Generator ID Otomatis: Kolom ID Toko dibuat otomatis (Read-Only) oleh sistem berdasarkan tanggal dan nomor urut pendaftaran untuk kemudahan tracking.
+3. Cegah Duplikat (Integritas Data): Kolom NIK KTP, Email, dan Nomor HP ditandai secara khusus. Sistem di-backend nantinya akan menolak jika data ini sudah digunakan oleh akun lain (1 KTP = 1 Akun).
+4. Pemisahan Keamanan Login: Form untuk merubah Username dan Password dipisahkan ke dalam kartu berbeda agar pengguna tidak tidak sengaja merubah data login saat memperbarui profil toko.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-profil-master">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Profil Master</h3>
+            <p class="text-muted small mb-0">Kelola identitas resmi, alamat, dan akses login toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Peringatan Anti Duplikat -->
+    <div class="alert alert-info shadow-sm border-0 mb-4 d-flex align-items-start">
+        <i class="bi bi-shield-check text-info fs-4 me-3"></i>
+        <div>
+            <strong>Perlindungan Data (Anti-Duplikat):</strong>
+            <p class="mb-0 small">Sistem menerapkan kebijakan ketat <strong>1 KTP, 1 Email, dan 1 No HP hanya untuk 1 Akun Toko</strong>. Jika Anda terdeteksi menggunakan data palsu atau duplikat, SuperAdmin berhak membekukan akun Anda secara permanen.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: DATA IDENTITAS & TOKO -->
+        <div class="col-lg-7">
+            <div class="card-custom border-top-orange h-100">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-4"><i class="bi bi-shop me-2 text-orange-custom"></i> Identitas Usaha & Pemilik</h5>
+                
+                <form id="form-profil-toko">
+                    <!-- ID Toko Otomatis -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">ID Toko (Sistem)</label>
+                        <input type="text" class="form-control bg-light fw-bold text-secondary" value="TG-20260713-001" readonly>
+                        <small class="text-muted">ID dibuat otomatis saat pendaftaran.</small>
+                    </div>
+
+                    <!-- Upload Foto -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Foto Profil Toko <span class="text-danger">*</span></label>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 80px; height: 80px;">
+                                <i class="bi bi-image text-muted fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="file" class="form-control form-control-sm mb-1" accept="image/jpeg, image/png">
+                                <small class="text-muted">Format JPG/PNG, Maksimal 2MB.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nama Toko <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Contoh: Grosir Makmur" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nama Pemilik <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Sesuai KTP" required>
+                        </div>
+                    </div>
+
+                    <!-- Data Sensitif (Anti Duplikat) -->
+                    <div class="p-3 bg-light border rounded mb-4">
+                        <h6 class="text-orange-custom fw-bold mb-3 small">Data Utama (Wajib Unik)</h6>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small mb-1">ID KTP (NIK) <span class="text-danger">*</span></label>
+                            <div class="input-group input-group-sm">
+                                <input type="number" class="form-control" placeholder="16 Digit NIK" required>
+                                <span class="input-group-text bg-success text-white"><i class="bi bi-check-circle-fill"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="form-label fw-bold small mb-1">Email <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <input type="email" class="form-control" placeholder="nama@email.com" required>
+                                    <span class="input-group-text bg-success text-white"><i class="bi bi-check-circle-fill"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small mb-1">Nomor HP/WA <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control" placeholder="0812..." required>
+                                    <span class="input-group-text bg-success text-white"><i class="bi bi-check-circle-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Alamat Lengkap <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota, Kodepos..." required></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save-fill me-2"></i> SIMPAN PROFIL TOKO
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: PENGATURAN LOGIN -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100" style="border-top: 4px solid #2b2b2b;">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-4"><i class="bi bi-key-fill me-2 text-dark"></i> Keamanan & Akun</h5>
+                
+                <form id="form-ubah-login">
+                    <div class="alert alert-secondary small border-0 mb-4">
+                        Gunakan form di bawah ini jika Anda ingin mengubah Username atau Password login Anda. Pastikan password baru mudah diingat namun sulit ditebak.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Username Saat Ini</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control" value="grosirmakmur26" disabled>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-primary">Username Baru (Opsional)</label>
+                        <input type="text" class="form-control" placeholder="Ketik username baru jika ingin diubah">
+                    </div>
+
+                    <hr class="text-muted my-4">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Password Baru</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" placeholder="Minimal 6 karakter">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Konfirmasi Password Baru</label>
+                        <input type="password" class="form-control" placeholder="Ketik ulang password baru">
+                    </div>
+
+                    <button type="button" class="btn btn-dark w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-shield-lock-fill me-2"></i> PERBARUI AKSES LOGIN
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-08 -->
+<!-- ==========================================
+BLOK TG-09 - INPUT REKENING BANK & E-WALLET
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-09:
+1. Jalur Pencairan Dana: Tempat toko mendaftarkan rekening bank atau dompet digital (E-Wallet) untuk menerima pembayaran dan mencairkan pendapatan.
+2. Dua Opsi Pembayaran: Menyediakan form khusus untuk Bank Konvensional (Nomor Rekening) dan form terpisah untuk E-Wallet yang disarankan (Nomor HP).
+3. Tabel Manajemen (CRUD): Menampilkan semua rekening yang sudah didaftarkan. Terdapat tombol "Edit" dan "Hapus" untuk mempermudah pemilik toko mengelola data pencairan mereka.
+4. Desain Responsif Oranye-Putih: Form diletakkan di sebelah kiri dan tabel daftar rekening di sebelah kanan agar rapi dan mudah diakses dari layar komputer maupun HP.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-rekening-ewallet">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Rekening & E-Wallet</h3>
+            <p class="text-muted small mb-0">Kelola metode penerimaan dana dan pencairan saldo Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Peringatan Sistem -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill text-warning fs-4 me-3"></i>
+        <div>
+            <strong>Perhatian:</strong> Pastikan Nama Pemilik pada Rekening Bank atau E-Wallet <strong>sama persis</strong> dengan Nama KTP profil Anda. Ketidaksesuaian nama dapat menyebabkan penundaan atau penolakan pencairan dana oleh SuperAdmin.
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM INPUT (KIRI) -->
+        <div class="col-lg-5">
+            
+            <!-- Form Tambah Rekening Bank -->
+            <div class="card-custom border-top-orange mb-4">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-bank2 me-2 text-orange-custom"></i> Tambah Rekening Bank</h5>
+                <form id="form-rekening-bank">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Pilih Bank <span class="text-danger">*</span></label>
+                        <select class="form-select" required>
+                            <option value="" selected disabled>-- Pilih Bank --</option>
+                            <option value="BCA">BCA (Bank Central Asia)</option>
+                            <option value="BRI">BRI (Bank Rakyat Indonesia)</option>
+                            <option value="BNI">BNI (Bank Negara Indonesia)</option>
+                            <option value="MANDIRI">Bank Mandiri</option>
+                            <option value="BSI">BSI (Bank Syariah Indonesia)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nomor Rekening <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Contoh: 1234567890" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Nama Pemilik Rekening <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Sesuai buku tabungan" required>
+                    </div>
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save-fill me-2"></i> SIMPAN REKENING BANK
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form Tambah E-Wallet -->
+            <div class="card-custom mb-4" style="border-top: 4px solid #17a2b8;">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-phone-fill me-2 text-info"></i> Tambah E-Wallet</h5>
+                <form id="form-ewallet">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Pilih Jenis E-Wallet <span class="text-danger">*</span></label>
+                        <select class="form-select border-info" required>
+                            <option value="" selected disabled>-- Pilih E-Wallet --</option>
+                            <option value="GOPAY">GoPay</option>
+                            <option value="DANA">DANA</option>
+                            <option value="OVO">OVO</option>
+                            <option value="SHOPEEPAY">ShopeePay</option>
+                            <option value="LINKAJA">LinkAja</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nomor HP Terdaftar <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Contoh: 0812xxxxxx" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Nama Pemilik Akun <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Sesuai aplikasi E-Wallet" required>
+                    </div>
+                    <button type="button" class="btn btn-info text-white w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save-fill me-2"></i> SIMPAN E-WALLET
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- BAGIAN 2: TABEL DAFTAR REKENING (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-list-check me-2 text-orange-custom"></i> Daftar Rekening Tersimpan</h5>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Tipe Pembayaran</th>
+                                <th scope="col">Rincian Akun</th>
+                                <th scope="col" class="text-center">Status</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contoh Data 1: Bank -->
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary px-2 py-1"><i class="bi bi-bank2 me-1"></i> Bank BCA</span>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark">0987654321</strong>
+                                    <small class="text-muted">a.n Budi Santoso</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success small">Utama</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger mb-1" title="Hapus"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Contoh Data 2: E-Wallet -->
+                            <tr>
+                                <td>
+                                    <span class="badge bg-info text-white px-2 py-1"><i class="bi bi-phone-fill me-1"></i> DANA</span>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark">081234567890</strong>
+                                    <small class="text-muted">a.n Budi Santoso</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary small">Opsional</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger mb-1" title="Hapus"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Contoh Data 3: E-Wallet (ShopeePay) -->
+                            <tr>
+                                <td>
+                                    <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bag-fill me-1"></i> ShopeePay</span>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark">081234567890</strong>
+                                    <small class="text-muted">a.n Budi Santoso</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary small">Opsional</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger mb-1" title="Hapus"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 text-muted small">
+                    <i class="bi bi-info-circle-fill text-orange-custom me-1"></i> Anda dapat menambahkan hingga maksimal 5 metode pembayaran.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-09 -->
+<!-- ==========================================
+BLOK TG-10 - MODAL CASH & BELANJA
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-10:
+1. Buku Kas Modal: Fitur untuk mencatat modal awal (kas masuk) dan modal yang digunakan untuk belanja stok barang (kas keluar).
+2. Kalkulasi Otomatis (Visual): Menampilkan ringkasan Total Modal Masuk, Total Modal Keluar, dan Sisa Kas saat ini dalam bentuk kartu yang mudah dibaca.
+3. Form Pencatatan Berulang: Mengakomodasi rutinitas pemilik toko yang bisa berbelanja stok hingga 3x seminggu. Form mencakup Jenis Transaksi, Nominal, Keterangan, dan Tanggal.
+4. Tabel Riwayat Master: Menampilkan histori transaksi modal secara berurutan agar pemilik toko bisa melacak ke mana saja uang modal digunakan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-modal-belanja">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Modal Cash & Belanja</h3>
+            <p class="text-muted small mb-0">Pantau perputaran uang modal dan catatan belanja stok barang Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Ringkasan Keuangan Modal -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-orange-custom text-white shadow-sm border-0 h-100 p-3 rounded-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-1 opacity-75">Total Modal (Kas Masuk)</h6>
+                        <h3 class="fw-bold mb-0">Rp 25.000.000</h3>
+                    </div>
+                    <div class="bg-white text-orange-custom rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                        <i class="bi bi-wallet2 fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white shadow-sm border-0 h-100 p-3 rounded-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-1 opacity-75">Total Belanja Stok (Kas Keluar)</h6>
+                        <h3 class="fw-bold mb-0">Rp 12.500.000</h3>
+                    </div>
+                    <div class="bg-white text-danger rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                        <i class="bi bi-cart-dash-fill fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm border-0 h-100 p-3 rounded-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-1 opacity-75">Sisa Saldo Modal Saat Ini</h6>
+                        <h3 class="fw-bold mb-0">Rp 12.500.000</h3>
+                    </div>
+                    <div class="bg-white text-success rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                        <i class="bi bi-safe-fill fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM INPUT TRANSAKSI MODAL (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom border-top-orange h-100">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-pencil-square me-2 text-orange-custom"></i> Catat Modal & Belanja Baru</h5>
+                
+                <form id="form-input-modal">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tanggal <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" value="2026-07-13" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Jenis Transaksi <span class="text-danger">*</span></label>
+                        <select class="form-select" required>
+                            <option value="" selected disabled>-- Pilih Jenis --</option>
+                            <option value="in">Tambah Modal Toko (Kas Masuk)</option>
+                            <option value="out">Belanja Stok Barang (Kas Keluar)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nominal (Rp) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light fw-bold">Rp</span>
+                            <input type="number" class="form-control" placeholder="Contoh: 1500000" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Keterangan / Rincian Belanja <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="3" placeholder="Contoh: Beli beras 50 karung dan minyak goreng 20 dus dari agen..." required></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save-fill me-2"></i> SIMPAN CATATAN
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL RIWAYAT MODAL (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-journal-text me-2 text-orange-custom"></i> Riwayat Modal & Belanja</h5>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer-fill"></i> Cetak</button>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col" class="text-center">Jenis</th>
+                                <th scope="col" class="text-end">Nominal (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contoh Data 1 (Belanja) -->
+                            <tr>
+                                <td><small class="text-muted">12 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block text-dark small">Belanja Mingguan</strong>
+                                    <small class="text-muted">Rokok, Mie Instan, dan Gula Pasir</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-danger text-white">Belanja (Out)</span>
+                                </td>
+                                <td class="text-end fw-bold text-danger">
+                                    - 3.500.000
+                                </td>
+                            </tr>
+                            
+                            <!-- Contoh Data 2 (Belanja) -->
+                            <tr>
+                                <td><small class="text-muted">08 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block text-dark small">Restock Beras</strong>
+                                    <small class="text-muted">Beras Rojo Lele 25 Karung</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-danger text-white">Belanja (Out)</span>
+                                </td>
+                                <td class="text-end fw-bold text-danger">
+                                    - 9.000.000
+                                </td>
+                            </tr>
+
+                            <!-- Contoh Data 3 (Modal Awal) -->
+                            <tr>
+                                <td><small class="text-muted">01 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block text-dark small">Suntikan Modal Awal</strong>
+                                    <small class="text-muted">Modal tabungan pribadi buka toko</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success text-white">Modal (In)</span>
+                                </td>
+                                <td class="text-end fw-bold text-success">
+                                    + 25.000.000
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-3 text-muted small text-center border-top pt-2">
+                    Riwayat di atas diurutkan dari transaksi terbaru.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-10 -->
+<!-- ==========================================
+BLOK TG-11 - MASTER INPUT PRODUK & KATALOG
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-11:
+1. Pusat Data Barang: Berfungsi sebagai database utama (Master Data) untuk semua produk fisik yang dijual di toko.
+2. Form Input Super Lengkap: Mengakomodasi detail spesifik seperti Kode Barang (Barcode manual/otomatis), Kategori luas (Sembako hingga Obat-obatan), Satuan (Pcs/Kg/Liter), hingga Kalender Kadaluarsa (Expired Date) untuk keamanan pelanggan.
+3. Fitur Filter Cerdas (TabNav): Menampilkan tabel data yang bisa disaring berdasarkan 4 kategori analitik: Semua Produk, Produk Kadaluarsa, Produk Terlaris (untuk restock), dan Produk Tidak Laku (untuk bahan evaluasi/diskon).
+4. Indikator Visual: Memberikan label warna (badge) otomatis untuk mengingatkan pemilik jika stok menipis atau barang mendekati masa kadaluarsa.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-input-produk">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Master Input Produk</h3>
+            <p class="text-muted small mb-0">Kelola database barang, stok, dan pantau masa kadaluarsa produk Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Peringatan Sistem (Edukasi Kualitas) -->
+    <div class="alert alert-info border-0 shadow-sm mb-4 d-flex align-items-center">
+        <i class="bi bi-info-circle-fill text-info fs-4 me-3"></i>
+        <div>
+            <strong>Penting:</strong> Pastikan Anda mengisi <strong>Tanggal Kadaluarsa</strong> untuk produk Makanan, Minuman, dan Obat-obatan demi menjaga kualitas toko dan kepercayaan pelanggan aplikasi.
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM INPUT PRODUK (KIRI) -->
+        <div class="col-lg-4">
+            <div class="card-custom border-top-orange h-100">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-box-seam-fill me-2 text-orange-custom"></i> Tambah Produk Baru</h5>
+                
+                <form id="form-master-produk">
+                    <!-- Foto Produk -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Foto Produk <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control form-control-sm" accept="image/jpeg, image/png" required>
+                        <small class="text-muted" style="font-size: 0.75rem;">Format JPG/PNG, Maks. 2MB. Foto buram akan ditolak sistem.</small>
+                    </div>
+
+                    <!-- Kode Barang (Barcode) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Kode Barang / Barcode <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Scan/Ketik Manual" required>
+                            <button class="btn btn-outline-orange fw-bold" type="button" title="Buat Kode Otomatis"><i class="bi bi-magic"></i> Auto</button>
+                        </div>
+                    </div>
+
+                    <!-- Nama Produk -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nama Produk <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Contoh: Beras Rojo Lele Premium" required>
+                    </div>
+
+                    <!-- Kategori & Harga -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Jenis/Kategori <span class="text-danger">*</span></label>
+                            <select class="form-select form-select-sm" required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Sembako">Sembako Utama</option>
+                                <option value="Makanan">Makanan / Snack</option>
+                                <option value="Minuman">Minuman Botol/Sachet</option>
+                                <option value="Bumbu">Bumbu Dapur</option>
+                                <option value="Obat">Obat-obatan Pribadi</option>
+                                <option value="MandiCuci">Alat Mandi & Cuci</option>
+                                <option value="Rokok">Rokok & Tembakau</option>
+                                <option value="ATK">Alat Tulis Kantor</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Harga Jual (Rp) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control form-control-sm" placeholder="Contoh: 15000" required>
+                        </div>
+                    </div>
+
+                    <!-- Jumlah Stok & Satuan -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Jumlah Stok <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control form-control-sm" placeholder="Contoh: 50" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Satuan <span class="text-danger">*</span></label>
+                            <select class="form-select form-select-sm" required>
+                                <option value="Pcs">Pcs / Buah</option>
+                                <option value="Kg">Kilogram (Kg)</option>
+                                <option value="Liter">Liter (L)</option>
+                                <option value="Dus">Karton / Dus</option>
+                                <option value="Karung">Karung</option>
+                                <option value="Pack">Pack / Renteng</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal Input & Kadaluarsa -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Tgl. Input <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control form-control-sm" value="2026-07-13" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small text-danger">Tgl. Kadaluarsa</label>
+                            <input type="date" class="form-control form-control-sm border-danger">
+                        </div>
+                    </div>
+
+                    <!-- Keterangan -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Keterangan Produk</label>
+                        <textarea class="form-control form-control-sm" rows="2" placeholder="Catatan opsional mengenai produk..."></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-cloud-arrow-up-fill me-2"></i> SIMPAN KE MASTER DATA
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL DATA PRODUK & FILTER (KANAN) -->
+        <div class="col-lg-8">
+            <div class="card-custom h-100 border-top-orange">
+                
+                <!-- Navigasi Tab (Filter) -->
+                <ul class="nav nav-tabs mb-3" id="tab-produk-master" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold text-dark" id="semua-tab" data-bs-toggle="tab" type="button" role="tab">
+                            <i class="bi bi-collection-fill text-orange-custom me-1"></i> Semua (3)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold text-dark" id="laris-tab" data-bs-toggle="tab" type="button" role="tab">
+                            <i class="bi bi-graph-up-arrow text-success me-1"></i> Terlaris
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold text-dark" id="tidak-laku-tab" data-bs-toggle="tab" type="button" role="tab">
+                            <i class="bi bi-graph-down-arrow text-secondary me-1"></i> Tidak Laku
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold text-danger" id="kadaluarsa-tab" data-bs-toggle="tab" type="button" role="tab">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Kadaluarsa (1)
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Kolom Pencarian -->
+                <div class="d-flex mb-3">
+                    <div class="input-group input-group-sm w-50">
+                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Cari nama atau kode barang...">
+                    </div>
+                </div>
+                
+                <!-- Area Tabel Scrollable -->
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col" style="width: 50px;">Foto</th>
+                                <th scope="col">Nama & Kode</th>
+                                <th scope="col">Harga & Kategori</th>
+                                <th scope="col" class="text-center">Stok</th>
+                                <th scope="col">Kadaluarsa</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data 1: Normal / Laris -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Indomie Goreng Reguler</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">KODE: 899886620014</small>
+                                </td>
+                                <td>
+                                    <strong class="text-orange-custom d-block small mb-0">Rp 3.500</strong>
+                                    <span class="badge bg-secondary" style="font-size: 0.65rem;">Makanan</span>
+                                </td>
+                                <td class="text-center">
+                                    <strong class="d-block">120</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Pcs</small>
+                                </td>
+                                <td><small class="text-success fw-bold">10 Des 2027</small></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-0 px-1 mb-1" title="Edit"><i class="bi bi-pencil-square small"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-0 px-1 mb-1" title="Hapus"><i class="bi bi-trash-fill small"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Data 2: Tidak Laku & Stok Menipis -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Minyak Goreng Bimoli 2L</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">KODE: 899886620099</small>
+                                </td>
+                                <td>
+                                    <strong class="text-orange-custom d-block small mb-0">Rp 38.000</strong>
+                                    <span class="badge bg-secondary" style="font-size: 0.65rem;">Sembako</span>
+                                </td>
+                                <td class="text-center">
+                                    <strong class="d-block text-warning">5</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Pouch</small>
+                                </td>
+                                <td><small class="text-success fw-bold">01 Jan 2028</small></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-0 px-1 mb-1" title="Edit"><i class="bi bi-pencil-square small"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-0 px-1 mb-1" title="Hapus"><i class="bi bi-trash-fill small"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Data 3: Kadaluarsa -->
+                            <tr class="table-danger">
+                                <td>
+                                    <div class="bg-white border rounded d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Roti Tawar Serba Sari</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">KODE: MAN-001</small>
+                                </td>
+                                <td>
+                                    <strong class="text-danger d-block small mb-0">Rp 12.000</strong>
+                                    <span class="badge bg-danger" style="font-size: 0.65rem;">Makanan</span>
+                                </td>
+                                <td class="text-center">
+                                    <strong class="d-block">10</strong>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Pcs</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger mb-1"><i class="bi bi-x-circle-fill"></i> Expired</span><br>
+                                    <small class="text-danger fw-bold">10 Jul 2026</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-0 px-1 mb-1" title="Edit"><i class="bi bi-pencil-square small"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-0 px-1 mb-1" title="Hapus"><i class="bi bi-trash-fill small"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Info Status Data -->
+                <div class="mt-3 text-muted small text-center border-top pt-2">
+                    Menampilkan 3 dari total 3 produk di Master Data.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-11 -->
+<!-- ==========================================
+BLOK TG-12 - ETALASE PRODUK PUBLIK & PENGAJUAN KUOTA
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-12:
+1. Etalase Publik: Halaman khusus untuk memilih produk dari Master Data (Blok TG-11) yang ingin dipajang / dijual di aplikasi pelanggan.
+2. Limitasi Akun Free: Sistem mengunci batas maksimal unggah produk sebanyak 5 item untuk pengguna gratis. Ini adalah strategi marketing untuk mendorong upgrade.
+3. Panel Harga SuperAdmin: Menampilkan daftar harga penambahan kuota (10, 25, 50 Produk) yang aturannya dikendalikan langsung oleh akun SuperAdmin.
+4. Tabel Visibilitas: Menampilkan daftar produk yang sedang tayang (live) di aplikasi pelanggan, lengkap dengan tombol aksi untuk menyembunyikan produk jika stok habis atau sedang tidak dijual.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-etalase-publik">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Etalase Publik</h3>
+            <p class="text-muted small mb-0">Pilih dan tampilkan produk Anda ke aplikasi pelanggan.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Info Kuota & Status Akun -->
+    <div class="alert border border-warning shadow-sm mb-4 d-flex justify-content-between align-items-center bg-white rounded-3">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-shop-window text-orange-custom fs-2 me-3"></i>
+            <div>
+                <strong class="d-block text-dark fs-5">Status Kuota: <span class="text-orange-custom">Akun FREE</span></strong>
+                <small class="text-muted">Anda hanya dapat memajang maksimal 5 Produk ke publik.</small>
+            </div>
+        </div>
+        <div class="text-center bg-light border p-2 rounded">
+            <span class="d-block small fw-bold text-muted mb-1">Terpakai</span>
+            <h4 class="mb-0 text-dark fw-bold">2 <span class="text-muted fs-6">/ 5</span></h4>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM TAMPILKAN PRODUK & INFO UPGRADE (KIRI) -->
+        <div class="col-lg-5">
+            
+            <!-- Form Pajang Produk -->
+            <div class="card-custom border-top-orange mb-4 h-100">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-megaphone-fill me-2 text-orange-custom"></i> Pajang Produk ke Publik</h5>
+                
+                <form id="form-pajang-produk">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Pilih Produk dari Master Data <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Barang yang Sudah Diinput --</option>
+                            <option value="1">Indomie Goreng Reguler (Rp 3.500) - Stok: 120</option>
+                            <option value="2">Minyak Goreng Bimoli 2L (Rp 38.000) - Stok: 5</option>
+                        </select>
+                        <small class="text-muted" style="font-size: 0.75rem;">Hanya menampilkan produk dengan stok tersedia (>0).</small>
+                    </div>
+
+                    <div class="mb-4 bg-light p-3 border rounded">
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input class="form-check-input fs-4 me-3" type="checkbox" id="tampilPublik" checked required>
+                            <label class="form-check-label fw-bold text-success" for="tampilPublik" style="cursor: pointer;">
+                                Tayangkan Langsung ke Aplikasi
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-cloud-upload-fill me-2"></i> UNGGAH KE ETALASE
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- BAGIAN 2: TABEL ETALASE & UPGRADE (KANAN) -->
+        <div class="col-lg-7">
+            
+            <!-- Tabel Etalase -->
+            <div class="card-custom border-top-orange mb-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-eye-fill me-2 text-orange-custom"></i> Produk Tayang (Live)</h5>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col" style="width: 50px;">Foto</th>
+                                <th scope="col">Nama Produk</th>
+                                <th scope="col">Harga Jual</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data Produk 1 -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border text-center rounded d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Indomie Goreng Reguler</strong>
+                                    <span class="badge bg-success" style="font-size: 0.6rem;">Publik</span>
+                                </td>
+                                <td>
+                                    <strong class="text-orange-custom small">Rp 3.500</strong>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-danger fw-bold py-1 px-2" title="Sembunyikan dari aplikasi"><i class="bi bi-eye-slash-fill me-1"></i> Sembunyikan</button>
+                                </td>
+                            </tr>
+                            <!-- Data Produk 2 -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border text-center rounded d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Rokok Surya 16</strong>
+                                    <span class="badge bg-success" style="font-size: 0.6rem;">Publik</span>
+                                </td>
+                                <td>
+                                    <strong class="text-orange-custom small">Rp 32.000</strong>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-danger fw-bold py-1 px-2" title="Sembunyikan dari aplikasi"><i class="bi bi-eye-slash-fill me-1"></i> Sembunyikan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Panel Pengajuan Tambah Kuota (Dari SuperAdmin) -->
+            <div class="card-custom border-0 bg-light">
+                <h6 class="text-dark fw-bold mb-3"><i class="bi bi-rocket-takeoff-fill me-2 text-primary"></i> Upgrade Kuota Produk (Akun PRO)</h6>
+                <p class="small text-muted mb-3">Butuh lebih dari 5 slot produk? Pilih paket berlangganan di bawah ini (Harga resmi dari SuperAdmin):</p>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <div class="border rounded bg-white text-center p-3 h-100 shadow-sm border-primary">
+                            <span class="badge bg-primary mb-2">Paket Basic</span>
+                            <h4 class="fw-bold text-dark mb-1">+10</h4>
+                            <small class="text-muted d-block mb-2">Produk</small>
+                            <strong class="text-orange-custom d-block">Rp 15.000</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded bg-white text-center p-3 h-100 shadow-sm border-success position-relative">
+                            <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">Terlaris</span>
+                            <span class="badge bg-success mb-2 mt-1">Paket Standar</span>
+                            <h4 class="fw-bold text-dark mb-1">+25</h4>
+                            <small class="text-muted d-block mb-2">Produk</small>
+                            <strong class="text-orange-custom d-block">Rp 20.000</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded bg-white text-center p-3 h-100 shadow-sm border-warning">
+                            <span class="badge bg-warning text-dark mb-2">Paket Sultan</span>
+                            <h4 class="fw-bold text-dark mb-1">+50</h4>
+                            <small class="text-muted d-block mb-2">Produk</small>
+                            <strong class="text-orange-custom d-block">Rp 50.000</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-dark w-100 fw-bold shadow-sm" onclick="alert('Mengarahkan ke menu Pengajuan Akun PRO...')">
+                    AJUKAN TAMBAH KUOTA SEKARANG <i class="bi bi-arrow-right-circle ms-1"></i>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-12 -->
