@@ -2376,3 +2376,359 @@ PENJELASAN FUNGSI PERINTAH BLOK TG-12:
     </div>
 </div>
 <!-- AKHIR BLOK TG-12 -->
+<!-- ==========================================
+BLOK TG-13 - PEMERIKSAAN PRODUK & AUDIT STOK
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-13:
+1. Audit Stok Berkala: Fitur untuk mencocokkan jumlah stok yang tercatat di dalam sistem aplikasi dengan jumlah fisik barang riil yang ada di rak toko.
+2. Form Stabilisasi: Jika terdapat selisih (barang kurang karena rusak, hilang, atau expired), kasir/pemilik dapat memasukkan angka fisik riil. Sistem akan menghitung selisih kerugiannya.
+3. Tombol "Stabilkan Produk": Saat ditekan, tombol ini akan melakukan dua hal: Pertama, mengubah stok di Master Data (TG-11) sesuai fisik riil. Kedua, mencatat nilai nominal barang yang hilang tersebut ke dalam laporan Rekap Kerugian.
+4. Riwayat Audit: Tabel di sebelah kanan berfungsi sebagai rekam jejak (log) untuk memantau kapan saja produk distabilkan dan apa alasannya (Tikus, Hilang, Rusak, dll), menjaga transparansi antar karyawan toko.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-pemeriksaan-produk">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Pemeriksaan & Audit Stok</h3>
+            <p class="text-muted small mb-0">Cocokkan stok sistem dengan fisik riil dan stabilkan selisihnya.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Peringatan Sistem (Konsekuensi Stabilisasi) -->
+    <div class="alert alert-danger border-0 shadow-sm mb-4 d-flex align-items-center rounded-3">
+        <i class="bi bi-exclamation-triangle-fill text-danger fs-3 me-3"></i>
+        <div>
+            <strong>Peringatan Audit Finansial:</strong> Melakukan stabilisasi stok (pengurangan) karena barang hilang atau rusak akan otomatis memotong total aset barang Anda dan dicatat sebagai <strong>Kerugian Operasional</strong> pada laporan akhir bulan. Lakukan dengan teliti!
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM AUDIT & STABILISASI (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom border-top-orange h-100 mb-4">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-clipboard2-pulse-fill me-2 text-orange-custom"></i> Form Stabilisasi Produk</h5>
+                
+                <form id="form-audit-stok">
+                    <!-- Pencarian Produk -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Cari & Pilih Produk <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih dari Master Data --</option>
+                            <option value="1">Beras Rojo Lele 25kg (Stok Sistem: 50 Karung)</option>
+                            <option value="2">Minyak Goreng Bimoli 2L (Stok Sistem: 12 Pouch)</option>
+                            <option value="3">Indomie Goreng (Stok Sistem: 120 Pcs)</option>
+                        </select>
+                    </div>
+
+                    <!-- Indikator Stok Sistem -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="bg-light border rounded p-2 text-center h-100">
+                                <small class="d-block text-muted fw-bold">Stok di Sistem</small>
+                                <h3 class="text-primary fw-bold mb-0">12</h3>
+                                <small class="text-muted" style="font-size: 0.7rem;">Pouch</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small text-danger">Stok Fisik Riil <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control form-control-lg border-danger text-center fw-bold" placeholder="Misal: 10" required>
+                            <small class="text-muted d-block mt-1 text-center" style="font-size: 0.75rem;">Masukkan hitungan asli rak.</small>
+                        </div>
+                    </div>
+
+                    <!-- Hitung Selisih & Alasan -->
+                    <div class="mb-3 p-3 border border-warning rounded bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="small fw-bold text-muted">Selisih Ditemukan:</span>
+                            <span class="badge bg-danger fs-6">- 2 Pouch</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small fw-bold text-muted">Estimasi Nilai Kerugian:</span>
+                            <strong class="text-danger">Rp 76.000</strong>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Alasan Stabilisasi / Penyusutan <span class="text-danger">*</span></label>
+                        <select class="form-select mb-2" required>
+                            <option value="" selected disabled>-- Pilih Alasan --</option>
+                            <option value="Rusak">Barang Rusak / Kemasan Bocor</option>
+                            <option value="Kadaluarsa">Barang Lewat Masa Kadaluarsa (Expired)</option>
+                            <option value="Hilang">Barang Hilang / Dicuri</option>
+                            <option value="Konsumsi">Dikonsumsi Sendiri (Toko)</option>
+                        </select>
+                        <textarea class="form-control form-control-sm" rows="2" placeholder="Catatan tambahan (Opsional)..."></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-danger w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-arrow-down-circle-fill me-2"></i> STABILKAN PRODUK & CATAT KERUGIAN
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL RIWAYAT AUDIT (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-clock-history me-2 text-orange-custom"></i> Riwayat Audit & Kerugian</h5>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-excel"></i> Export CSV</button>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col">Tgl & Waktu</th>
+                                <th scope="col">Nama Barang</th>
+                                <th scope="col" class="text-center">Perubahan</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col" class="text-end">Rugi (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contoh Data Audit 1 -->
+                            <tr>
+                                <td>
+                                    <small class="d-block fw-bold text-dark">12 Jul 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">09:15 WIB</small>
+                                </td>
+                                <td>
+                                    <strong class="d-block small mb-0 text-dark">Roti Tawar Serba Sari</strong>
+                                    <span class="badge bg-secondary" style="font-size: 0.6rem;">Oleh: Pemilik</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-danger rounded-pill">10 <i class="bi bi-arrow-right"></i> 0</span>
+                                </td>
+                                <td>
+                                    <small class="d-block fw-bold text-danger">Kadaluarsa</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Dibuang ke tong sampah</small>
+                                </td>
+                                <td class="text-end text-danger fw-bold small">
+                                    120.000
+                                </td>
+                            </tr>
+
+                            <!-- Contoh Data Audit 2 -->
+                            <tr>
+                                <td>
+                                    <small class="d-block fw-bold text-dark">05 Jul 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">14:30 WIB</small>
+                                </td>
+                                <td>
+                                    <strong class="d-block small mb-0 text-dark">Gula Pasir Gulaku 1kg</strong>
+                                    <span class="badge bg-secondary" style="font-size: 0.6rem;">Oleh: Kasir</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark rounded-pill">50 <i class="bi bi-arrow-right"></i> 49</span>
+                                </td>
+                                <td>
+                                    <small class="d-block fw-bold text-warning text-dark">Rusak</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Kemasan sobek digigit tikus</small>
+                                </td>
+                                <td class="text-end text-danger fw-bold small">
+                                    16.500
+                                </td>
+                            </tr>
+                            
+                            <!-- Contoh Data Audit 3 -->
+                            <tr>
+                                <td>
+                                    <small class="d-block fw-bold text-dark">01 Jul 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">20:00 WIB</small>
+                                </td>
+                                <td>
+                                    <strong class="d-block small mb-0 text-dark">Kopi Kapal Api Mix</strong>
+                                    <span class="badge bg-secondary" style="font-size: 0.6rem;">Oleh: Pemilik</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-primary rounded-pill">10 <i class="bi bi-arrow-right"></i> 8</span>
+                                </td>
+                                <td>
+                                    <small class="d-block fw-bold text-primary">Konsumsi</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">Diseduh untuk tukang parkir</small>
+                                </td>
+                                <td class="text-end text-danger fw-bold small">
+                                    3.000
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Akumulasi Kerugian -->
+                <div class="mt-3 bg-light border p-2 rounded d-flex justify-content-between align-items-center">
+                    <span class="small fw-bold text-muted">Total Kerugian Bulan Ini (Juli 2026):</span>
+                    <strong class="text-danger fs-5">Rp 139.500</strong>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-13 -->
+<!-- ==========================================
+BLOK TG-14 - MANAJEMEN AKUN KASIR
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-14:
+1. Delegasi Tugas: Fitur bagi pemilik toko untuk membuatkan akun khusus (sub-akun) bagi karyawan atau kasir yang bertugas di toko fisik.
+2. Keamanan Hak Akses: Kasir yang login dengan akun ini secara otomatis HANYA bisa mengakses menu Transaksi (POS) dan melihat data produk. Kasir tidak bisa mengubah master data, menghapus transaksi, atau melihat laporan laba bersih.
+3. Form Registrasi Karyawan: Mengumpulkan data dasar karyawan seperti Nama, Nomor HP, dan Alamat, serta membuatkan Username dan Password khusus kasir.
+4. Manajemen Karyawan (CRUD): Tabel riwayat memungkinkan pemilik toko untuk memantau kasir, melakukan Edit, dan Menonaktifkan akun jika kasir tersebut sedang cuti atau sudah berhenti bekerja.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-akun-kasir">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Manajemen Akun Kasir</h3>
+            <p class="text-muted small mb-0">Kelola data karyawan dan hak akses mesin kasir (POS) toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali
+        </button>
+    </div>
+
+    <!-- Peringatan Hak Akses -->
+    <div class="alert alert-info border-0 shadow-sm mb-4 d-flex align-items-center rounded-3">
+        <i class="bi bi-person-bounding-box text-info fs-3 me-3"></i>
+        <div>
+            <strong>Info Hak Akses Kasir:</strong> Karyawan yang login menggunakan akun kasir <strong>tidak dapat menghapus atau mengubah transaksi</strong> yang sudah dicetak. Mereka juga dibatasi dari akses menu keuangan utama dan konfigurasi toko.
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM BUAT AKUN KASIR (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom border-top-orange h-100 mb-4">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-person-plus-fill me-2 text-orange-custom"></i> Tambah Karyawan Baru</h5>
+                
+                <form id="form-buat-kasir">
+                    
+                    <h6 class="text-orange-custom fw-bold mb-3 small">Identitas Karyawan</h6>
+                    
+                    <!-- Nama & HP -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nama Lengkap Kasir <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Contoh: Siti Aminah" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nomor HP / WhatsApp <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control form-control-sm" placeholder="Contoh: 08123456789" required>
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Alamat Tinggal <span class="text-danger">*</span></label>
+                        <textarea class="form-control form-control-sm" rows="2" placeholder="Alamat domisili karyawan..." required></textarea>
+                    </div>
+
+                    <h6 class="text-orange-custom fw-bold mb-3 small">Pengaturan Login</h6>
+
+                    <!-- Username & Password -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Username Kasir <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light text-muted fw-bold">kasir.</span>
+                            <input type="text" class="form-control" placeholder="namakasir (Tanpa spasi)" required>
+                        </div>
+                        <small class="text-muted" style="font-size: 0.7rem;">Gunakan format sederhana. Contoh: kasir.siti</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Password Akun <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control form-control-sm" placeholder="Minimal 6 Karakter" required>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-person-check-fill me-2"></i> BUAT AKUN KASIR SEKARANG
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL DAFTAR KASIR (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-people-fill me-2 text-orange-custom"></i> Daftar Karyawan Toko</h5>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col">Profil & Kontak</th>
+                                <th scope="col">Akses Login</th>
+                                <th scope="col" class="text-center">Status</th>
+                                <th scope="col" class="text-center">Aksi Manajemen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data Kasir 1 (Aktif) -->
+                            <tr>
+                                <td>
+                                    <strong class="d-block text-dark small mb-0">Siti Aminah</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-telephone-fill me-1"></i>081299887766</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border border-secondary" style="font-size: 0.7rem;"><i class="bi bi-person-fill me-1"></i>kasir.siti</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success rounded-pill">Aktif</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-warning text-dark py-1 px-2 fw-bold mb-1 w-100" title="Nonaktifkan Akun (Cuti/Libur)" style="font-size: 0.75rem;">
+                                        <i class="bi bi-pause-circle-fill me-1"></i> Nonaktifkan
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 fw-bold w-100" title="Hapus Karyawan (Resign)" style="font-size: 0.75rem;">
+                                        <i class="bi bi-trash-fill me-1"></i> Hapus
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Data Kasir 2 (Nonaktif) -->
+                            <tr class="bg-light">
+                                <td>
+                                    <strong class="d-block text-muted small mb-0">Agus Pramono</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-telephone-fill me-1"></i>085611223344</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-muted border border-secondary" style="font-size: 0.7rem;"><i class="bi bi-person-fill me-1"></i>kasir.agus</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary rounded-pill">Nonaktif</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-success py-1 px-2 fw-bold mb-1 w-100" title="Aktifkan Kembali" style="font-size: 0.75rem;">
+                                        <i class="bi bi-play-circle-fill me-1"></i> Aktifkan
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 fw-bold w-100" title="Hapus Karyawan (Resign)" style="font-size: 0.75rem;">
+                                        <i class="bi bi-trash-fill me-1"></i> Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 text-muted small border-top pt-2">
+                    <i class="bi bi-lightbulb-fill text-warning me-1"></i> <strong>Tips:</strong> Jika karyawan resign atau cuti panjang, disarankan untuk menggunakan fitur <strong>Nonaktifkan</strong> daripada menghapus data agar histori transaksinya tidak kehilangan referensi nama kasir.
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-14 -->
+</body>
+</html>
