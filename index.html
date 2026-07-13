@@ -4042,5 +4042,1376 @@ PENJELASAN FUNGSI PERINTAH BLOK TG-22:
     </div>
 </div>
 <!-- AKHIR BLOK TG-22 -->
+    <!-- ==========================================
+BLOK TG-23 - MENU PENGAJUAN & AKTIVASI AKUN PRO
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-23:
+1. Pusat Upgrade Akun: Tempat pemilik toko mengajukan perubahan status akun dari FREE menjadi PRO agar dapat mengakses seluruh fitur premium.
+2. Informasi Harga Sewa: Menampilkan daftar harga sewa aplikasi yang ditentukan oleh SuperAdmin (per 1 Bulan, 3 Bulan, 6 Bulan, dan 1 Tahun) secara transparan.
+3. Informasi Fee Penjualan: Menampilkan persentase fee penjualan bulanan (misal 2,5%) yang juga dikelola oleh SuperAdmin sebagai biaya operasional platform.
+4. Tombol Pengajuan: Menyediakan tombol bagi pemilik toko untuk mengajukan permohonan upgrade ke akun PRO yang akan diproses oleh tim SuperAdmin.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-menu-pengajuan">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-arrow-up-circle-fill me-2"></i> Menu Pengajuan Akun</h3>
+            <p class="text-muted small mb-0">Ajukan peningkatan akun ke versi PRO untuk membuka semua fitur terbatas.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Status Akun Saat Ini -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="bg-orange-custom text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="bi bi-person-badge-fill fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 fw-bold">Status Akun Anda Saat Ini</h6>
+                    <h3 class="text-secondary fw-bold mb-0">AKUN FREE (Terbatas)</h3>
+                </div>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2 shadow-sm"><i class="bi bi-lock-fill me-1"></i> 5 Produk Maksimal</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: HARGA SEWA DARI SUPERADMIN (KIRI) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-cash-stack me-2 text-orange-custom"></i> Biaya Sewa Aplikasi (Ditentukan SuperAdmin)</h5>
+                
+                <div class="table-responsive mb-4">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Periode Sewa</th>
+                                <th scope="col" class="text-end">Harga Normal</th>
+                                <th scope="col" class="text-center">Status</th>
+                                <th scope="col" class="text-center">Pilih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong class="text-dark">1 Bulan</strong></td>
+                                <td class="text-end fw-bold text-orange-custom">Rp 10.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill">Tersedia</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-orange fw-bold px-3">Pilih Paket</button>
+                                </td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong class="text-dark">3 Bulan</strong> <span class="badge bg-danger ms-1">Populer</span></td>
+                                <td class="text-end fw-bold text-orange-custom">Rp 30.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill">Tersedia</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-orange fw-bold px-3">Pilih Paket</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong class="text-dark">6 Bulan</strong></td>
+                                <td class="text-end fw-bold text-orange-custom">Rp 60.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill">Tersedia</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-orange fw-bold px-3">Pilih Paket</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong class="text-dark">1 Tahun (12 Bulan)</strong></td>
+                                <td class="text-end fw-bold text-orange-custom">Rp 120.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill">Tersedia</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-orange fw-bold px-3">Pilih Paket</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-info border-0 shadow-sm small">
+                    <i class="bi bi-info-circle-fill me-2"></i> 
+                    <strong>Catatan SuperAdmin:</strong> Harga sewa aplikasi di atas dapat berubah sewaktu-waktu sesuai kebijakan pusat. Pembayaran dilakukan setelah pengajuan disetujui.
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: FEE PENJUALAN & TOMBOL AJUKAN (KANAN) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-percent me-2 text-orange-custom"></i> Biaya Fee Penjualan</h5>
+                
+                <div class="bg-light p-4 rounded-3 mb-4 text-center border">
+                    <h6 class="text-muted fw-bold mb-2">Persentase Fee Bulanan (Omzet)</h6>
+                    <h2 class="text-danger fw-bold mb-0">2,5%</h2>
+                    <small class="text-muted">Dari total penjualan kotor per bulan</small>
+                </div>
+
+                <div class="alert alert-warning border-0 shadow-sm small mb-4">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> 
+                    <strong>Ketentuan:</strong> Fee penjualan ini dibayarkan setiap bulan berdasarkan laporan transaksi yang terekam di sistem. 
+                    Keterlambatan pembayaran dapat menyebabkan akun Anda ditangguhkan (suspend) oleh SuperAdmin.
+                </div>
+
+                <hr class="text-muted">
+
+                <h6 class="text-dark fw-bold mb-3"><i class="bi bi-send-check-fill me-2 text-orange-custom"></i> Formulir Pengajuan Upgrade</h6>
+                <form id="form-pengajuan-pro">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Pilih Paket Sewa <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Periode --</option>
+                            <option value="1">1 Bulan - Rp 10.000</option>
+                            <option value="2">3 Bulan - Rp 30.000</option>
+                            <option value="3">6 Bulan - Rp 60.000</option>
+                            <option value="4">1 Tahun - Rp 120.000</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Catatan Tambahan (Opsional)</label>
+                        <textarea class="form-control" rows="2" placeholder="Sampaikan pesan kepada SuperAdmin jika diperlukan..."></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm" onclick="alert('Pengajuan Anda telah dikirim dan akan diproses oleh SuperAdmin dalam 1x24 jam.')">
+                        <i class="bi bi-rocket-takeoff-fill me-2"></i> AJUKAN UPGRADE KE AKUN PRO
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">Dengan mengajukan, Anda menyetujui seluruh syarat & ketentuan Platform 2R.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-23 -->
+<!-- ==========================================
+BLOK TG-24 - UPLOAD PERSYARATAN AKUN
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-24:
+1. Pengumpulan Dokumen Legalitas: Tempat pemilik toko mengunggah berkas persyaratan yang diperlukan untuk verifikasi akun atau pengajuan upgrade ke PRO.
+2. Kapasitas Maksimal: Sistem membatasi maksimal 10 berkas yang dapat diunggah agar tetap rapi dan sesuai ketentuan SuperAdmin.
+3. Tabel Riwayat Unggahan: Menampilkan semua berkas yang sudah dikirim beserta status verifikasinya (Menunggu, Diterima, atau Ditolak).
+4. Keamanan Berkas: Hanya pemilik akun yang dapat mengunggah dan melihat berkas yang telah dikirimkan, menjaga kerahasiaan dokumen pribadi.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-upload-persyaratan">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i> Upload Persyaratan</h3>
+            <p class="text-muted small mb-0">Unggah berkas pendukung untuk keperluan verifikasi akun atau pengajuan PRO.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Informasi Kapasitas Unggah -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="bi bi-cloud-arrow-up-fill fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 fw-bold">Kapasitas Unggah Tersisa</h6>
+                    <h3 class="text-primary fw-bold mb-0">8 dari 10 Berkas</h3>
+                </div>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-info text-white fs-6 px-3 py-2 shadow-sm"><i class="bi bi-file-earmark-check-fill me-1"></i> Maks. 2MB per Berkas</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM UPLOAD BERKAS (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-upload me-2 text-orange-custom"></i> Unggah Berkas Baru</h5>
+                
+                <form id="form-upload-persyaratan">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Jenis Dokumen <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Jenis Dokumen --</option>
+                            <option value="KTP">Kartu Tanda Penduduk (KTP)</option>
+                            <option value="SKU">Surat Keterangan Usaha (SKU)</option>
+                            <option value="NPWP">Nomor Pokok Wajib Pajak (NPWP)</option>
+                            <option value="SIUP">Surat Izin Usaha Perdagangan (SIUP)</option>
+                            <option value="Domisili">Surat Keterangan Domisili</option>
+                            <option value="Lainnya">Dokumen Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">File Berkas <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" accept="image/jpeg, image/png, application/pdf" required>
+                        <small class="text-muted" style="font-size: 0.75rem;">Format yang diterima: JPG, PNG, atau PDF. Maksimal 2MB per file.</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Keterangan (Opsional)</label>
+                        <input type="text" class="form-control" placeholder="Contoh: KTP Pemilik Toko">
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-cloud-upload-fill me-2"></i> UNGGAH BERKAS
+                    </button>
+                </form>
+
+                <div class="alert alert-warning border-0 shadow-sm small mt-4 mb-0">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> 
+                    <strong>Perhatian:</strong> Pastikan dokumen yang Anda unggah terbaca dengan jelas. Dokumen yang buram atau tidak lengkap akan ditolak oleh verifikator SuperAdmin.
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: DAFTAR BERKAS TERUNGGAH (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-files me-2 text-orange-custom"></i> Riwayat Unggahan Berkas</h5>
+                    <span class="badge bg-secondary">2 Berkas Terunggah</span>
+                </div>
+
+                <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col">Jenis Dokumen</th>
+                                <th scope="col">Tanggal Unggah</th>
+                                <th scope="col" class="text-center">Status Verifikasi</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Berkas 1 -->
+                            <tr>
+                                <td>
+                                    <strong class="d-block small text-dark">KTP Pemilik</strong>
+                                    <small class="text-muted">ktp_budi_2026.jpg</small>
+                                </td>
+                                <td><small class="text-muted">10 Jul 2026, 14:20</small></td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark rounded-pill px-2">Menunggu Verifikasi</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info py-1 px-2 mb-1" title="Lihat Berkas"><i class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus Berkas"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                            <!-- Berkas 2 -->
+                            <tr>
+                                <td>
+                                    <strong class="d-block small text-dark">Surat Keterangan Usaha</strong>
+                                    <small class="text-muted">sku_toko_makmur.pdf</small>
+                                </td>
+                                <td><small class="text-muted">12 Jul 2026, 09:45</small></td>
+                                <td class="text-center">
+                                    <span class="badge bg-success rounded-pill px-2"><i class="bi bi-check-circle-fill me-1"></i> Diterima</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info py-1 px-2 mb-1" title="Lihat Berkas"><i class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus Berkas" disabled><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 text-muted small border-top pt-2 text-center">
+                    <i class="bi bi-info-circle-fill text-primary me-1"></i> 
+                    Berkas yang sudah <strong>Diterima</strong> tidak dapat dihapus. Silakan hubungi SuperAdmin jika terdapat kesalahan.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-24 -->
+<!-- ==========================================
+BLOK TG-25 - TAGIHAN APLIKASI & PENGATURAN SUSPEND
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-25:
+1. Portal Pembayaran Tagihan: Menampilkan seluruh tagihan fee aplikasi yang harus dibayarkan pemilik toko kepada SuperAdmin secara transparan dan terperinci.
+2. Manajemen Akun Suspend: Jika akun terkena penangguhan (suspend), semua menu lain akan terkunci secara otomatis dan pemilik toko hanya dapat mengakses halaman ini untuk menyelesaikan kewajiban pembayaran.
+3. Upload Bukti Pembayaran: Menyediakan formulir khusus untuk mengunggah bukti transfer atau pembayaran tagihan yang akan diverifikasi oleh tim SuperAdmin.
+4. Pengajuan Pengaktifan Kembali: Tombol khusus bagi pemilik toko untuk mengajukan permohonan pembukaan akses akun setelah seluruh tagihan dilunasi dan bukti pembayaran dikirimkan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-tagihan-app">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-receipt-cutoff me-2"></i> Tagihan Aplikasi</h3>
+            <p class="text-muted small mb-0">Kelola pembayaran tagihan dan aktifkan kembali akun yang ditangguhkan.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Status Akun dan Peringatan Suspend -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white" id="status-akun-suspend">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 55px; height: 55px; min-width: 55px;">
+                        <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-danger fw-bold mb-1">Status Akun: DITANGGUHKAN (SUSPEND)</h5>
+                        <p class="text-muted small mb-0">Akun Anda saat ini dibekukan karena terdapat tunggakan pembayaran. Semua fitur terkunci hingga Anda menyelesaikan kewajiban di bawah ini.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <span class="badge bg-danger fs-6 px-3 py-2 shadow-sm"><i class="bi bi-lock-fill me-1"></i> Akses Terbatas</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ringkasan Total Tunggakan -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card bg-danger text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Total Tunggakan Tagihan</h6>
+                        <h3 class="fw-bold mb-0">Rp 85.000</h3>
+                        <small class="opacity-75 d-block mt-1">Belum Termasuk Denda</small>
+                    </div>
+                    <div class="bg-white text-danger rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 45px; height: 45px;">
+                        <i class="bi bi-cash-stack fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-warning text-dark shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Tanggal Jatuh Tempo Terdekat</h6>
+                        <h3 class="fw-bold mb-0">25 Juli 2026</h3>
+                        <small class="opacity-75 d-block mt-1">12 Hari Tersisa</small>
+                    </div>
+                    <div class="bg-white text-warning rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 45px; height: 45px;">
+                        <i class="bi bi-calendar-x-fill fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: DAFTAR TAGIHAN (KIRI) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-list-ul me-2 text-orange-custom"></i> Daftar Tagihan Anda</h5>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col">No. Tagihan</th>
+                                <th scope="col">Periode</th>
+                                <th scope="col">Jenis Tagihan</th>
+                                <th scope="col" class="text-end">Jumlah (Rp)</th>
+                                <th scope="col" class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Tagihan 1 -->
+                            <tr class="table-danger">
+                                <td><strong class="text-danger">INV-TG-202607-001</strong></td>
+                                <td><small class="text-muted">Juli 2026</small></td>
+                                <td><span class="badge bg-secondary">Sewa Aplikasi (1 Bulan)</span></td>
+                                <td class="text-end fw-bold text-danger">10.000</td>
+                                <td class="text-center"><span class="badge bg-danger rounded-pill px-2">Belum Lunas</span></td>
+                            </tr>
+                            <!-- Tagihan 2 -->
+                            <tr class="table-danger">
+                                <td><strong class="text-danger">INV-TG-202607-002</strong></td>
+                                <td><small class="text-muted">Juli 2026</small></td>
+                                <td><span class="badge bg-secondary">Fee Penjualan (2,5%)</span></td>
+                                <td class="text-end fw-bold text-danger">75.000</td>
+                                <td class="text-center"><span class="badge bg-danger rounded-pill px-2">Belum Lunas</span></td>
+                            </tr>
+                            <!-- Tagihan 3 (Lunas) -->
+                            <tr class="table-success">
+                                <td><strong class="text-success">INV-TG-202606-001</strong></td>
+                                <td><small class="text-muted">Juni 2026</small></td>
+                                <td><span class="badge bg-secondary">Sewa Aplikasi (1 Bulan)</span></td>
+                                <td class="text-end fw-bold text-success">10.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill px-2"><i class="bi bi-check-circle me-1"></i> Lunas</span></td>
+                            </tr>
+                            <!-- Tagihan 4 (Lunas) -->
+                            <tr class="table-success">
+                                <td><strong class="text-success">INV-TG-202606-002</strong></td>
+                                <td><small class="text-muted">Juni 2026</small></td>
+                                <td><span class="badge bg-secondary">Fee Penjualan (2,5%)</span></td>
+                                <td class="text-end fw-bold text-success">65.000</td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill px-2"><i class="bi bi-check-circle me-1"></i> Lunas</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: UPLOAD BUKTI BAYAR & PENGAJUAN AKTIFASI (KANAN) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-credit-card-2-front-fill me-2 text-orange-custom"></i> Pembayaran & Pengaktifan</h5>
+                
+                <!-- Form Upload Bukti Pembayaran -->
+                <form id="form-bukti-bayar" class="mb-4">
+                    <h6 class="text-dark fw-bold mb-3 small">Upload Bukti Pembayaran</h6>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Pilih Tagihan yang Dibayar <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Tagihan --</option>
+                            <option value="1">INV-TG-202607-001 - Sewa Aplikasi (Rp 10.000)</option>
+                            <option value="2">INV-TG-202607-002 - Fee Penjualan (Rp 75.000)</option>
+                            <option value="3">Semua Tagihan (Rp 85.000)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tanggal Pembayaran <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" value="2026-07-13" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Upload Bukti Transfer <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" accept="image/jpeg, image/png, application/pdf" required>
+                        <small class="text-muted" style="font-size: 0.75rem;">Format JPG, PNG, atau PDF. Maksimal 2MB. Pastikan bukti terlihat jelas.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nama Pengirim (Sesuai Rekening)</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Budi Santoso">
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-cloud-upload-fill me-2"></i> KIRIM BUKTI PEMBAYARAN
+                    </button>
+                </form>
+
+                <hr class="text-muted">
+
+                <!-- Form Ajukan Pengaktifan -->
+                <form id="form-ajukan-aktifasi">
+                    <h6 class="text-dark fw-bold mb-3 small">Ajukan Pengaktifan Akun</h6>
+                    
+                    <div class="alert alert-info border-0 shadow-sm small mb-3">
+                        <i class="bi bi-info-circle-fill me-2"></i> 
+                        Setelah seluruh tagihan dilunasi dan bukti pembayaran dikirim, Anda dapat mengajukan permohonan pengaktifan kembali akun.
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Pesan untuk SuperAdmin (Opsional)</label>
+                        <textarea class="form-control" rows="3" placeholder="Sampaikan alasan atau informasi tambahan terkait pengaktifan akun Anda..."></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-success w-100 fw-bold py-2 shadow-sm" onclick="alert('Pengajuan pengaktifan akun Anda telah dikirim. SuperAdmin akan memproses dalam 1x24 jam kerja.')">
+                        <i class="bi bi-unlock-fill me-2"></i> AJUKAN PENGAKTIFAN AKUN
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">Pemrosesan pengaktifan memerlukan waktu maksimal 1x24 jam setelah bukti diterima.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-25 -->
+<!-- ==========================================
+BLOK TG-26 - KONFIGURASI SISTEM & CADANGAN DATA
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-26:
+1. Pusat Pengaturan Integrasi: Tempat pemilik toko mengelola pengaturan integrasi dengan layanan eksternal seperti Application Programming Interface (API) untuk sinkronisasi data ke platform lain.
+2. Cadangan Data (Backup): Fitur untuk mengunduh seluruh data toko (produk, transaksi, pelanggan, dan pengaturan) ke dalam satu file berformat JavaScript Object Notation (JSON) sebagai salinan aman di perangkat lokal.
+3. Pemulihan Data (Restore): Fitur untuk mengunggah kembali file cadangan JSON yang sebelumnya diunduh, berguna jika terjadi kehilangan data atau saat ingin memindahkan data ke perangkat baru.
+4. Keamanan dan Akses: Halaman ini hanya dapat diakses oleh akun PRO. Akun FREE akan melihat pemberitahuan bahwa fitur ini terkunci dan perlu melakukan peningkatan akun terlebih dahulu.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-konfigurasi-backup">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-gear-wide-connected me-2"></i> Konfigurasi Sistem dan Cadangan Data</h3>
+            <p class="text-muted small mb-0">Kelola pengaturan integrasi, buat cadangan data, dan pulihkan data toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Pemberitahuan Kunci Fitur untuk Akun FREE -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center rounded-3" id="alert-akun-free-backup">
+        <i class="bi bi-lock-fill text-warning fs-3 me-3"></i>
+        <div>
+            <strong>Fitur Terkunci (Akun FREE):</strong> Maaf, fitur Konfigurasi, Cadangan Data, dan Pemulihan Data hanya tersedia untuk pengguna <strong>Akun PRO</strong>. Silakan kunjungi <strong>Menu Pengajuan (Blok TG-23)</strong> untuk meningkatkan akun Anda dan membuka akses penuh.
+        </div>
+    </div>
+
+    <!-- Seluruh konten dibungkus dalam satu kartu utama, hanya bisa diakses jika PRO -->
+    <div class="card-custom border-top-orange shadow-sm border-0 mb-4" id="konten-konfigurasi-pro">
+        
+        <!-- ========== BAGIAN 1: KONFIGURASI INTEGRASI ADMIN ========== -->
+        <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-plug-fill me-2 text-orange-custom"></i> Konfigurasi Integrasi Sistem</h5>
+        <p class="text-muted small mb-4">Pengaturan ini digunakan untuk menghubungkan toko Anda dengan layanan eksternal atau Application Programming Interface (API) pihak ketiga.</p>
+        
+        <form id="form-konfigurasi-integrasi" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold small">Alamat URL API Eksternal</label>
+                    <input type="url" class="form-control" placeholder="Contoh: https://api.pihakketiga.com/v1/integrasi" value="">
+                    <small class="text-muted" style="font-size: 0.75rem;">Masukkan tautan Application Programming Interface (API) dari layanan yang ingin Anda integrasikan dengan sistem toko.</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold small">Kunci Autentikasi (API Key)</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" placeholder="Masukkan kunci API rahasia Anda" value="">
+                        <button class="btn btn-outline-secondary" type="button" title="Tampilkan atau sembunyikan kunci"><i class="bi bi-eye-fill"></i></button>
+                    </div>
+                    <small class="text-muted" style="font-size: 0.75rem;">Kunci API ini bersifat rahasia. Jangan bagikan kepada siapapun.</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold small">Mode Sinkronisasi Data</label>
+                    <select class="form-select">
+                        <option value="manual" selected>Manual (Tombol Sinkronisasi)</option>
+                        <option value="otomatis">Otomatis Setiap Jam</option>
+                        <option value="harian">Otomatis Setiap Hari (Jam 00:00)</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold small">Status Integrasi</label>
+                    <div class="form-control bg-light text-muted d-flex align-items-center">
+                        <span class="badge bg-secondary me-2">Tidak Aktif</span>
+                        <small>Belum terhubung ke layanan eksternal</small>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-2">
+                <button type="button" class="btn btn-orange fw-bold shadow-sm px-4">
+                    <i class="bi bi-save-fill me-2"></i> SIMPAN KONFIGURASI
+                </button>
+                <button type="button" class="btn btn-outline-primary fw-bold shadow-sm px-4">
+                    <i class="bi bi-arrow-repeat me-2"></i> UJI KONEKSI
+                </button>
+            </div>
+        </form>
+
+        <hr class="text-muted my-4">
+
+        <!-- ========== BAGIAN 2: CADANGAN DATA (BACKUP) ========== -->
+        <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-download me-2 text-success"></i> Cadangan Data (Backup File)</h5>
+        <p class="text-muted small mb-4">Unduh seluruh data toko Anda ke dalam satu file berformat JavaScript Object Notation (JSON). File ini berisi semua informasi penting termasuk daftar produk, riwayat transaksi, data pelanggan, pengaturan toko, dan catatan keuangan. Simpan file ini di tempat yang aman.</p>
+        
+        <div class="bg-light p-4 rounded-3 mb-4 border">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h6 class="fw-bold text-dark mb-2">Data yang Akan Disertakan dalam File Cadangan:</h6>
+                    <ul class="small text-muted mb-0 ps-3">
+                        <li>Profil Toko dan Pengaturan (Nama, Alamat, Jam Operasional)</li>
+                        <li>Master Data Produk (Nama, Harga, Stok, Kategori, Foto)</li>
+                        <li>Riwayat Transaksi Penjualan Lengkap</li>
+                        <li>Data Kasbon dan Piutang Pelanggan</li>
+                        <li>Riwayat Modal Belanja dan Biaya Operasional</li>
+                        <li>Data Akun Kasir dan Karyawan Toko</li>
+                        <li>Pengaturan Rekening Bank dan Dompet Digital (E-Wallet)</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center mt-3 mt-md-0">
+                    <button type="button" class="btn btn-success fw-bold py-3 px-4 shadow-sm w-100" onclick="alert('Proses pengunduhan file cadangan data akan dimulai. File JSON akan tersimpan di perangkat Anda.')">
+                        <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-5"></i> UNDUH CADANGAN DATA
+                    </button>
+                    <small class="text-muted d-block mt-2" style="font-size: 0.75rem;">Format: backup_toko_20260713.json</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-sm small mb-4">
+            <i class="bi bi-info-circle-fill me-2"></i> 
+            <strong>Rekomendasi Keamanan:</strong> Lakukan pencadangan data secara berkala, minimal satu kali dalam seminggu. Simpan file cadangan di tempat terpisah dari perangkat utama untuk mengantisipasi kehilangan data akibat kerusakan perangkat.
+        </div>
+
+        <hr class="text-muted my-4">
+
+        <!-- ========== BAGIAN 3: PEMULIHAN DATA (RESTORE) ========== -->
+        <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-upload me-2 text-danger"></i> Pemulihan Data (Restore File)</h5>
+        <p class="text-muted small mb-4">Pulihkan data toko Anda dengan mengunggah file cadangan berformat JavaScript Object Notation (JSON) yang sebelumnya telah Anda unduh. Proses ini akan menggantikan seluruh data yang ada saat ini dengan data dari file cadangan.</p>
+
+        <div class="bg-danger bg-opacity-10 p-4 rounded-3 mb-4 border border-danger">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-2 me-3"></i>
+                <div>
+                    <h6 class="fw-bold text-danger mb-2">Peringatan Keras Sebelum Pemulihan Data:</h6>
+                    <ul class="small text-dark mb-0 ps-3">
+                        <li>Proses pemulihan akan <strong>menghapus seluruh data yang ada saat ini</strong> dan menggantinya dengan data dari file cadangan yang Anda unggah.</li>
+                        <li>Tindakan ini <strong>tidak dapat dibatalkan (irreversible)</strong>. Pastikan Anda telah memilih file cadangan yang benar.</li>
+                        <li>Sangat disarankan untuk melakukan pencadangan data terbaru terlebih dahulu sebelum melakukan pemulihan, untuk berjaga-jaga jika terjadi kesalahan.</li>
+                        <li>Hanya gunakan file dengan ekstensi <strong>.json</strong> yang dihasilkan oleh sistem ini. File dari sumber lain akan ditolak.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <form id="form-pemulihan-data" class="mb-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold small">Pilih File Cadangan Data <span class="text-danger">*</span></label>
+                <input type="file" class="form-control" accept=".json, application/json" required>
+                <small class="text-muted" style="font-size: 0.75rem;">Hanya file dengan ekstensi .json yang diterima. Ukuran file maksimal 50 Megabyte.</small>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold small">Ketik KONFIRMASI untuk Melanjutkan <span class="text-danger">*</span></label>
+                <input type="text" class="form-control border-danger" placeholder="Ketik: SAYA YAKIN INGIN MEMULIHKAN DATA" required>
+                <small class="text-danger fw-bold" style="font-size: 0.75rem;">Ketik kalimat di atas persis tanpa tanda kutip untuk mengonfirmasi bahwa Anda memahami risiko tindakan ini.</small>
+            </div>
+            <button type="button" class="btn btn-danger fw-bold py-2 px-4 shadow-sm" onclick="alert('Fitur pemulihan data masih dalam konfirmasi keamanan. Pastikan Anda telah membaca semua peringatan.')">
+                <i class="bi bi-arrow-repeat me-2"></i> PULIHKAN DATA SEKARANG
+            </button>
+        </form>
+
+        <hr class="text-muted my-4">
+
+        <!-- ========== BAGIAN 4: INFORMASI TAMBAHAN ========== -->
+        <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-question-circle-fill me-2 text-primary"></i> Bantuan dan Informasi Tambahan</h5>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="border rounded p-3 bg-white h-100">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-clock-history me-2 text-orange-custom"></i> Riwayat Cadangan Terakhir</h6>
+                    <table class="table table-sm table-borderless mb-0 small">
+                        <tbody>
+                            <tr>
+                                <td class="text-muted">Terakhir Dibuat:</td>
+                                <td class="fw-bold text-dark">13 Juli 2026, Pukul 10:30 WIB</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Ukuran File:</td>
+                                <td class="fw-bold text-dark">2.4 Megabyte</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Jumlah Data:</td>
+                                <td class="fw-bold text-dark">1.250 Record</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded p-3 bg-white h-100">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-telephone-fill me-2 text-success"></i> Butuh Bantuan?</h6>
+                    <p class="small text-muted mb-2">Jika Anda mengalami kendala saat melakukan pencadangan atau pemulihan data, silakan hubungi tim Customer Service kami melalui:</p>
+                    <ul class="small text-muted mb-0 ps-3">
+                        <li>Chat langsung di menu Hubungi Customer Service (Blok TG-27)</li>
+                        <li>Email: support@platform2r.id</li>
+                        <li>Jam operasional: Senin - Sabtu, Pukul 08:00 - 20:00 WIB</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-26 -->
+<!-- ==========================================
+BLOK TG-27 - HUBUNGI CUSTOMER SERVICE (CHAT CS)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-27:
+1. Layanan Bantuan Langsung: Menyediakan antarmuka percakapan (chat) real-time antara pemilik toko dengan tim Customer Service (CS) Platform 2R.
+2. Akses Terbatas Akun PRO: Fitur komunikasi ini hanya tersedia untuk pengguna dengan status Akun PRO. Pengguna Akun FREE akan melihat pemberitahuan penguncian dan diarahkan untuk meningkatkan akun terlebih dahulu.
+3. Riwayat Percakapan Tersimpan: Seluruh percakapan dengan Customer Service akan tersimpan dan dapat dilihat kembali kapan saja selama masa aktif akun.
+4. Dukungan Prioritas: Pertanyaan atau keluhan dari Akun PRO akan mendapatkan prioritas penanganan lebih cepat dibandingkan pengguna reguler.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-chat-customer-service">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-headset me-2"></i> Hubungi Customer Service</h3>
+            <p class="text-muted small mb-0">Dapatkan bantuan langsung dari tim dukungan pelanggan kami.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Pemberitahuan Kunci Fitur untuk Akun FREE -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center rounded-3" id="alert-akun-free-chat-cs">
+        <i class="bi bi-lock-fill text-warning fs-3 me-3"></i>
+        <div>
+            <strong>Fitur Terkunci (Akun FREE):</strong> Maaf, fitur komunikasi langsung dengan Customer Service hanya tersedia untuk pengguna <strong>Akun PRO</strong>. Silakan kunjungi <strong>Menu Pengajuan (Blok TG-23)</strong> untuk meningkatkan akun Anda dan membuka akses fitur ini.
+        </div>
+    </div>
+
+    <!-- Seluruh konten chat hanya bisa diakses jika PRO -->
+    <div class="card-custom border-top-orange shadow-sm border-0" id="konten-chat-customer-service-pro" style="max-height: 700px; display: flex; flex-direction: column;">
+        
+        <!-- Bagian Atas: Informasi Customer Service yang Sedang Aktif -->
+        <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+            <div class="bg-success text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 55px; height: 55px; min-width: 55px;">
+                <i class="bi bi-headset fs-3"></i>
+            </div>
+            <div class="flex-grow-1">
+                <h5 class="fw-bold text-dark mb-1">Tim Customer Service Platform 2R</h5>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2" style="width: 10px; height: 10px; border-radius: 50%; padding: 0;"></span>
+                    <small class="text-success fw-bold">Online - Siap Membantu</small>
+                </div>
+            </div>
+            <div class="text-end">
+                <small class="text-muted d-block">Jam Operasional</small>
+                <small class="fw-bold text-dark">Senin - Sabtu, 08:00 - 20:00 WIB</small>
+            </div>
+        </div>
+
+        <!-- Bagian Tengah: Area Percakapan -->
+        <div class="bg-light rounded-3 p-4 mb-3 border" style="flex-grow: 1; overflow-y: auto; min-height: 400px; max-height: 450px;">
+            
+            <!-- Pesan dari Customer Service (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-success rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-headset text-white small"></i>
+                        </div>
+                        <strong class="small text-success">Customer Service</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">10:30 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Selamat pagi, Bapak/Ibu pemilik toko. Ada yang bisa kami bantu hari ini? Tim Customer Service siap melayani pertanyaan seputar penggunaan aplikasi, kendala teknis, atau informasi pengajuan akun PRO.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">10:35 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-person-fill text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Selamat pagi, Tim CS. Saya ingin menanyakan tentang prosedur pengajuan akun PRO. Apakah ada dokumen tambahan yang perlu saya siapkan selain KTP dan Surat Keterangan Usaha?</p>
+                </div>
+            </div>
+
+            <!-- Pesan Balasan dari Customer Service (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-success rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-headset text-white small"></i>
+                        </div>
+                        <strong class="small text-success">Customer Service</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">10:38 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Terima kasih atas pertanyaannya, Bapak/Ibu. Untuk pengajuan akun PRO, cukup siapkan KTP dan Surat Keterangan Usaha (SKU) yang masih berlaku. Unggah kedua dokumen tersebut melalui menu <strong>Upload Persyaratan (Blok TG-24)</strong>. Setelah itu, silakan ajukan upgrade melalui <strong>Menu Pengajuan (Blok TG-23)</strong> dan pilih paket sewa yang diinginkan. Tim kami akan memverifikasi dan mengaktifkan akun PRO Anda dalam waktu 1x24 jam kerja.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">10:40 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-person-fill text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Baik, terima kasih banyak atas informasinya. Saya akan segera menyiapkan dokumen dan mengajukan upgrade hari ini juga.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bagian Bawah: Form Input Pesan -->
+        <div class="border-top pt-3">
+            <form id="form-chat-customer-service" onsubmit="event.preventDefault(); alert('Pesan Anda telah terkirim ke Tim Customer Service.')">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ketik pesan Anda di sini..." required>
+                    <button class="btn btn-orange fw-bold px-4" type="submit">
+                        <i class="bi bi-send-fill me-2"></i> KIRIM
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-muted" style="font-size: 0.75rem;">
+                        <i class="bi bi-info-circle-fill me-1"></i> Tim CS akan merespons dalam waktu maksimal 15 menit pada jam operasional.
+                    </small>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Muat ulang percakapan">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Segarkan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-27 -->
+<!-- ==========================================
+BLOK TG-28 - HUBUNGI JASA OJEK (CHAT OJEK)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-28:
+1. Komunikasi Langsung dengan Kurir: Menyediakan antarmuka percakapan (chat) real-time antara pemilik toko dengan mitra Jasa Ojek yang terdaftar di Platform 2R.
+2. Koordinasi Pengiriman: Memudahkan pemilik toko untuk berkoordinasi dengan pengemudi ojek terkait alamat penjemputan barang, alamat tujuan pelanggan, serta negosiasi ongkos kirim.
+3. Akses Terbatas Akun PRO: Fitur komunikasi ini hanya tersedia untuk pengguna dengan status Akun PRO. Pengguna Akun FREE akan melihat pemberitahuan penguncian dan diarahkan untuk meningkatkan akun terlebih dahulu.
+4. Daftar Ojek Aktif: Menampilkan informasi singkat pengemudi ojek yang sedang terhubung, termasuk nama, rating, dan kendaraan yang digunakan untuk memastikan kepercayaan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-chat-jasa-ojek">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-motorcycle me-2"></i> Hubungi Jasa Ojek</h3>
+            <p class="text-muted small mb-0">Koordinasi pengiriman barang dengan mitra ojek terdekat secara langsung.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Pemberitahuan Kunci Fitur untuk Akun FREE -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center rounded-3" id="alert-akun-free-chat-ojek">
+        <i class="bi bi-lock-fill text-warning fs-3 me-3"></i>
+        <div>
+            <strong>Fitur Terkunci (Akun FREE):</strong> Maaf, fitur komunikasi langsung dengan Jasa Ojek hanya tersedia untuk pengguna <strong>Akun PRO</strong>. Silakan kunjungi <strong>Menu Pengajuan (Blok TG-23)</strong> untuk meningkatkan akun Anda dan membuka akses fitur ini.
+        </div>
+    </div>
+
+    <!-- Seluruh konten chat hanya bisa diakses jika PRO -->
+    <div class="card-custom border-top-orange shadow-sm border-0" id="konten-chat-jasa-ojek-pro" style="max-height: 700px; display: flex; flex-direction: column;">
+        
+        <!-- Bagian Atas: Informasi Ojek yang Sedang Dihubungi -->
+        <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+            <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 55px; height: 55px; min-width: 55px;">
+                <i class="bi bi-motorcycle fs-3"></i>
+            </div>
+            <div class="flex-grow-1">
+                <h5 class="fw-bold text-dark mb-1">Agus Setiawan - Mitra Ojek</h5>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2" style="width: 10px; height: 10px; border-radius: 50%; padding: 0;"></span>
+                    <small class="text-success fw-bold">Online - Siap Mengantar</small>
+                    <span class="mx-2 text-muted">|</span>
+                    <small class="text-muted"><i class="bi bi-star-fill text-warning me-1"></i>4.9/5.0</small>
+                    <span class="mx-2 text-muted">|</span>
+                    <small class="text-muted"><i class="bi bi-geo-alt-fill text-danger me-1"></i>0.2 km dari toko</small>
+                </div>
+            </div>
+            <div class="text-end">
+                <small class="text-muted d-block">Kendaraan</small>
+                <small class="fw-bold text-dark">Honda Beat - B 3125 XY</small>
+            </div>
+        </div>
+
+        <!-- Bagian Tengah: Area Percakapan -->
+        <div class="bg-light rounded-3 p-4 mb-3 border" style="flex-grow: 1; overflow-y: auto; min-height: 400px; max-height: 450px;">
+            
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">11:15 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-shop text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Selamat siang, Bang Agus. Apakah saat ini sedang bisa menerima orderan pengiriman? Saya ada pesanan yang perlu diantar ke pelanggan di daerah Jalan Anggrek Nomor 12.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Ojek (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-warning rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-motorcycle text-dark small"></i>
+                        </div>
+                        <strong class="small text-dark">Bang Agus</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">11:17 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Siang juga, Bos. Siap, saya sedang kosong. Jalan Anggrek Nomor 12 itu yang dekat dengan Perumahan Permata ya? Berapa jumlah barang yang perlu diantar?</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">11:18 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-shop text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Benar, dekat Perumahan Permata Blok C. Barangnya hanya dua item: satu karung beras ukuran 5 kilogram dan satu pouch minyak goreng kemasan 2 liter. Tidak terlalu berat.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Ojek (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-warning rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-motorcycle text-dark small"></i>
+                        </div>
+                        <strong class="small text-dark">Bang Agus</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">11:20 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Baik, Bos. Untuk jarak sekitar 1,5 kilometer dengan barang segitu, ongkos kirimnya Rp 12.000 saja. Saya bisa langsung meluncur ke toko sekarang. Bagaimana?</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">11:21 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-shop text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Ongkos kirim Rp 12.000 cocok, Bang. Silakan langsung ke toko Grosir Maju Jaya di Jalan Raya Utama Nomor 45. Saya tunggu di depan. Terima kasih.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bagian Bawah: Form Input Pesan -->
+        <div class="border-top pt-3">
+            <form id="form-chat-jasa-ojek" onsubmit="event.preventDefault(); alert('Pesan Anda telah terkirim ke Mitra Jasa Ojek.')">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ketik pesan Anda di sini..." required>
+                    <button class="btn btn-orange fw-bold px-4" type="submit">
+                        <i class="bi bi-send-fill me-2"></i> KIRIM
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-muted" style="font-size: 0.75rem;">
+                        <i class="bi bi-info-circle-fill me-1"></i> Koordinasikan alamat penjemputan, tujuan, dan ongkos kirim dengan jelas.
+                    </small>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Muat ulang percakapan">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Segarkan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-28 -->
+<!-- ==========================================
+BLOK TG-29 - HUBUNGI PELANGGAN (CHAT PELANGGAN)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-29:
+1. Komunikasi Langsung dengan Pembeli: Menyediakan antarmuka percakapan (chat) real-time antara pemilik toko dengan pelanggan yang melakukan pemesanan melalui aplikasi.
+2. Negosiasi dan Konfirmasi: Memudahkan pemilik toko untuk berdiskusi langsung dengan pelanggan mengenai ketersediaan stok, perubahan harga, atau detail pengiriman sebelum pesanan diproses.
+3. Akses Terbatas Akun PRO: Fitur komunikasi ini hanya tersedia untuk pengguna dengan status Akun PRO. Pengguna Akun FREE akan melihat pemberitahuan penguncian dan diarahkan untuk meningkatkan akun terlebih dahulu.
+4. Riwayat Percakapan Terintegrasi: Seluruh percakapan dengan pelanggan akan tersimpan dan terhubung dengan data pesanan yang bersangkutan, memudahkan penelusuran jika terjadi perbedaan informasi.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-chat-pelanggan">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-chat-heart-fill me-2"></i> Hubungi Pelanggan</h3>
+            <p class="text-muted small mb-0">Berkomunikasi langsung dengan pelanggan terkait pesanan dan pengiriman.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Pemberitahuan Kunci Fitur untuk Akun FREE -->
+    <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center rounded-3" id="alert-akun-free-chat-pelanggan">
+        <i class="bi bi-lock-fill text-warning fs-3 me-3"></i>
+        <div>
+            <strong>Fitur Terkunci (Akun FREE):</strong> Maaf, fitur komunikasi langsung dengan Pelanggan hanya tersedia untuk pengguna <strong>Akun PRO</strong>. Silakan kunjungi <strong>Menu Pengajuan (Blok TG-23)</strong> untuk meningkatkan akun Anda dan membuka akses fitur ini.
+        </div>
+    </div>
+
+    <!-- Seluruh konten chat hanya bisa diakses jika PRO -->
+    <div class="card-custom border-top-orange shadow-sm border-0" id="konten-chat-pelanggan-pro" style="max-height: 700px; display: flex; flex-direction: column;">
+        
+        <!-- Bagian Atas: Informasi Pelanggan yang Sedang Dihubungi -->
+        <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+            <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 55px; height: 55px; min-width: 55px;">
+                <i class="bi bi-person-fill fs-3"></i>
+            </div>
+            <div class="flex-grow-1">
+                <h5 class="fw-bold text-dark mb-1">Budi Wijaya - Pelanggan</h5>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-2" style="font-size: 0.7rem;">Pesanan #ORD-2026-7788</span>
+                    <small class="text-muted">Total Belanja: Rp 647.500</small>
+                </div>
+            </div>
+            <div class="text-end">
+                <small class="text-muted d-block">Lokasi Tujuan</small>
+                <small class="fw-bold text-dark"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Jl. Anggrek No. 12 (1.5 km)</small>
+            </div>
+        </div>
+
+        <!-- Bagian Tengah: Area Percakapan -->
+        <div class="bg-light rounded-3 p-4 mb-3 border" style="flex-grow: 1; overflow-y: auto; min-height: 400px; max-height: 450px;">
+            
+            <!-- Pesan dari Pelanggan (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-person-fill text-white small"></i>
+                        </div>
+                        <strong class="small text-primary">Budi Wijaya</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">11:00 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Selamat siang, Pak. Saya sudah melakukan pemesanan melalui aplikasi dengan nomor order #ORD-2026-7788. Apakah stok Beras Rojo Lele 25kg masih tersedia? Saya pesan 2 karung.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">11:05 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-shop text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Selamat siang, Pak Budi. Pesanan sudah kami terima. Stok Beras Rojo Lele 25kg masih tersedia cukup banyak. Untuk 2 karung siap kami kemas. Apakah ada tambahan lain atau pesanan sudah sesuai?</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pelanggan (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-person-fill text-white small"></i>
+                        </div>
+                        <strong class="small text-primary">Budi Wijaya</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">11:08 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Pesanan sudah sesuai, Pak. Selain beras, saya juga memesan 5 bungkus Indomie Goreng. Apakah bisa dikirim hari ini juga? Saya ada di rumah sampai sore.</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pemilik Toko (Kanan) -->
+            <div class="d-flex mb-4 justify-content-end">
+                <div class="bg-orange-custom text-white p-3 rounded-3 shadow-sm" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2 justify-content-end">
+                        <small class="opacity-75 me-2" style="font-size: 0.7rem;">11:10 WIB</small>
+                        <strong class="small">Anda</strong>
+                        <div class="bg-white rounded-circle d-flex justify-content-center align-items-center ms-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-shop text-orange-custom small"></i>
+                        </div>
+                    </div>
+                    <p class="mb-0 small">Tentu, Pak. Semua barang tersedia. Kami akan segera menghubungi mitra ojek untuk pengiriman. Estimasi sampai di alamat Jalan Anggrek Nomor 12 sekitar pukul 12:00 siang. Apakah ada nomor telepon yang bisa dihubungi kurir jika kesulitan menemukan lokasi?</p>
+                </div>
+            </div>
+
+            <!-- Pesan dari Pelanggan (Kiri) -->
+            <div class="d-flex mb-4">
+                <div class="bg-white text-dark p-3 rounded-3 shadow-sm border" style="max-width: 75%;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 30px; height: 30px;">
+                            <i class="bi bi-person-fill text-white small"></i>
+                        </div>
+                        <strong class="small text-primary">Budi Wijaya</strong>
+                        <small class="text-muted ms-2" style="font-size: 0.7rem;">11:12 WIB</small>
+                    </div>
+                    <p class="mb-0 small">Baik, Pak. Nomor saya 081298765432. Silakan kasih tahu kurir untuk menghubungi saya jika perlu. Terima kasih banyak atas pelayanannya!</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bagian Bawah: Form Input Pesan -->
+        <div class="border-top pt-3">
+            <form id="form-chat-pelanggan" onsubmit="event.preventDefault(); alert('Pesan Anda telah terkirim ke Pelanggan.')">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ketik pesan Anda di sini..." required>
+                    <button class="btn btn-orange fw-bold px-4" type="submit">
+                        <i class="bi bi-send-fill me-2"></i> KIRIM
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-muted" style="font-size: 0.75rem;">
+                        <i class="bi bi-info-circle-fill me-1"></i> Komunikasikan detail pesanan, ketersediaan stok, dan estimasi pengiriman dengan jelas.
+                    </small>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Muat ulang percakapan">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Segarkan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-29 -->
+<!-- ==========================================
+BLOK TG-30 - HALAMAN BERITA PROMOSI PRODUK
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-30:
+1. Pusat Promosi Produk: Tempat bagi seluruh pemilik toko (Akun FREE maupun Akun PRO) untuk mengunggah berita promosi produk secara gratis tanpa biaya tambahan.
+2. Konten Multimedia: Mendukung unggahan berupa foto produk, video singkat, atau gambar promosi menarik disertai teks iklan untuk menarik perhatian calon pembeli di aplikasi pelanggan.
+3. Proses Persetujuan SuperAdmin: Setiap berita promosi yang diunggah akan melalui proses peninjauan oleh SuperAdmin terlebih dahulu. Berita hanya akan tampil di aplikasi pelanggan setelah mendapatkan status disetujui.
+4. Penghapusan Otomatis: Sistem secara otomatis akan menghapus berita promosi yang sudah berusia lebih dari 3 bulan sejak tanggal pembuatan, menjaga etalase promosi tetap segar dan relevan bagi pelanggan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-berita-promosi">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0"><i class="bi bi-megaphone-fill me-2"></i> Berita Promosi Produk</h3>
+            <p class="text-muted small mb-0">Unggah promosi produk Anda secara gratis dan jangkau lebih banyak pelanggan di aplikasi.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Informasi Ketentuan Promosi -->
+    <div class="alert alert-info border-0 shadow-sm mb-4 d-flex align-items-start rounded-3">
+        <i class="bi bi-info-circle-fill text-info fs-3 me-3"></i>
+        <div>
+            <strong>Ketentuan Berita Promosi:</strong>
+            <ul class="mb-0 small mt-1 ps-3">
+                <li>Fitur ini terbuka untuk <strong>semua pengguna</strong>, termasuk Akun FREE dan Akun PRO, secara gratis tanpa biaya tambahan.</li>
+                <li>Setiap berita promosi yang diunggah akan <strong>diperiksa terlebih dahulu</strong> oleh SuperAdmin sebelum ditampilkan di aplikasi pelanggan.</li>
+                <li>Berita yang telah berusia <strong>lebih dari 3 bulan</strong> sejak tanggal pembuatan akan dihapus secara otomatis oleh sistem.</li>
+                <li>Konten yang mengandung unsur SARA, pornografi, atau penipuan akan langsung ditolak dan akun dapat dikenakan sanksi.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM UNGGAH BERITA PROMOSI (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom border-top-orange shadow-sm border-0 h-100">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-upload me-2 text-orange-custom"></i> Unggah Berita Promosi Baru</h5>
+                
+                <form id="form-unggah-berita-promosi">
+                    
+                    <!-- Unggah Foto atau Video -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Unggah Foto atau Video Promosi <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" accept="image/jpeg, image/png, image/gif, video/mp4, video/mpeg" required>
+                        <small class="text-muted" style="font-size: 0.75rem;">Format yang diterima: JPG, PNG, GIF, MP4, atau MPEG. Maksimal ukuran file 10 Megabyte.</small>
+                    </div>
+
+                    <!-- Teks Promosi -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Teks Promosi atau Iklan <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="4" placeholder="Tuliskan teks promosi produk Anda secara menarik dan informatif. Contoh: Diskon 20% untuk pembelian Beras Rojo Lele selama bulan Juli! Stok terbatas!" required></textarea>
+                        <small class="text-muted" style="font-size: 0.75rem;">Maksimal 500 karakter. Gunakan bahasa yang sopan dan tidak berlebihan.</small>
+                    </div>
+
+                    <!-- Informasi Produk Terkait -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Produk Terkait (Opsional)</label>
+                        <select class="form-select">
+                            <option value="" selected disabled>-- Pilih Produk dari Master Data (Opsional) --</option>
+                            <option value="1">Beras Rojo Lele 25kg - Rp 315.000</option>
+                            <option value="2">Indomie Goreng Reguler - Rp 3.500</option>
+                            <option value="3">Minyak Goreng Bimoli 2L - Rp 38.000</option>
+                            <option value="4">Rokok Surya 16 - Rp 32.000</option>
+                            <option value="5">Gula Pasir Gulaku 1kg - Rp 18.000</option>
+                        </select>
+                    </div>
+
+                    <!-- Tanggal Mulai dan Berakhir Promosi -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Tanggal Mulai Promosi <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" value="2026-07-13" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Tanggal Berakhir Promosi</label>
+                            <input type="date" class="form-control" value="2026-10-13">
+                            <small class="text-muted" style="font-size: 0.7rem;">Maksimal 3 bulan dari tanggal mulai.</small>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Unggah -->
+                    <div class="mb-4">
+                        <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm" onclick="alert('Berita promosi Anda telah berhasil diunggah dan akan diperiksa oleh SuperAdmin dalam 1x24 jam kerja. Setelah disetujui, berita akan tampil di aplikasi pelanggan.')">
+                            <i class="bi bi-cloud-upload-fill me-2"></i> UNGGAH BERITA PROMOSI
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- Pemberitahuan Proses Persetujuan -->
+                <div class="alert alert-warning border-0 shadow-sm small mb-0">
+                    <i class="bi bi-hourglass-split me-2"></i> 
+                    <strong>Proses Peninjauan:</strong> Berita yang Anda unggah akan diperiksa oleh SuperAdmin dalam waktu maksimal 1x24 jam kerja. 
+                    Anda akan menerima pemberitahuan jika berita disetujui atau ditolak beserta alasannya.
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: DAFTAR BERITA PROMOSI (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-newspaper me-2 text-orange-custom"></i> Daftar Berita Promosi Anda</h5>
+                    <span class="badge bg-secondary">3 Berita</span>
+                </div>
+                
+                <!-- Informasi Urutan Tampilan -->
+                <div class="small text-muted mb-3">
+                    <i class="bi bi-sort-down me-1"></i> Berita diurutkan berdasarkan <strong>tanggal pembuatan terbaru</strong>. Berita yang sudah berusia lebih dari 3 bulan akan dihapus otomatis oleh sistem.
+                </div>
+
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col" style="width: 60px;">Media</th>
+                                <th scope="col">Teks Promosi</th>
+                                <th scope="col">Tanggal Dibuat</th>
+                                <th scope="col" class="text-center">Status Verifikasi</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Berita 1 (Disetujui) -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-image-fill text-secondary fs-4"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-1">Diskon 20% Beras Rojo Lele!</strong>
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Promo berlaku hingga 13 Oktober 2026. Stok terbatas! Buruan pesan sekarang juga sebelum kehabisan.</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted fw-bold d-block">13 Juli 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">10:30 WIB</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success rounded-pill px-2"><i class="bi bi-check-circle-fill me-1"></i> Disetujui</span>
+                                    <small class="text-success d-block mt-1" style="font-size: 0.65rem;">Tayang di Aplikasi</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info py-1 px-2 mb-1" title="Lihat Pratinjau"><i class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus Berita"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Berita 2 (Menunggu Verifikasi) -->
+                            <tr>
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-film text-secondary fs-4"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-1">Video Produk Baru: Minyak Goreng Hemat</strong>
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Kenalkan produk minyak goreng Bimoli 2L dengan harga spesial. Tonton video singkat kami!</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted fw-bold d-block">12 Juli 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">14:15 WIB</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark rounded-pill px-2"><i class="bi bi-hourglass-split me-1"></i> Menunggu</span>
+                                    <small class="text-muted d-block mt-1" style="font-size: 0.65rem;">Menunggu Persetujuan</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info py-1 px-2 mb-1" title="Lihat Pratinjau"><i class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Batalkan Unggahan"><i class="bi bi-x-circle-fill"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Berita 3 (Ditolak) -->
+                            <tr class="table-danger">
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-image-fill text-secondary fs-4"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-1">Obral Besar Semua Produk!</strong>
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Semua produk diskon hingga 70%. Buruan sebelum kehabisan!</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted fw-bold d-block">10 Juli 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">09:00 WIB</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-danger rounded-pill px-2"><i class="bi bi-x-circle-fill me-1"></i> Ditolak</span>
+                                    <small class="text-danger d-block mt-1" style="font-size: 0.65rem;">Foto terlalu buram</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-warning py-1 px-2 mb-1 text-dark" title="Unggah Ulang dengan Perbaikan"><i class="bi bi-arrow-repeat me-1"></i> Perbaiki</button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus Permanen"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Berita 4 (Akan Kadaluarsa) -->
+                            <tr class="table-warning">
+                                <td>
+                                    <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-image-fill text-secondary fs-4"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-1">Promo Lebaran Special Package</strong>
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Paket hemat lebaran sudah tersedia. Pesan sekarang juga mumpung masih ada!</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted fw-bold d-block">15 April 2026</small>
+                                    <small class="text-muted" style="font-size: 0.7rem;">08:45 WIB</small>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-warning text-dark rounded-pill px-2"><i class="bi bi-exclamation-triangle-fill me-1"></i> Akan Hapus</span>
+                                    <small class="text-warning d-block mt-1" style="font-size: 0.65rem;">2 hari tersisa</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info py-1 px-2 mb-1" title="Lihat Pratinjau"><i class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus Sekarang"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Catatan Tambahan di Bawah Tabel -->
+                <div class="mt-3 text-muted small text-center border-top pt-2">
+                    <i class="bi bi-lightbulb-fill text-warning me-1"></i> 
+                    <strong>Tips Promosi:</strong> Gunakan foto produk yang jelas dan teks promosi yang singkat namun menarik. 
+                    Berita dengan foto berkualitas tinggi memiliki peluang lebih besar untuk disetujui dan menarik minat pelanggan.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-30 -->
 </body>
 </html>
