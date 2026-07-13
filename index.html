@@ -1,4 +1,1316 @@
 <!-- ==========================================
+BLOK TG-15 - MESIN KASIR (POINT OF SALES)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-15:
+1. Antarmuka Transaksi Cepat: Menampilkan etalase produk (panggil dari Master Data) yang bisa diklik untuk menambah barang ke daftar belanja.
+2. Kalkulasi Struk Real-Time: Tabel rincian barang menghitung subtotal secara otomatis. Fitur tombol +/- memungkinkan kasir mengubah jumlah barang dengan cepat tanpa input manual.
+3. Metode Pembayaran Variatif: Mendukung tiga metode (Tunai, Transfer Bank, atau Kasbon/Hutang). Untuk Kasbon, sistem mewajibkan penginputan Nama Pelanggan sebagai bukti piutang.
+4. Keamanan Pasca-Transaksi: Setelah tombol "PROSES PEMBAYARAN" ditekan dan transaksi sukses, sistem akan mengunci data tersebut. Kasir tidak bisa lagi mengedit atau menghapus transaksi yang sudah tersimpan untuk mencegah kecurangan (fraud).
+=========================================== -->
+<div class="container-fluid mt-4 d-none-custom" id="halaman-mesin-kasir">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="text-orange-custom fw-bold mb-0"><i class="bi bi-cart-check-fill me-2"></i> Mesin Kasir (POS)</h4>
+            <small class="text-muted">Kasir Aktif: <span class="fw-bold">Pemilik Toko</span> | Tanggal: Hari Ini</small>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: ETALASE PRODUK (KIRI) -->
+        <div class="col-lg-7">
+            <div class="card-custom border-top-orange h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                    <h5 class="text-dark mb-0 fw-bold">Daftar Produk Master</h5>
+                    <div class="input-group" style="width: 280px;">
+                        <input type="text" class="form-control" placeholder="Cari nama atau barcode...">
+                        <button class="btn btn-orange"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <!-- Produk 1 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border shadow-sm p-2 text-center">
+                            <div class="bg-light rounded mb-2 d-flex align-items-center justify-content-center" style="height: 80px;">
+                                <i class="bi bi-box-seam text-secondary fs-1"></i>
+                            </div>
+                            <h6 class="card-title text-truncate mb-1 fw-bold" style="font-size: 0.85rem;">Beras Rojo Lele 25kg</h6>
+                            <p class="card-text text-orange-custom fw-bold mb-1" style="font-size: 0.9rem;">Rp 315.000</p>
+                            <small class="text-muted d-block mb-2" style="font-size: 0.75rem;">Stok: 50 Karung</small>
+                            <button class="btn btn-sm btn-outline-orange w-100 fw-bold"><i class="bi bi-plus-lg"></i> Tambah</button>
+                        </div>
+                    </div>
+                    <!-- Produk 2 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border shadow-sm p-2 text-center">
+                            <div class="bg-light rounded mb-2 d-flex align-items-center justify-content-center" style="height: 80px;">
+                                <i class="bi bi-box-seam text-secondary fs-1"></i>
+                            </div>
+                            <h6 class="card-title text-truncate mb-1 fw-bold" style="font-size: 0.85rem;">Indomie Goreng</h6>
+                            <p class="card-text text-orange-custom fw-bold mb-1" style="font-size: 0.9rem;">Rp 3.500</p>
+                            <small class="text-muted d-block mb-2" style="font-size: 0.75rem;">Stok: 120 Pcs</small>
+                            <button class="btn btn-sm btn-outline-orange w-100 fw-bold"><i class="bi bi-plus-lg"></i> Tambah</button>
+                        </div>
+                    </div>
+                    <!-- Produk 3 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border shadow-sm p-2 text-center">
+                            <div class="bg-light rounded mb-2 d-flex align-items-center justify-content-center" style="height: 80px;">
+                                <i class="bi bi-box-seam text-secondary fs-1"></i>
+                            </div>
+                            <h6 class="card-title text-truncate mb-1 fw-bold" style="font-size: 0.85rem;">Minyak Bimoli 2L</h6>
+                            <p class="card-text text-orange-custom fw-bold mb-1" style="font-size: 0.9rem;">Rp 38.000</p>
+                            <small class="text-muted d-block mb-2" style="font-size: 0.75rem;">Stok: 12 Pouch</small>
+                            <button class="btn btn-sm btn-outline-orange w-100 fw-bold"><i class="bi bi-plus-lg"></i> Tambah</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: RINCIAN STRUK BELANJA (KANAN) -->
+        <div class="col-lg-5">
+            <div class="card-custom bg-light border-0 shadow-sm h-100">
+                <h5 class="text-dark border-bottom pb-2 mb-3 fw-bold"><i class="bi bi-receipt-cutoff me-2"></i> Rincian Tagihan</h5>
+                
+                <div class="table-responsive" style="min-height: 250px;">
+                    <table class="table table-sm align-middle bg-white border">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center" style="width: 110px;">Qty</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Beras Rojo Lele<br><small class="text-muted">@315.000</small></td>
+                                <td class="text-center">
+                                    <div class="input-group input-group-sm">
+                                        <button class="btn btn-outline-secondary px-2">-</button>
+                                        <input type="text" class="form-control text-center px-0 fw-bold" value="1" readonly>
+                                        <button class="btn btn-outline-secondary px-2">+</button>
+                                    </div>
+                                </td>
+                                <td class="text-end fw-bold text-dark">315.000</td>
+                            </tr>
+                            <tr>
+                                <td>Indomie Goreng<br><small class="text-muted">@3.500</small></td>
+                                <td class="text-center">
+                                    <div class="input-group input-group-sm">
+                                        <button class="btn btn-outline-secondary px-2">-</button>
+                                        <input type="text" class="form-control text-center px-0 fw-bold" value="10" readonly>
+                                        <button class="btn btn-outline-secondary px-2">+</button>
+                                    </div>
+                                </td>
+                                <td class="text-end fw-bold text-dark">35.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="border-top pt-3 mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0 text-muted fw-bold">TOTAL BAYAR</h5>
+                        <h2 class="mb-0 text-danger fw-bold">Rp 350.000</h2>
+                    </div>
+
+                    <form id="form-pembayaran-kasir">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label small fw-bold">Metode Pembayaran</label>
+                                <select class="form-select border-orange-custom" required>
+                                    <option value="Tunai">Tunai (Cash)</option>
+                                    <option value="Transfer">Transfer Bank</option>
+                                    <option value="Kasbon">Kasbon (Hutang)</option>
+                                </select>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label small fw-bold">Uang Diterima (Rp)</label>
+                                <input type="number" class="form-control" placeholder="Contoh: 400000">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Pelanggan <small class="text-danger">(Wajib jika Kasbon)</small></label>
+                            <input type="text" class="form-control" placeholder="Masukkan nama untuk dicatat di struk / piutang">
+                        </div>
+
+                        <div class="alert alert-success p-2 mb-3 text-center border-0 shadow-sm d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Kembalian:</span> 
+                            <span class="fs-4 fw-bold">Rp 50.000</span>
+                        </div>
+
+                        <button type="button" class="btn btn-success w-100 fw-bold fs-5 py-3 shadow" onclick="alert('Transaksi berhasil diproses dan dikunci.')">
+                            <i class="bi bi-printer-fill me-2"></i> PROSES PEMBAYARAN
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- AKHIR BLOK TG-15 -->
+<!-- ==========================================
+BLOK TG-16 - DATA TRANSAKSI PENJUALAN
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-16:
+1. Pusat Histori Transaksi: Menyimpan seluruh record transaksi yang berhasil diselesaikan di mesin kasir (Blok TG-15).
+2. Filter Analitik: Memungkinkan pemilik toko mencari transaksi berdasarkan Tanggal, Nama Pelanggan, No. Struk, atau Metode Pembayaran (Tunai/Transfer/Kasbon).
+3. Bukti Transaksi: Fitur untuk melihat detail struk kembali dan mencetaknya ulang jika diperlukan.
+4. Export Data: Fitur download data ke format Excel sebagai bukti laporan untuk kebutuhan audit internal maupun penagihan fee aplikasi oleh SuperAdmin.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-data-transaksi">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Data Transaksi Penjualan</h3>
+            <p class="text-muted small mb-0">Seluruh riwayat penjualan toko yang telah tersimpan di sistem.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Panel Filter & Export -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-bold small">Filter Tanggal</label>
+                <input type="date" class="form-control" value="2026-07-13">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold small">Cari No. Struk / Nama</label>
+                <input type="text" class="form-control" placeholder="Contoh: INV-001">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold small">Metode Bayar</label>
+                <select class="form-select border-orange-custom">
+                    <option value="Semua">Semua Metode</option>
+                    <option value="Tunai">Tunai (Cash)</option>
+                    <option value="Transfer">Transfer Bank</option>
+                    <option value="Kasbon">Kasbon (Hutang)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-orange w-100 fw-bold"><i class="bi bi-funnel-fill me-1"></i> TAMPILKAN</button>
+                    <button class="btn btn-success fw-bold px-3" title="Download Excel"><i class="bi bi-file-earmark-excel-fill fs-5"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Data Transaksi -->
+    <div class="card-custom shadow-sm border-0">
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table class="table table-hover align-middle border">
+                <thead class="table-light sticky-top">
+                    <tr>
+                        <th scope="col">No. Struk</th>
+                        <th scope="col">Waktu</th>
+                        <th scope="col">Pelanggan</th>
+                        <th scope="col">Kasir</th>
+                        <th scope="col" class="text-center">Pembayaran</th>
+                        <th scope="col" class="text-end">Total (Rp)</th>
+                        <th scope="col" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Row Data 1 -->
+                    <tr>
+                        <td><strong class="text-primary">INV-20260713-001</strong></td>
+                        <td><small class="text-muted d-block">13 Jul 2026</small><small class="text-muted">08:15 WIB</small></td>
+                        <td><strong class="d-block small">Umum / Non-Member</strong></td>
+                        <td><span class="badge bg-light text-dark border"><i class="bi bi-person me-1"></i>Pemilik</span></td>
+                        <td class="text-center"><span class="badge bg-success rounded-pill px-3">Tunai</span></td>
+                        <td class="text-end fw-bold">350.000</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info fw-bold py-1"><i class="bi bi-printer me-1"></i> Cetak</button>
+                        </td>
+                    </tr>
+                    <!-- Row Data 2 -->
+                    <tr>
+                        <td><strong class="text-primary">INV-20260713-002</strong></td>
+                        <td><small class="text-muted d-block">13 Jul 2026</small><small class="text-muted">09:30 WIB</small></td>
+                        <td><strong class="d-block small">Pak RT Sumanto</strong></td>
+                        <td><span class="badge bg-light text-dark border"><i class="bi bi-person me-1"></i>kasir.siti</span></td>
+                        <td class="text-center"><span class="badge bg-warning text-dark rounded-pill px-3">Kasbon</span></td>
+                        <td class="text-end fw-bold">150.000</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info fw-bold py-1"><i class="bi bi-printer me-1"></i> Cetak</button>
+                        </td>
+                    </tr>
+                    <!-- Row Data 3 -->
+                    <tr>
+                        <td><strong class="text-primary">INV-20260713-003</strong></td>
+                        <td><small class="text-muted d-block">13 Jul 2026</small><small class="text-muted">10:45 WIB</small></td>
+                        <td><strong class="d-block small">Budi Wijaya</strong><span class="badge bg-primary" style="font-size: 0.6rem;">Aplikasi</span></td>
+                        <td><span class="badge bg-light text-dark border"><i class="bi bi-person me-1"></i>Pemilik</span></td>
+                        <td class="text-center"><span class="badge bg-info text-white rounded-pill px-3">Transfer</span></td>
+                        <td class="text-end fw-bold">85.000</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info fw-bold py-1"><i class="bi bi-printer me-1"></i> Cetak</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="table-secondary">
+                    <tr>
+                        <td colspan="5" class="text-end fw-bold py-3">Total Pendapatan Terfilter:</td>
+                        <td class="text-end fw-bold text-orange-custom fs-5 py-3">Rp 585.000</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- AKHIR BLOK TG-16 -->
+<!-- ==========================================
+BLOK TG-17 - REKAP TRANSAKSI & ANALITIK LABA
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-17:
+1. Ringkasan Kinerja (Dashboard Analitik): Menampilkan nilai absolut dari Omset, Estimasi HPP (Modal Barang Terjual), dan Laba Kotor dalam bentuk kartu ringkasan untuk evaluasi cepat.
+2. Filter Periode: Pemilik toko dapat menarik data rekapitulasi berdasarkan rentang tanggal (Dari - Sampai) untuk kebutuhan evaluasi bulanan atau mingguan.
+3. Analisis Metode Pembayaran: Menampilkan rincian komposisi pendapatan (Tunai, Transfer, Kasbon) guna memantau arus kas toko.
+4. Produk Paling Laris: Fitur analitik sederhana untuk mengurutkan produk berdasarkan jumlah terjual, membantu pemilik toko menentukan barang mana yang harus segera di-restock.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-rekap-transaksi">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Rekap Transaksi & Laba</h3>
+            <p class="text-muted small mb-0">Analisis omset, pergerakan produk, dan keuntungan kotor toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Panel Filter Periode Rekap -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold small">Dari Tanggal</label>
+                <input type="date" class="form-control" value="2026-07-01">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold small">Sampai Tanggal</label>
+                <input type="date" class="form-control" value="2026-07-13">
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-orange w-100 fw-bold shadow-sm"><i class="bi bi-funnel-fill me-2"></i> FILTER DATA REKAP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartu Ringkasan Performa (Warna-Warni) -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-orange-custom text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Total Omset (Penjualan)</h6>
+                        <h3 class="fw-bold mb-0">Rp 15.250.000</h3>
+                        <small class="opacity-75 d-block mt-2"><i class="bi bi-receipt me-1"></i> Dari 85 Transaksi</small>
+                    </div>
+                    <div class="bg-white text-orange-custom rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 45px; height: 45px;">
+                        <i class="bi bi-graph-up-arrow fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Estimasi HPP (Modal Barang)</h6>
+                        <h3 class="fw-bold mb-0">Rp 11.100.000</h3>
+                        <small class="opacity-75 d-block mt-2"><i class="bi bi-box-seam me-1"></i> Harga dasar stok terjual</small>
+                    </div>
+                    <div class="bg-white text-danger rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 45px; height: 45px;">
+                        <i class="bi bi-cart-dash-fill fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Estimasi Laba Kotor</h6>
+                        <h3 class="fw-bold mb-0">Rp 4.150.000</h3>
+                        <small class="opacity-75 d-block mt-2"><i class="bi bi-cash-coin me-1"></i> Sebelum potong operasional</small>
+                    </div>
+                    <div class="bg-white text-success rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 45px; height: 45px;">
+                        <i class="bi bi-wallet-fill fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Statistik Metode Pembayaran (Kiri) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-pie-chart-fill me-2 text-primary"></i> Komposisi Pendapatan</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                        <div>
+                            <span class="badge bg-success me-2"><i class="bi bi-cash"></i></span> Tunai (Cash)
+                        </div>
+                        <span class="fw-bold text-success fs-5">Rp 9.500.000</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                        <div>
+                            <span class="badge bg-info text-white me-2"><i class="bi bi-bank2"></i></span> Transfer Bank
+                        </div>
+                        <span class="fw-bold text-info fs-5">Rp 4.250.000</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                        <div>
+                            <span class="badge bg-warning text-dark me-2"><i class="bi bi-journal-text"></i></span> Kasbon (Piutang)
+                        </div>
+                        <span class="fw-bold text-warning fs-5">Rp 1.500.000</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tabel Produk Paling Laris (Kanan) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-star-fill me-2 text-warning"></i> Top 5 Produk Terlaris</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th class="text-center">Jml Terjual</th>
+                                <th class="text-end">Nilai Penjualan (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong class="d-block small text-dark">Beras Rojo Lele 25kg</strong></td>
+                                <td class="text-center"><span class="badge bg-orange-custom rounded-pill">20 Karung</span></td>
+                                <td class="text-end fw-bold text-secondary">6.300.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong class="d-block small text-dark">Indomie Goreng Reguler</strong></td>
+                                <td class="text-center"><span class="badge bg-orange-custom rounded-pill">125 Pcs</span></td>
+                                <td class="text-end fw-bold text-secondary">437.500</td>
+                            </tr>
+                            <tr>
+                                <td><strong class="d-block small text-dark">Minyak Goreng Bimoli 2L</strong></td>
+                                <td class="text-center"><span class="badge bg-orange-custom rounded-pill">40 Pouch</span></td>
+                                <td class="text-end fw-bold text-secondary">1.520.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong class="d-block small text-dark">Rokok Surya 16</strong></td>
+                                <td class="text-center"><span class="badge bg-orange-custom rounded-pill">35 Bungkus</span></td>
+                                <td class="text-end fw-bold text-secondary">1.120.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong class="d-block small text-dark">Gula Pasir Gulaku 1kg</strong></td>
+                                <td class="text-center"><span class="badge bg-orange-custom rounded-pill">30 Pcs</span></td>
+                                <td class="text-end fw-bold text-secondary">540.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- AKHIR BLOK TG-17 -->
+<!-- ==========================================
+BLOK TG-18 - KASBON PELANGGAN (BUKU PIUTANG)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-18:
+1. Pencatatan Piutang: Form khusus untuk mendata pelanggan yang berhutang (Nama, Nomor HP, Jumlah Kasbon, dan Catatan Alamat).
+2. Integrasi Penjualan: Data kasbon dari mesin kasir (Blok TG-15) akan otomatis masuk ke sini agar mudah dilacak.
+3. Manajemen Cicilan & Pelunasan: Tabel daftar tagihan yang menampilkan riwayat hutang pelanggan secara transparan, lengkap dengan tombol aksi "Terima Pembayaran/Lunas".
+4. Indikator Status Visual: Menggunakan badge warna (Merah untuk Belum Lunas, Kuning untuk Dicicil, dan Hijau untuk Lunas) sehingga pemilik toko tahu mana yang harus segera ditagih.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-kasbon-pelanggan">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Buku Kasbon Pelanggan</h3>
+            <p class="text-muted small mb-0">Kelola piutang pelanggan dan pantau arus pelunasan dengan tertib.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Statistik Kasbon Aktif -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="bi bi-journal-x fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 fw-bold">Total Piutang di Luar (Belum Lunas)</h6>
+                    <h3 class="text-danger fw-bold mb-0">Rp 1.150.000</h3>
+                </div>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-danger fs-6 mb-1 shadow-sm px-3 py-2"><i class="bi bi-exclamation-circle-fill me-1"></i> 5 Pelanggan Menunggak</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: INPUT KASBON BARU (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-person-plus-fill me-2 text-orange-custom"></i> Tambah Tagihan Manual</h5>
+                <form id="form-kasbon-baru">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nama Pelanggan <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Contoh: Pak RT Sumanto" required>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Nomor HP/WA <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" placeholder="0812..." required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Jumlah Hutang <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light fw-bold">Rp</span>
+                                <input type="number" class="form-control" placeholder="0" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Alamat / Rincian Barang <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="3" placeholder="Tuliskan alamat pelanggan dan rincian barang yang di-kasbon..." required></textarea>
+                    </div>
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save-fill me-2"></i> SIMPAN DATA KASBON
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: DAFTAR KASBON & PELUNASAN (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-list-check me-2 text-orange-custom"></i> Daftar Tagihan Pelanggan</h5>
+                    <div class="input-group input-group-sm" style="width: 250px;">
+                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Cari nama pelanggan...">
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Data Pelanggan</th>
+                                <th>Sisa Tagihan</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Aksi Bayar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Baris Data 1 (Belum Lunas) -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">12 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-0">Pak RT Sumanto</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-whatsapp text-success me-1"></i>081233445566</small>
+                                </td>
+                                <td><strong class="text-danger d-block">Rp 150.000</strong></td>
+                                <td class="text-center"><span class="badge bg-danger rounded-pill small px-2">Belum Lunas</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-success fw-bold py-1 px-2 shadow-sm" title="Terima Pembayaran"><i class="bi bi-wallet2 me-1"></i> Bayar</button>
+                                </td>
+                            </tr>
+                            <!-- Baris Data 2 (Dicicil) -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">10 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block small text-dark mb-0">Ibu Warung Pojok</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-whatsapp text-success me-1"></i>085699887766</small>
+                                </td>
+                                <td>
+                                    <strong class="text-warning text-dark d-block">Rp 400.000</strong>
+                                    <small class="text-muted" style="font-size: 0.65rem;">Awal: Rp 500.000</small>
+                                </td>
+                                <td class="text-center"><span class="badge bg-warning text-dark rounded-pill small px-2">Dicicil</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-success fw-bold py-1 px-2 shadow-sm" title="Terima Pembayaran"><i class="bi bi-wallet2 me-1"></i> Bayar</button>
+                                </td>
+                            </tr>
+                            <!-- Baris Data 3 (Lunas) -->
+                            <tr class="bg-light">
+                                <td><small class="text-muted fw-bold">08 Jul 2026</small></td>
+                                <td>
+                                    <strong class="d-block small text-muted mb-0">Budi Bengkel</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-telephone me-1"></i>087711223344</small>
+                                </td>
+                                <td><strong class="text-success d-block">Rp 0</strong></td>
+                                <td class="text-center"><span class="badge bg-success rounded-pill small px-2"><i class="bi bi-check-circle-fill me-1"></i> Lunas</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-secondary py-1 px-3 shadow-none" disabled><i class="bi bi-dash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-18 -->
+<!-- ==========================================
+BLOK TG-19 - ORDER MASUK APLIKASI
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-19:
+1. Pusat Pesanan Online: Menampilkan daftar order yang masuk secara real-time dari aplikasi pelanggan.
+2. Workflow Status: Mengelola alur pesanan mulai dari "Menunggu Konfirmasi", "Sedang Diproses", "Dalam Pengiriman", hingga "Selesai".
+3. Aksi Cepat: Menyediakan tombol aksi langsung untuk menerima pesanan, menolak, chat dengan pelanggan (negosiasi/ketersediaan stok), dan memanggil kurir (Ojek).
+4. Ringkasan Order: Terdapat kartu statistik di bagian atas agar pemilik toko bisa langsung melihat berapa banyak pesanan yang antre hari ini.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-order-masuk">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Order Online Masuk</h3>
+            <p class="text-muted small mb-0">Kelola pesanan dari pelanggan, chat koordinasi, dan panggil kurir pengantar.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Statistik Ringkasan Order -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Pesanan Baru</h6>
+                        <h3 class="fw-bold mb-0">2 Order</h3>
+                    </div>
+                    <i class="bi bi-bell-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Sedang Diproses</h6>
+                        <h3 class="fw-bold mb-0">1 Order</h3>
+                    </div>
+                    <i class="bi bi-box-seam-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm border-0 p-3 rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="opacity-75 mb-1">Selesai / Terkirim (Hari Ini)</h6>
+                        <h3 class="fw-bold mb-0">15 Order</h3>
+                    </div>
+                    <i class="bi bi-check-circle-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Daftar Order Masuk -->
+    <div class="card-custom border-top-orange shadow-sm border-0">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+            <h5 class="text-dark fw-bold mb-0"><i class="bi bi-basket-fill me-2 text-orange-custom"></i> Antrean Pesanan</h5>
+            <button class="btn btn-sm btn-outline-orange fw-bold"><i class="bi bi-arrow-clockwise me-1"></i> Segarkan (Refresh)</button>
+        </div>
+
+        <div class="table-responsive" style="min-height: 300px;">
+            <table class="table table-hover align-middle border">
+                <thead class="table-light sticky-top">
+                    <tr>
+                        <th scope="col">ID & Waktu Order</th>
+                        <th scope="col">Pelanggan & Tujuan</th>
+                        <th scope="col">Rincian Item</th>
+                        <th scope="col">Total (Rp)</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Aksi Koordinasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data Order 1 (Baru Masuk) -->
+                    <tr>
+                        <td>
+                            <strong class="text-primary d-block">#ORD-2026-7788</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">13 Jul 2026, 11:00 WIB</small>
+                        </td>
+                        <td>
+                            <strong class="d-block small text-dark mb-0">Budi Wijaya</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Jl. Anggrek No. 12 (1.5 km)</small>
+                        </td>
+                        <td>
+                            <small class="d-block text-dark">2x Beras Rojo Lele</small>
+                            <small class="d-block text-dark">5x Indomie Goreng</small>
+                        </td>
+                        <td class="fw-bold text-dark">647.500</td>
+                        <td class="text-center">
+                            <span class="badge bg-primary rounded-pill px-2 blink-soft">Baru Masuk</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-success fw-bold py-1 px-2 shadow-sm mb-1" title="Terima Order"><i class="bi bi-check-lg me-1"></i> Terima</button>
+                            <button class="btn btn-sm btn-info text-white fw-bold py-1 px-2 shadow-sm mb-1" title="Chat Pelanggan"><i class="bi bi-chat-dots-fill"></i></button>
+                            <button class="btn btn-sm btn-danger fw-bold py-1 px-2 shadow-sm mb-1" title="Tolak Pesanan"><i class="bi bi-x-lg"></i></button>
+                        </td>
+                    </tr>
+
+                    <!-- Data Order 2 (Diproses) -->
+                    <tr>
+                        <td>
+                            <strong class="text-primary d-block">#ORD-2026-7785</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">13 Jul 2026, 10:45 WIB</small>
+                        </td>
+                        <td>
+                            <strong class="d-block small text-dark mb-0">Ibu Siti Nurbaya</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Komp. Permata Blok C (2.0 km)</small>
+                        </td>
+                        <td>
+                            <small class="d-block text-dark">1x Minyak Bimoli 2L</small>
+                            <small class="d-block text-dark">1x Gula Pasir 1kg</small>
+                        </td>
+                        <td class="fw-bold text-dark">56.000</td>
+                        <td class="text-center">
+                            <span class="badge bg-warning text-dark rounded-pill px-2">Dikemas</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-warning fw-bold py-1 px-2 shadow-sm mb-1" title="Panggil Kurir / Ojek"><i class="bi bi-motorcycle me-1"></i> Panggil Ojek</button>
+                            <button class="btn btn-sm btn-info text-white fw-bold py-1 px-2 shadow-sm mb-1" title="Chat Pelanggan"><i class="bi bi-chat-dots-fill"></i></button>
+                        </td>
+                    </tr>
+
+                    <!-- Data Order 3 (Dikirim) -->
+                    <tr class="bg-light">
+                        <td>
+                            <strong class="text-primary d-block">#ORD-2026-7780</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">13 Jul 2026, 10:15 WIB</small>
+                        </td>
+                        <td>
+                            <strong class="d-block small text-muted mb-0">Agus Supriyadi</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Jl. Merdeka No. 45 (3.1 km)</small>
+                        </td>
+                        <td>
+                            <small class="d-block text-muted">1x Gas Elpiji 3kg</small>
+                            <small class="d-block text-muted">2x Aqua Galon</small>
+                        </td>
+                        <td class="fw-bold text-muted">60.000</td>
+                        <td class="text-center">
+                            <span class="badge bg-info text-white rounded-pill px-2"><i class="bi bi-truck me-1"></i> Dikirim</span>
+                            <small class="d-block text-muted mt-1" style="font-size: 0.65rem;">Kurir: Ojek Bang Jali</small>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-success fw-bold py-1 px-2 shadow-sm w-100" title="Tandai Selesai"><i class="bi bi-check2-all me-1"></i> Selesai</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- AKHIR BLOK TG-19 -->
+<!-- ==========================================
+BLOK TG-20 - BIAYA OPERASIONAL (PENGELUARAN TOKO)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-20:
+1. Pencatatan Pengeluaran: Form khusus untuk mencatat biaya operasional toko harian/bulanan (Listrik, Gaji Kasir, Bensin, Keamanan, dll).
+2. Kalkulasi Laba Bersih: Data yang dimasukkan ke sini akan otomatis memotong total laba kotor penjualan untuk menghasilkan nilai Laba Bersih di laporan akhir.
+3. Tabel Riwayat: Menampilkan riwayat pengeluaran yang bisa difilter berdasarkan bulan, sehingga pemilik bisa melacak pos pengeluaran mana yang paling membengkak.
+4. Summary Bulanan: Kartu statistik di atas untuk memberikan peringatan visual total pengeluaran operasional bulan berjalan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-biaya-operasional">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Biaya Operasional</h3>
+            <p class="text-muted small mb-0">Catat pengeluaran harian/bulanan toko untuk perhitungan laba bersih.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Statistik Pengeluaran Bulan Ini -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="bi bi-calculator-fill fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 fw-bold">Total Pengeluaran Bulan Ini (Juli 2026)</h6>
+                    <h3 class="text-danger fw-bold mb-0">Rp 850.000</h3>
+                </div>
+            </div>
+            <div class="text-end d-none d-md-block">
+                <button class="btn btn-outline-danger fw-bold"><i class="bi bi-printer-fill me-1"></i> Cetak Laporan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM INPUT PENGELUARAN (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-pencil-square me-2 text-orange-custom"></i> Catat Pengeluaran Baru</h5>
+                <form id="form-biaya-operasional">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tanggal Pengeluaran <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" value="2026-07-13" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Kategori Pengeluaran <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Kategori --</option>
+                            <option value="ListrikAir">Listrik & Air (Token/PDAM)</option>
+                            <option value="GajiKaryawan">Gaji Karyawan / Kasir</option>
+                            <option value="Transportasi">Transportasi / Bensin Kulakan</option>
+                            <option value="KebersihanKeamanan">Iuran Kebersihan / Keamanan (RT/RW)</option>
+                            <option value="Konsumsi">Konsumsi Toko</option>
+                            <option value="Perlengkapan">Perlengkapan (Kresek, Nota, dll)</option>
+                            <option value="Lainnya">Lain-lain / Tak Terduga</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nominal (Rp) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light fw-bold">Rp</span>
+                            <input type="number" class="form-control" placeholder="Contoh: 150000" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Keterangan Detail <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="3" placeholder="Contoh: Beli token listrik prabayar untuk meteran toko..." required></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-danger w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save2-fill me-2"></i> SIMPAN PENGELUARAN
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL RIWAYAT OPERASIONAL (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-clock-history me-2 text-orange-custom"></i> Riwayat Pengeluaran</h5>
+                    <div class="input-group input-group-sm" style="width: 200px;">
+                        <select class="form-select">
+                            <option value="07-2026" selected>Juli 2026</option>
+                            <option value="06-2026">Juni 2026</option>
+                            <option value="05-2026">Mei 2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Kategori & Keterangan</th>
+                                <th class="text-end">Nominal (Rp)</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data Operasional 1 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">10 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-warning text-dark mb-1">Listrik & Air</span>
+                                    <strong class="d-block small text-dark mb-0">Beli Token Listrik</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">200.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Data Operasional 2 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">05 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-info text-white mb-1">Kebersihan/Keamanan</span>
+                                    <strong class="d-block small text-dark mb-0">Iuran Sampah & Hansip RT</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">50.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Data Operasional 3 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">01 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-success mb-1">Gaji Karyawan</span>
+                                    <strong class="d-block small text-dark mb-0">Gaji Mingguan Kasir (Siti)</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">600.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-20 -->
+<!-- ==========================================
+BLOK TG-20 - BIAYA OPERASIONAL (PENGELUARAN TOKO)
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-20:
+1. Pencatatan Pengeluaran: Form khusus untuk mencatat biaya operasional toko harian/bulanan (Listrik, Gaji Kasir, Bensin, Keamanan, dll).
+2. Kalkulasi Laba Bersih: Data yang dimasukkan ke sini akan otomatis memotong total laba kotor penjualan untuk menghasilkan nilai Laba Bersih di laporan akhir.
+3. Tabel Riwayat: Menampilkan riwayat pengeluaran yang bisa difilter berdasarkan bulan, sehingga pemilik bisa melacak pos pengeluaran mana yang paling membengkak.
+4. Summary Bulanan: Kartu statistik di atas untuk memberikan peringatan visual total pengeluaran operasional bulan berjalan.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-biaya-operasional">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Biaya Operasional</h3>
+            <p class="text-muted small mb-0">Catat pengeluaran harian/bulanan toko untuk perhitungan laba bersih.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Statistik Pengeluaran Bulan Ini -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="bi bi-calculator-fill fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 fw-bold">Total Pengeluaran Bulan Ini (Juli 2026)</h6>
+                    <h3 class="text-danger fw-bold mb-0">Rp 850.000</h3>
+                </div>
+            </div>
+            <div class="text-end d-none d-md-block">
+                <button class="btn btn-outline-danger fw-bold"><i class="bi bi-printer-fill me-1"></i> Cetak Laporan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: FORM INPUT PENGELUARAN (KIRI) -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-pencil-square me-2 text-orange-custom"></i> Catat Pengeluaran Baru</h5>
+                <form id="form-biaya-operasional">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tanggal Pengeluaran <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" value="2026-07-13" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Kategori Pengeluaran <span class="text-danger">*</span></label>
+                        <select class="form-select border-orange-custom" required>
+                            <option value="" selected disabled>-- Pilih Kategori --</option>
+                            <option value="ListrikAir">Listrik & Air (Token/PDAM)</option>
+                            <option value="GajiKaryawan">Gaji Karyawan / Kasir</option>
+                            <option value="Transportasi">Transportasi / Bensin Kulakan</option>
+                            <option value="KebersihanKeamanan">Iuran Kebersihan / Keamanan (RT/RW)</option>
+                            <option value="Konsumsi">Konsumsi Toko</option>
+                            <option value="Perlengkapan">Perlengkapan (Kresek, Nota, dll)</option>
+                            <option value="Lainnya">Lain-lain / Tak Terduga</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nominal (Rp) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light fw-bold">Rp</span>
+                            <input type="number" class="form-control" placeholder="Contoh: 150000" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Keterangan Detail <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="3" placeholder="Contoh: Beli token listrik prabayar untuk meteran toko..." required></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-danger w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-save2-fill me-2"></i> SIMPAN PENGELUARAN
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL RIWAYAT OPERASIONAL (KANAN) -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-dark fw-bold mb-0"><i class="bi bi-clock-history me-2 text-orange-custom"></i> Riwayat Pengeluaran</h5>
+                    <div class="input-group input-group-sm" style="width: 200px;">
+                        <select class="form-select">
+                            <option value="07-2026" selected>Juli 2026</option>
+                            <option value="06-2026">Juni 2026</option>
+                            <option value="05-2026">Mei 2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Kategori & Keterangan</th>
+                                <th class="text-end">Nominal (Rp)</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data Operasional 1 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">10 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-warning text-dark mb-1">Listrik & Air</span>
+                                    <strong class="d-block small text-dark mb-0">Beli Token Listrik</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">200.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Data Operasional 2 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">05 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-info text-white mb-1">Kebersihan/Keamanan</span>
+                                    <strong class="d-block small text-dark mb-0">Iuran Sampah & Hansip RT</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">50.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Data Operasional 3 -->
+                            <tr>
+                                <td><small class="text-muted fw-bold">01 Jul 2026</small></td>
+                                <td>
+                                    <span class="badge bg-success mb-1">Gaji Karyawan</span>
+                                    <strong class="d-block small text-dark mb-0">Gaji Mingguan Kasir (Siti)</strong>
+                                </td>
+                                <td class="text-end fw-bold text-danger">600.000</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger py-1 px-2 mb-1" title="Hapus"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-20 -->
+<!-- ==========================================
+BLOK TG-21 - LAPORAN LABA RUGI BERSIH
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-21:
+1. Pusat Kalkulasi Final: Menghitung secara otomatis seluruh data dari Blok TG-17 (Laba Kotor), TG-13 (Kerugian Audit), dan TG-20 (Biaya Operasional).
+2. Visibilitas Laba Bersih: Pemilik toko dapat melihat secara langsung "Uang Bersih" yang didapatkan selama periode tertentu.
+3. Cetak Laporan (Export): Laporan bisa dicetak menjadi PDF atau Excel untuk arsip pembukuan atau pelaporan.
+4. Navigasi Periode: Fitur filter bulan dan tahun untuk mengevaluasi dan membandingkan performa toko antar waktu.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-laba-rugi">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Laporan Laba Rugi (Profit & Loss)</h3>
+            <p class="text-muted small mb-0">Rangkuman pendapatan, pengeluaran, dan laba bersih toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <!-- Filter Periode Laporan -->
+    <div class="card-custom border-top-orange mb-4 shadow-sm border-0">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold small">Pilih Bulan</label>
+                <select class="form-select border-orange-custom">
+                    <option value="01">Januari</option>
+                    <option value="02">Februari</option>
+                    <option value="03">Maret</option>
+                    <option value="04">April</option>
+                    <option value="05">Mei</option>
+                    <option value="06">Juni</option>
+                    <option value="07" selected>Juli</option>
+                    <option value="08">Agustus</option>
+                    <option value="09">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold small">Pilih Tahun</label>
+                <select class="form-select border-orange-custom">
+                    <option value="2025">2025</option>
+                    <option value="2026" selected>2026</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-orange w-100 fw-bold shadow-sm"><i class="bi bi-search me-1"></i> LIHAT LAPORAN</button>
+                    <button class="btn btn-danger fw-bold shadow-sm px-3" title="Cetak PDF"><i class="bi bi-file-earmark-pdf-fill fs-5"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- BAGIAN KIRI: RINCIAN PENDAPATAN & PENGELUARAN -->
+        <div class="col-lg-7">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-journal-text me-2 text-orange-custom"></i> Rincian Buku Besar (Juli 2026)</h5>
+                
+                <!-- Sesi Pendapatan -->
+                <div class="mb-4">
+                    <h6 class="text-success fw-bold bg-light p-2 rounded">1. PENDAPATAN (PENJUALAN)</h6>
+                    <div class="d-flex justify-content-between px-2 mb-1">
+                        <span class="small text-dark">Total Omset Kotor</span>
+                        <span class="small fw-bold">Rp 15.250.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mb-1 border-bottom pb-2">
+                        <span class="small text-danger">Estimasi HPP (Modal Barang Terjual)</span>
+                        <span class="small fw-bold text-danger">(Rp 11.100.000)</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mt-2">
+                        <strong class="text-success">Laba Kotor Penjualan</strong>
+                        <strong class="text-success">Rp 4.150.000</strong>
+                    </div>
+                </div>
+
+                <!-- Sesi Pengeluaran & Kerugian -->
+                <div class="mb-3">
+                    <h6 class="text-danger fw-bold bg-light p-2 rounded">2. BEBAN & PENGELUARAN</h6>
+                    <div class="d-flex justify-content-between px-2 mb-1">
+                        <span class="small text-dark">Biaya Listrik & Air</span>
+                        <span class="small fw-bold">Rp 200.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mb-1">
+                        <span class="small text-dark">Gaji Karyawan</span>
+                        <span class="small fw-bold">Rp 600.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mb-1">
+                        <span class="small text-dark">Iuran Keamanan / Kebersihan</span>
+                        <span class="small fw-bold">Rp 50.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mb-1 border-bottom pb-2 text-warning">
+                        <span class="small text-dark">Kerugian Stok (Audit: Hilang/Rusak/Expired)</span>
+                        <span class="small fw-bold text-warning text-dark">Rp 139.500</span>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mt-2">
+                        <strong class="text-danger">Total Beban Operasional & Kerugian</strong>
+                        <strong class="text-danger">Rp 989.500</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN KANAN: KARTU HASIL LABA BERSIH -->
+        <div class="col-lg-5">
+            <div class="card-custom h-100 border-0 shadow-sm bg-light d-flex flex-column justify-content-center align-items-center text-center p-4">
+                <i class="bi bi-wallet2 text-success mb-3" style="font-size: 4rem;"></i>
+                <h5 class="text-muted fw-bold mb-1">LABA BERSIH</h5>
+                <small class="text-muted mb-4">Periode: Juli 2026</small>
+                
+                <div class="bg-success text-white w-100 p-3 rounded-4 shadow mb-3">
+                    <h2 class="fw-bold mb-0">Rp 3.160.500</h2>
+                </div>
+
+                <div class="alert alert-info border-0 shadow-sm w-100 text-start" style="font-size: 0.8rem;">
+                    <i class="bi bi-info-circle-fill me-1"></i> <strong>Catatan Sistem:</strong> 
+                    Angka Laba Bersih di atas didapat dari Laba Kotor Penjualan dikurangi seluruh Total Beban Operasional dan Kerugian.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- AKHIR BLOK TG-21 -->
+<!-- ==========================================
+BLOK TG-22 - PENGATURAN TOKO & PROFIL
+===========================================
+PENJELASAN FUNGSI PERINTAH BLOK TG-22:
+1. Profil Identitas: Pengaturan data dasar toko (Nama Toko, Alamat Lengkap, Nomor HP WhatsApp, dan Logo Toko) yang akan muncul di aplikasi pelanggan.
+2. Pengaturan Operasional: Konfigurasi jam buka-tutup toko dan tombol "Toko Libur" untuk menonaktifkan pesanan secara otomatis saat pemilik sedang tidak bisa melayani.
+3. Lokasi Google Maps: Integrasi koordinat lokasi (Latitude/Longitude) agar pelanggan dapat menemukan toko melalui navigasi maps.
+4. Keamanan & Sinkronisasi: Pengaturan kata sandi akun pemilik dan tombol sinkronisasi data ke cloud untuk keamanan backup data.
+=========================================== -->
+<div class="container mt-4 d-none-custom" id="halaman-pengaturan-toko">
+    
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-orange-custom fw-bold mb-0">Pengaturan Toko</h3>
+            <p class="text-muted small mb-0">Kelola identitas, jam operasional, dan lokasi toko Anda.</p>
+        </div>
+        <button class="btn btn-outline-secondary fw-bold shadow-sm" onclick="kembaliKeDashboardToko()">
+            <i class="bi bi-arrow-left me-2"></i> Kembali ke Dashboard
+        </button>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- BAGIAN 1: PROFIL & LOKASI (KIRI) -->
+        <div class="col-lg-6">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-shop me-2 text-orange-custom"></i> Profil Identitas Toko</h5>
+                
+                <form id="form-pengaturan-toko">
+                    <div class="text-center mb-4">
+                        <div class="bg-light border rounded-circle d-inline-flex justify-content-center align-items-center mb-2" style="width: 100px; height: 100px;">
+                            <i class="bi bi-camera-fill fs-2 text-muted"></i>
+                        </div>
+                        <small class="d-block text-muted">Unggah Logo Toko (Max 2MB)</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nama Toko <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" value="Toko Grosir Maju Jaya" required>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Nomor WhatsApp <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" value="081234567890" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small">Kode Pos</label>
+                            <input type="number" class="form-control" value="60123">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Alamat Lengkap <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" required>Jl. Raya Utama No. 45, Kec. Sukamaju, Kota Jakarta</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Koordinat Lokasi (Maps)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="-6.2000, 106.8167">
+                            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-geo-alt-fill"></i></button>
+                        </div>
+                        <small class="text-muted" style="font-size: 0.7rem;">Gunakan koordinat lat, long untuk akurasi peta.</small>
+                    </div>
+
+                    <button type="button" class="btn btn-orange w-100 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-check-circle-fill me-2"></i> SIMPAN PROFIL TOKO
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: OPERASIONAL & KEAMANAN (KANAN) -->
+        <div class="col-lg-6">
+            <div class="card-custom h-100 border-top-orange shadow-sm border-0">
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-clock-fill me-2 text-orange-custom"></i> Jam Operasional & Status</h5>
+                
+                <div class="mb-4 bg-light p-3 rounded">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark">Status Toko (Buka/Tutup)</span>
+                        <div class="form-check form-switch fs-4">
+                            <input class="form-check-input" type="checkbox" id="statusToko" checked>
+                        </div>
+                    </div>
+                    <small class="text-muted">Jika di-nonaktifkan, pesanan online tidak akan bisa masuk.</small>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <label class="form-label fw-bold small">Jam Buka</label>
+                        <input type="time" class="form-control" value="07:00">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-bold small">Jam Tutup</label>
+                        <input type="time" class="form-control" value="22:00">
+                    </div>
+                </div>
+
+                <h5 class="text-dark fw-bold border-bottom pb-2 mb-3"><i class="bi bi-shield-lock-fill me-2 text-orange-custom"></i> Keamanan Akun</h5>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small">Ubah Password Pemilik</label>
+                    <input type="password" class="form-control mb-2" placeholder="Masukkan password baru...">
+                    <input type="password" class="form-control" placeholder="Konfirmasi password baru...">
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-outline-primary fw-bold py-2">
+                        <i class="bi bi-cloud-arrow-up me-2"></i> SINKRONISASI DATA CLOUD
+                    </button>
+                    <button class="btn btn-outline-danger fw-bold py-2">
+                        <i class="bi bi-door-closed me-2"></i> KELUAR DARI AKUN (LOGOUT)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- AKHIR BLOK TG-22 -->
+<!-- ==========================================
 BLOK TG-23 - PUSAT BANTUAN & TIKET SUPPORT
 ===========================================
 PENJELASAN FUNGSI PERINTAH BLOK TG-23:
